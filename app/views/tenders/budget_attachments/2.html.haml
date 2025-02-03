@@ -1,0 +1,19 @@
+= simple_nested_form_for @expediente, data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host }, html: {class: 'horizontal-form directUpload'}, wrapper: :horizontal_form, defaults: {disabled: file.disabled? } do |f|
+  = error_notification(f)
+  %hr
+  .d-flex.attachments-fields
+    = f.simple_fields_for :budget_attachments, wrapper: false do |i|
+      .row.fields.with-title{class: "#{i.index}"}
+        .row#attachment_data
+          = i.input :detail, as: :string, label: "Detalle", input_html: {style: 'margin-right: 25px'}
+          = i.input :objeto, as: :string, label: "Objeto", input_html: {style: 'margin-left: 25px'}
+          = i.input :entity_name, as: :string, label: "Proveedor"
+        .caption.captionload
+          = image_tag "/images/load.gif", class: 'img-fluid'
+        .text-center.img_wrp
+          = image_tag i.object.display_file, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image #{i.object.new_record? ? 'hidden' : nil}", data: {index: i.index}
+          = i.input :original_filename, value: i.object.original_filename, as: i.object.new_record? ? :hidden : :string, label: false, wrapper_html: {style: 'width: 90px'}
+          = i.link_to_remove icon('fas', 'times'), class: 'rm-img-btn text-dark'
+        = i.input :file, as: :file, input_html: { class: "file_input btn btn-primary", data: {index: i.index} }, label: false
+  %center
+    = f.link_to_add "#{icon('fas', 'paperclip')} Adjuntar presupuesto".html_safe, :budget_attachments, class: "btn btn-success btn-sm align-self-start #{'disabled' if f.object.disabled?}", data: {target: '.attachments-fields'}

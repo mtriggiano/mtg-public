@@ -1,0 +1,21 @@
+.index
+	.index-title
+		.principal
+			= icon('fas', 'calendar')
+			Calendario de cirugías
+#index-body.table-responsive.border.p-4
+	.row
+		.col-6.calendar
+			= month_calendar events: @surgeries do |date, meetings|
+				= date.strftime("%d")
+				- if meetings.count > 0
+					= link_to "javascript:void(0)", onclick: "displaySurgeries('#{date}')" do
+						= meetings.count
+						Cirugías
+		.col-6.surgery_general
+			- unless @surgeries.closest_file.nil?
+				= render "/surgeries/files/see/general", file: @surgeries.closest_file
+			- else
+				%h4.text-center
+					= icon('fas', 'exclamation')
+					No hay más cirugías programadas.

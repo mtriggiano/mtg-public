@@ -1,0 +1,37 @@
+= simple_form_builder shipment, defaults: {disabled: shipment.disabled?} do |f|
+	= shared_nav(f)
+	.card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+		.card-body
+			= file_header(f)
+			.header-detail
+				= error_notification(f)
+				.row
+					.col-sm-4.col-12
+						= number_input(f, true)
+						= sale_client_select(f)
+						= store_input(f)
+					.col-sm-4.col-12
+						= date_input(f, :date)
+						= state_input(f, with_button: false)
+						= f.input :shipment_type, as: :select, collection: shipment.class::TYPES
+					.col-sm-4.col-12
+						= f.input :from, collection: Anmat::EVENTOS[current_company.anmat_type].map{|e| e[:from] unless e[:from].blank?}.compact.uniq, label: "Origen"
+						= f.input :to, collection: Anmat::EVENTOS[current_company.anmat_type].map{|e| e[:to] unless e[:to].blank?}.compact.uniq, label: "Destino"
+						= f.input :id_evento, as: :select, collection: shipment.eventos, input_html: {data: {url: eventos_path, extra_data: "#tenders_shipment_from", secondary_data: "#tenders_shipment_to"}}, label: "Evento"
+				= new_associated_document(f)
+				= observation_to_user("Solo se vincularan las ordenes con estado 'Aprobado'.")
+				%hr
+				.text-center
+					= switch_shipment_state_button(shipment)
+				= content_for(:extra_links) do
+					= button_tag "#{icon('fas', 'map-marker-alt')} Destino".html_safe, type: :button, aria: {selected: false, controls: 'location'}, data: {toggle: 'tab', target: '#location'}, class: 'nav-link bg-white '
+					= button_tag "#{icon('fas', 'file-signature')} Conformado".html_safe, type: :button, aria: {selected: false, controls: 'conformed'}, data: {toggle: 'tab', target: '#conformed'}, class: "nav-link text-#{shipment.conformed ? 'success' : 'warning'}"
+	= document_table(f) do
+		= render '/file_attributes_configs/shared_extra_attributes', f:f, object: shipment
+		= observation_input(f)
+		= render '/tenders/shared_attachment', f:f
+= render '/sales/shipments/conformed'
+- if shipment.approved?
+	= modal("#{icon('fas', 'cogs')} Generar PDF", "pdf_modal", "pdf_modal_body", "extra-big") do
+		.modal-body
+			= render '/sales/shipments/custom_details_form', shipment: shipment

@@ -1,0 +1,4 @@
+= index_table(mform: true, icon: 'ticket-alt', mtarget: "#new_price_update_modal", collection: price_updates, text: "Precios", path: new_agreement_surgeries_price_update_path, jpath: agreement_surgeries_price_updates_path(format: :json), config: false)
+
+= modal("#{icon('fas', 'plus')} Añadir precio", "new_price_update_modal", "new_price_update_body", "extra-big") do
+	.modal-body

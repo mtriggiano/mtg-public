@@ -1,0 +1,43 @@
+wb = xlsx_package.workbook
+title = wb.styles.add_style(:bg_color => "80CBC4", :fg_color=>"#FF000000", :sz=>14,  :border=> {:style => :thin, :color => "80CBC4"})
+wb.add_worksheet(name: "Productos") do |sheet|
+    sheet.add_row(["ID", "Familia", "Sub-familia", "Código Interno*", "Nombre*", "Marca", "Origen", "Stock", "P.M.", "G.T.I.N.", "Lote", "Serie", "Vencimiento", "Vigente"], :style=> title)
+    products.includes(:product_category, :batches).each do |product|
+    	if product.batches.any?
+    		product.batches.each do |batch|
+        		sheet.add_row([
+                    product.id, 
+                    product.product_category.name, 
+                    product.family, 
+                    product.code,product.name, 
+                    product.branch, 
+                    product.source,
+                    batch.quantity, 
+                    product.pm, 
+                    product.gtin, 
+                    batch.code, 
+                    batch.serial, 
+                    batch.due_date,
+                    product.selectable ? "Si" : "No",
+                ])
+        	end
+        else
+        	sheet.add_row([
+                product.id, 
+                product.product_category.name, 
+                product.family, 
+                product.code, 
+                product.name, 
+                product.branch, 
+                product.source, 
+                product.available_stock, 
+                product.pm,
+                product.gtin, 
+                nil, 
+                nil, 
+                nil,
+                product.selectable ? "Si" : "No",
+            ])
+        end
+    end
+end

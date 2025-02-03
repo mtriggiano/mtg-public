@@ -1,0 +1,65 @@
+- present file do |file_presenter|
+	.row
+		.col-12
+			.px-2.bg-white.p-3
+				.text-muted
+					= icon('fas', 'list-alt')
+					Información básica
+				%hr
+					%dl.row
+						%hr
+						.col-6
+							= see_contact_dl("Número", file_presenter.number)
+							%hr.dotted
+							= see_contact_dl("Cliente", file_presenter.client)
+							%hr.dotted
+							= see_contact_dl("Nombres", file.first_name)
+							%hr.dotted
+							= see_contact_dl("Apellidos", file.last_name)
+							%hr.dotted
+							= see_contact_dl("Nacionalidad", file.nationality)
+							%hr.dotted
+							= see_contact_dl("Tipo Documento", file_presenter.document_type)
+							%hr.dotted
+							= see_contact_dl("Numero Documento", file.document_number)
+							%hr.dotted
+							= see_contact_dl("Direccion", file.address)
+							%hr.dotted
+							= see_contact_dl("Fecha Nacimiento", file_presenter.birthday)
+							%hr.dotted
+							= see_contact_dl("Edad", file.age)
+							%hr.dotted
+							= see_contact_dl("Sexo", file.gender)
+							%hr.dotted
+							= see_contact_dl("Celular", file.mobile_phone)
+							%hr.dotted
+							= see_contact_dl("Provincia", file.province)
+							%hr.dotted
+							= see_contact_dl("Localidad", file.locality)
+						.col-6
+							= see_contact_dl("Solicitud", file_presenter.surgery_request)
+							%hr.dotted
+							= see_contact_dl("Fecha solicitud", file_presenter.request_date)
+							%hr.dotted
+							= see_contact_dl("Tipo de Cirujia", file.surgery_type)
+							%hr.dotted
+							= see_contact_dl("Fecha Cirujia", file_presenter.surgery_date)
+							%hr.dotted
+							= see_contact_dl("Obra Social", file.social_work)
+							%hr.dotted
+							= see_contact_dl("Numero Paciente", file.pacient_number)
+							%hr.dotted
+							= see_contact_dl("Historia Clínica", file.medical_history)
+							%hr.dotted
+							= see_contact_dl("Institucion", file.institution)
+							%hr.dotted
+							= see_contact_dl("Medico", file.doctor)
+							%hr.dotted
+							= see_contact_dl("Stock Interno?", file_presenter.internal_stock)
+							%hr.dotted
+							= see_contact_dl("Tiempo cirujia", file.surgery_time)
+							%hr.dotted
+							= see_contact_dl("Observación", file.observation)
+							%hr.dotted
+							= see_contact_dl("Estado", file.state)
+							

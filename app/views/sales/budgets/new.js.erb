@@ -1,0 +1,4 @@
+<% simple_nested_form_for budget do |f| %>
+	<% @builder = f %>
+<% end %>
+$("tbody").html("<%= j render '/sales/shared_details_form', {f: @builder} %>");

@@ -1,0 +1,12 @@
+<% simple_nested_form_for arrival do |f| %>
+	<% @builder = f %>
+<% end %>
+$("table.parent-table > tbody").html("<%= j render '/purchases/shared_details_form', {f: @builder, colspan: 10} %>");
+setSelect2();
+toogleBody();
+
+$("#purchase_arrival_supplier_id").val("<%= arrival.entity_id %>").trigger("change")
+
+$("[id*=_arrival_details_attributes_][id$=_quantity]:not([id*=requested])").each(function(){
+	$(this).trigger("change")
+})

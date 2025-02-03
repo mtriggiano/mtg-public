@@ -1,0 +1,5 @@
+<% simple_nested_form_for external_bill do |f| %>
+	<% @builder = f %>
+<% end %>
+$(".parent-table tbody").html("<%= j render '/purchases/shared_details_form', {f: @builder} %>");
+$(".cbte_tipo").html("<%= j render '/purchases/bills/cbte_tipo', f: @builder %>")

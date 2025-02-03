@@ -1,0 +1,44 @@
+%div{style: 'background-color: white; height: 200px;'}
+.border
+  %table.width_100{style: 'font-size: 11px;'}
+    %tr
+      %td
+        %b
+          Institución:
+        = sale_shipment.client.name
+      %td
+        %b
+          Lugar de entrega:
+        = sale_shipment.delivery_place
+    %tr
+      %td
+        %b
+          Afiliado:
+        = sale_shipment.file.pacient.try(:upcase)
+      %td
+        %b
+          Nº Afiliado:
+        = sale_shipment.file.pacient_number
+    %tr
+      %td
+        %b
+          Cliente Razón Social:
+        = sale_shipment.client.name
+      %td
+        %b
+          Expediente:
+        = sale_shipment.file.full_name.try(:upcase)
+    %tr
+      %td
+        %b
+          Médico:
+        = sale_shipment.file.doctor.try(:upcase)
+      %td
+        %b
+          Fecha de salida:
+        = I18n.l(sale_shipment.date, format: :default)
+    %tr
+      %td
+        %b
+          O.C.:
+        = sale_shipment.file.try(:external_purchase_order_number)

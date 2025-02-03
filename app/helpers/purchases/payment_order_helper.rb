@@ -1,0 +1,2 @@
+module Purchases::PaymentOrderHelper
+end

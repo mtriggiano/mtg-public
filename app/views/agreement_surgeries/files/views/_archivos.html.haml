@@ -1,0 +1,137 @@
+- disabled ||= false
+= simple_nested_form_for file, html: { class: 'horizontal-form directUpload'}, wrapper: :horizontal_form, defaults:{disabled: disabled} do |f|
+  %hr.dotted
+  .row
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag file.dni, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.dni && f.object.dni != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.dni
+          = f.input :dni, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "DNI"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag file.anses_negative, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.dni && f.object.anses_negative != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.anses_negative
+          = f.input :anses_negative, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Negativa de ANSES"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag file.anses_no_negative, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.anses_no_negative && f.object.anses_no_negative != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.anses_no_negative
+          = f.input :anses_no_negative, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "No nevativa de ANSES"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag file.surgical_sheet, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.surgical_sheet && f.object.surgical_sheet != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.surgical_sheet
+          = f.input :surgical_sheet, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Foja quirirjica"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag file.codem, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.codem && f.object.codem != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.codem
+          = f.input :codem, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Informe CODEM"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag file.clinical_record_cover, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.clinical_record_cover && f.object.clinical_record_cover != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.clinical_record_cover
+          = f.input :clinical_record_cover, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Caratula historia clinica"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag file.implant_certificate, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.implant_certificate && f.object.implant_certificate != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.implant_certificate
+          = f.input :implant_certificate, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Certificado de implante"
+  .row
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag file.father_dni, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.father_dni && f.object.father_dni != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.father_dni
+          = f.input :father_dni, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "DNI Padre"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag file.mother_dni, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.mother_dni && f.object.mother_dni != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.mother_dni
+          = f.input :mother_dni, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "DNI Madre"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag file.father_anses_negative, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.father_anses_negative && f.object.father_anses_negative != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.mother_dni
+          = f.input :father_anses_negative, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Negativa Anses Padre"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag file.mother_anses_negative, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.mother_anses_negative && f.object.mother_anses_negative != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.mother_anses_negative
+          = f.input :mother_anses_negative, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Negativa Anses Madre"

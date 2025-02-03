@@ -1,0 +1,11 @@
+= edit_helper("Material") do
+  = link_to 'Nomenclador', agreement_surgeries_surgery_materials_path
+  \|
+  
+  = link_to "Editar".html_safe, edit_agreement_surgeries_surgery_material_path(surgery_material)
+
+  = render '/agreement_surgeries/surgery_materials/form', disabled: true
+
+  = track_users(@surgery_material)
+  
+  = render "/agreement_surgeries/surgery_materials/widgets/precios"

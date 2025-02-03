@@ -1,0 +1,90 @@
+.d-flex.justify-content-center
+  .col-lg-8
+    = link_to "Volver a #{cash_account.nombre}", polymorphic_path(cash_account, view: "expenditures")
+    %p.text-muted.mb-1 Información del comprobante
+    .card.mb-4
+      .card-body
+        .row
+          .col-md-4.form-group
+            %p.text-muted.mb-1 Código
+            %h5
+              = cash_account_expenditure.codigo_recibo
+          .col-md-4.form-group
+            %p.text-muted.mb-1 Comprobante
+            %h5
+              = cash_account_expenditure.codigo_comprobante
+          .col-md-2.form-group
+            %p.text-muted.mb-1 Fecha emisión
+            %h5
+              = cash_account_expenditure.fecha
+          .col-md-2.form-group
+            %p.text-muted.mb-1 Fecha pago
+            %h5
+              = cash_account_expenditure.fecha
+          .col-md-6.form-group
+            %p.text-muted.mb-1 Proveedor
+            %h5
+              = cash_account_expenditure.supplier_name
+          .col-md-6.form-group
+            %p.text-muted.mb-1 Documento asociado
+            %h5
+              = cash_account_expenditure.order.try(:name)
+          .col-md-12.form-group
+            %p.text-muted.mb-1 Descripción del gasto
+            %h5
+              = cash_account_expenditure.descripcion
+          .col-md-12.text-muted.text-right
+            %p.mb-0
+              Registrado el día:
+              = cash_account_expenditure.created_at
+            %p.mb-0
+              Actualizado el día:
+              = cash_account_expenditure.updated_at
+
+    %p.text-muted.mb-1 Recibo de dinero
+    .card.mb-4
+      .card-body
+        .row
+          .col-md-6
+            %p.text-muted.mb-1 Recibió
+            %h5
+              = cash_account_expenditure.recibe
+          .col-md-6
+            %p.text-muted.mb-1 En representación de
+            %h5
+              = cash_account_expenditure.representa
+
+    %p.text-muted.mb-1 Información contable
+    .card.mb-4
+      .card-body
+        .row
+          .col-md-4
+            %p.text-muted.mb-1 Fecha de registro
+            %h5
+              = cash_account_expenditure.fecha_registro
+          .col-md-4
+            %p.text-muted.mb-1 I.V.A.
+            %h5.text-right
+              = number_to_ars cash_account_expenditure.sum_iva
+          .col-md-4
+            %p.text-muted.mb-1 Percep. I.V.A.
+            %h5.text-right
+              = number_to_ars cash_account_expenditure.percep_iva
+          .col-md-4
+            %p.text-muted.mb-1 I.I.B.B.
+            %h5.text-right
+              = number_to_ars cash_account_expenditure.percep_iibb
+          .col-md-4
+            %p.text-muted.mb-1 NO Gravados
+            %h5.text-right
+              = number_to_ars cash_account_expenditure.no_gravados
+          .col-md-4
+            %p.text-muted.mb-1 TOTAL
+            %h5.text-right
+              = number_to_ars cash_account_expenditure.total
+
+    .text-center.mb-4
+      = link_to "Anular gasto de caja", cash_account_cash_account_expenditure_path(cash_account, cash_account_expenditure), method: :delete, class: 'btn btn-outline-danger', data: { confirm: "El movimiento de caja será eliminado ¿Desea continuar?" } if cash_account_expenditure.active?
+
+    .text-center.mb-4
+      = link_to "Imprimir recibo", cash_account_cash_account_expenditure_path(cash_account, cash_account_expenditure, format: :pdf), class: 'btn btn-success' if cash_account_expenditure.active?

@@ -1,0 +1,28 @@
+- child ||= d.object.is_a_child?
+- index = @index || d.index
+= document_detail(d, index, child) do
+	%td.d-flex.border-top-0
+		= state_point(d.object.state_point) unless child
+	%td
+		= offer_input(d)
+	%td
+		= product_td(d)
+		= measurement_td(d)
+	%td
+		= product_code_td(d)
+	%td
+		= quantity_td(d)
+	%td
+		= d.input :price, input_html:{disabled: true, class: 'price_td tender_price_history'} unless child
+	%td
+		= discount_td(d) unless child
+	%td
+		= iva_td(d) unless child
+		= d.input :description, as: :hidden
+	%td
+		= document_detail_observation_button d, index, child
+	%td.fixed-col
+		= total_td(d) unless child
+	%td.fixed-col
+		= document_detail_actions d, index, child
+	= document_detail_observation d, index, child

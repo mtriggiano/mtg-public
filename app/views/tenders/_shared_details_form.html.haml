@@ -1,0 +1,5 @@
+= f.simple_fields_for :details, defaults: {disabled: f.object.disabled?, label: false}, wrapper: false do |d|
+	= render 'details_form', {d: d, child: false}
+	- unless ["Tenders::Bill", "Tenders::Receipt", "Surgeries::SupplierBill", "Surgeries::ClientBill"].include?(f.object.class.name) 
+		= d.simple_fields_for :childs, defaults: {disabled: f.object.disabled?, label: false}, wrapper: false do |c|
+			= render 'details_form', {d: c, child: true}

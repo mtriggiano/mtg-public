@@ -1,0 +1,43 @@
+.row
+	.col-md-12.mb-3
+		.card
+			.card-header
+				%span.h4
+					= icon('fas', 'tasks')
+					Tablero de tareas
+				.float-right
+					= link_to "#{icon('fas', 'calendar-minus')} Semana".html_safe, edit_user_registration_path(view: 'calendar', sub_view: 'week'), class: 'btn btn-info'
+					= link_to "#{icon('fas', 'calendar-alt')} Mes".html_safe, edit_user_registration_path(view: 'calendar', sub_view: 'month'), class: 'btn btn-info'
+			.card-body.p-4
+				-if params[:sub_view] == "week"
+					= week_calendar events: current_user.alerts do |date, tasks|
+						= date.strftime("%d")
+
+						- tasks.first(3).each do |task|
+							.task.d-flex.text-truncate
+								%span.state
+									= state_circle(task.open?, task.state)
+								= link_to task.title, [:show, task, task.file, {alert_id: task.id, format: :html}]
+				- else
+					= month_calendar events: current_user.alerts do |date, tasks|
+						= date.strftime("%d")
+
+						- tasks.first(3).each do |task|
+							.task.d-flex.text-truncate
+								%span.state
+									= state_circle(task.open?, task.state)
+								= link_to task.title, [:show, task, task.file, {alert_id: task.id, format: :html}]
+	.col-md-6.mb-3
+		.card
+			.card-header
+				= icon('fas', 'tasks')
+				Tareas de la semana
+			.card-body.p-4
+				= line_chart current_user.alerts.group(:state).group_by_day(:final_date).count
+	.col-md-6.mb-3
+		.card
+			.card-header
+				= icon('fas', 'chart')
+				Rendimiento por día
+			.card-body.p-4
+				= column_chart current_user.alerts.finished.group_by_day_of_week(:created_at, format: "%a").count

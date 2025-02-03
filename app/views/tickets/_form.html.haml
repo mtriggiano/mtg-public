@@ -1,0 +1,26 @@
+= simple_form_for ticket, data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host }, html: {class: 'horizontal-form directUpload'}, wrapper: :horizontal_form do |f|
+  = error_notification(f)
+  .row
+    .col
+      = f.input :title, label: "Título"
+      %hr.dotted
+      = f.input :priority, label: "Prioridad", collection: (1..10).to_a
+      %hr.dotted
+      = f.input :classification, label: "Tipo", collection: Ticket::TYPES, include_blank: false
+      %hr.dotted
+      = f.input :area, label: "Tipo", collection: Ticket::AREAS, include_blank: false
+      %hr.dotted
+      = f.input :body, label: "Descripción",as: :text, input_html: {rows: 3}
+      %hr.dotted
+      .form-group.row.text.optional
+        = label_tag :attachment, "Adjunto", class: "col-md-4 col-lg-3 col-form-label col-form-label-sm text optional"
+        .col-md-8.col-lg-9
+          .mx-2.1.justify-content-center
+            .caption.captionload
+              = image_tag "/images/load.gif", class: 'img-fluid'
+            .img_wrp
+              = image_tag ticket.attachment, width: '75px', height: '75px', class: "border img-fuild image", data: {index: 1}
+            = f.input :attachment, as: :file, input_html: { hidden: true, class: "file_input", data: {index: 1} }, label: false
+  .actions
+    %hr
+    = save_button

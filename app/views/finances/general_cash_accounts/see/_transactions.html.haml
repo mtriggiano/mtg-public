@@ -1,0 +1,84 @@
+- fecha = fecha.nil? ? Date.today : fecha.to_date
+.row
+  .col-lg-6
+    .text-center
+      = link_to "#{icon('fas', 'plus')} Egreso manual".html_safe, new_cash_account_general_cash_expense_path(general_cash_account), class: 'btn btn-outline-success'
+      = link_to "#{icon('fas', 'search')} Buscador".html_safe, expenses_path, class: 'btn btn-outline-info'
+    %p.mb-1
+      Egresos del día
+    %table.contable-table
+      %thead
+        %th Comp.
+        %th Lugar/Persona
+        %th Fecha
+        %th Concepto
+        %th Importe
+        %th Forma
+      %tbody
+        - expenses.each do |log|
+          %tr
+            %td
+              = link_to log.codigo, expense_path(log.logable_id)
+            %td.word-breakeable
+              = log.entidad
+            %td.word-breakeable
+              = log.date
+            %td.word-breakeable
+              = log.description
+            %td.text-right{ :class => negative_colored_number_klass(log.monto) }
+              = number_to_ars log.monto
+            %td
+              = log.forma
+  .col-lg-6
+    .text-center
+      = link_to "#{icon('fas', 'plus')} Ingreso manual".html_safe, new_cash_account_general_cash_income_path(general_cash_account), class: 'btn btn-outline-success'
+      = link_to "#{icon('fas', 'search')} Buscador".html_safe,incomes_path, class: 'btn btn-outline-info'
+    %p.mb-1
+      Ingresos del día
+    %table.contable-table
+      %thead
+        %th Comp.
+        %th Lugar/Persona
+        %th Fecha
+        %th Concepto
+        %th Importe
+        %th Forma
+      %tbody
+        %tr
+          %td
+          %td
+            = general_cash_account.nombre
+          %td
+            = (fecha || Date.today)
+          %td.word-breakeable
+            Saldo anterior -
+            = (fecha || Date.today).to_date - 1.day
+          %td.text-right
+            = number_to_ars @saldo_anterior
+          %td
+            Efectivo ($)
+        - incomes.each do |log|
+          %tr
+            %td
+              = link_to log.codigo, income_path(log.logable_id)
+            %td.word-breakeable
+              = log.entidad
+            %td.word-breakeable
+              = log.date
+            %td.word-breakeable
+              = log.description
+            %td.text-right{ :class => negative_colored_number_klass(log.monto) }
+              = number_to_ars log.monto
+            %td
+              = log.forma
+
+  .col-lg-12
+    .row
+      .col-lg-6
+        %p.text-right.h5
+          Egresos:
+          = number_to_ars @egresos
+      .col-lg-6
+        %p.text-right.h5
+          Ingresos:
+          = number_to_ars @saldo_anterior + @ingresos

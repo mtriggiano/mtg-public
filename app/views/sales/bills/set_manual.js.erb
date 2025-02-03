@@ -1,0 +1,6 @@
+$("#bill_state").html("<%= j render '/sales/bills/bill_state' %>")
+<% if bill.manual == "E" %>
+	$("input[id$=bill_number]").attr("disabled", "disabled")
+<% else %>
+	$("input[id$=bill_number]").removeAttr("disabled")
+<% end %>

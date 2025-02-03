@@ -1,0 +1,59 @@
+= simple_nested_form_for(box, html: { class: 'directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }) do |f|
+
+	= error_notification(f)
+
+	.row
+		.col-sm-3.col-12.border-right.pt-3.h-70vh
+			.row
+				.col-sm-3.d-flex.align-items-center
+					= label_tag "Foto"
+				.col-sm-9.d-flex
+					= f.simple_fields_for :images, wrapper: false do |i|
+						.fields{class: "#{i.index}"}
+							.caption.captionload
+								= image_tag "/images/load.gif", class: 'img-fluid'
+							.mx-2.text-center.img_wrp
+								= image_tag i.object.source, width: '75px', height: '75px', alt: 'Añadir imagen', class: 'border img-fuild image', data: {index: i.index}
+								%br
+								= i.link_to_remove icon('fas', 'times'), class: 'rm-img-btn text-dark'
+								= i.input :source, as: :file, input_html: { hidden: true, class: "file_input", data: {index: i.index} }, label: false
+
+					= f.link_to_add image_tag("/images/plus.png", width: '75px', height: '75px'), :images, data: {limit: 3}
+			%hr.dotted
+			= f.association :product_category, as: :select, collection: current_company.product_categories.map{|pc| [pc.name, pc.id]}, label: "Categoría", include_blank: false
+			%hr.dotted
+			= f.input :name, label: "Nombre", placeholder: "Nombre del producto"
+			%hr.dotted
+			= f.input :code, label: "Código interno", placeholder: "Si deja en blanco se crea automáticamente"
+			%hr.dotted
+			= f.input :measurement_unit, label: "Unidad de medida", collection: Product::MEASUREMENT_UNITS.map{ |k,v| [v, k]}
+			%hr.dotted
+			= f.label :own, "¿Propio?"
+			= f.input :own, label: false, input_html: { data: { toggle: 'toggle', onstyle: 'success', offstyle: 'danger', on: "Si", off: "No" } }, wrapper_html: { class: 'flex-grow-1', style: 'margin-left: -1.25rem; padding-right: 1.25rem;' }
+			%hr.dotted
+			= f.label :selectable, "¿Vigente?"
+			= f.input :selectable, label: false, input_html: { data: { toggle: 'toggle', onstyle: 'success', offstyle: 'danger', on: "Si", off: "No" } }, wrapper_html: { class: 'flex-grow-1', style: 'margin-left: -1.25rem; padding-right: 1.25rem;' }
+		.col-sm-6.col-6.h-60vh.text-center
+			= f.link_to_add "#{icon('fas', 'plus')} Añadir posición".html_safe, :box_products, data: {target: '#box'}, class: 'btn btn-success'
+			.row.flex-wrap#box
+				= f.simple_fields_for :box_products, wrapper: false do |p|
+					.pt-3.parent_div.fields.col-3
+						= image_tag p.object.try(:product).try(:default_image) || "/images/empty.png", ondrop:"drop(event)", ondragover:"allowDrop(event)", class: "square-img droppable img-fluid"
+						.text-truncate.product_name{title: "#{p.object.product.try(:name)}", data:{toggle: 'tooltip'}, class: "#{'text-danger' if p.object.errors.any?}"}
+							= p.object.product.try(:name)
+						.d-flex
+							= p.input :quantity, label: false, input_html: {class: "#{'transparent' if p.object.new_record?} quantity"}, placeholder: "Cant."
+							= p.link_to_remove icon('fas', 'times'), class: "btn mb-4 corner"
+							= p.hidden_field :product_id, class: 'product_id'
+
+		.col-sm-3.col-6.pt-3.border-left.h-60vh
+			= text_field_tag :search, params[:search], class: 'form-control', id: 'search-input', placeholder: "Nombre, codigo, etc..."
+			%table.table
+				%thead
+					%th{colspan: 2, scope: "col"}
+						Producto
+				%tbody#product-body
+					= render '/inventaries/boxes/product_searcher'
+	%hr
+	.actions.w-100.text-center
+		= save_button

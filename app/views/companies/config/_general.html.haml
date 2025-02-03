@@ -1,0 +1,31 @@
+= simple_form_for(company, html: { class: 'horizontal-form directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }, wrapper: :horizontal_form) do |f|
+	= error_notification(f)
+	.row
+		.col-8.offset-2
+			.row
+				.col-sm-3.d-flex.align-items-center
+					= f.input :logo, as: :file, input_html: { hidden: true, id: 'file_input' }, label: 'Logotipo'
+				.col-sm-9
+					.caption.captionload
+						= image_tag "/images/load.gif", class: 'img-fluid'
+					= image_tag company.logo, width: '75px', alt: 'Añadir imagen', id: 'image', class: 'image border'
+			%hr.dotted
+			.row
+				.col-sm-3.d-flex.align-items-center
+					= f.input :pdf_logo, as: :file, input_html: { hidden: true, id: 'file_input' }, label: 'Logotipo para PDF'
+				.col-sm-9
+					.caption.captionload
+						= image_tag "/images/load.gif", class: 'img-fluid'
+					= image_tag company.pdf_logo, width: '75px', alt: 'Añadir imagen', id: 'image', class: 'image border'
+			%hr.dotted
+			= f.input :name, label: "Nombre de la empresa"
+			%hr.dotted
+			= f.input :email
+			%hr.dotted
+			= f.input :contact_number, label: "Teléfono"
+			%hr.dotted
+			= f.input :society_name, label: "Razón social"
+			%hr.dotted
+			= f.input :concept, label: "Concepto", collection: Afip::CONCEPTOS, include_blank: false, input_html: {id: "concepto"}
+			%hr
+	= save_button

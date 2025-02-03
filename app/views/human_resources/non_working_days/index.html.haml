@@ -1,0 +1,26 @@
+.row.d-flex
+  .col-md-12.col-12
+    .index
+      .index-title
+        .principal.d-flex
+          .title.flex-grow-1
+            = icon('fas', 'tasks')
+            Días no laborales y Feriados
+          .small
+            = link_to "#{icon('fas', 'calendar-minus')} Nuevo".html_safe, new_non_working_day_path, class: 'btn btn-info', data: {target: '#new_non_working_day_modal', toggle: 'modal', form: true}
+      #index-body.table-responsive.border.p-4
+        = month_calendar events: current_company.non_working_days do |date, feriados|
+          = date.strftime("%d")
+          - feriados.first(3).each do |feriado|
+            .task.d-flex.text-truncate
+              - if feriado.persisted?
+                = link_to "#{feriado.reason} - #{feriado.holiday_type}".html_safe, non_working_day_path(feriado.id), data: {target: '#show_non_working_day_modal', toggle: 'modal'}
+
+= modal("#{icon('fas', 'plus')} Añadir feriado", "new_non_working_day_modal", "new_non_working_day_body", 'big') do
+  .modal-body
+    = yield
+= modal("#{icon('fas', 'eye')} Ver feriado", "show_non_working_day_modal", "show_non_working_day_body") do
+  .modal-body
+    = yield
+  .modal-footer
+    = close_button

@@ -1,0 +1,50 @@
+- params[:view] ||= 'general'
+- present product do |product_presenter|
+	.container-fluid.d-inline-block
+		.bg-secondary.text-white
+			.row
+				.col-md-2.col-12.p-4.justify-content-center
+					.card.bg-secondary.border-0
+						%center.row
+							- product.images.each do |photo|
+								.col
+									= image_tag photo.source, class: 'card-img-top rounded-circle border bg-white contact-avatar'
+							.card-body
+								%h5 #{product.name}
+				.col-md-5.col-12.p-4
+					.card.bg-secondary.border-0.ml-4
+						%span
+							%i.small
+								Clasificación:
+							= product.clasification
+						%span.mt-1
+							%i.small
+								Categoría:
+							%span.text-white
+								= product_presenter.category
+						%span.mt-1
+							%i.small
+								Stock disponible:
+							= product_presenter.available_stock
+						%span.mt-1
+							%i.small
+								Stock mínimo:
+							= product_presenter.minimum_stock
+						%span.mt-1
+							%i.small
+								Stock recomendado:
+							= product_presenter.recommended_stock
+	.container-fluid.d-inline-block
+		%ul.nav.bg-white.border-bottom.border-top.p-2
+			%li.nav-item.border-animated
+				= show_links('General', 'general', params[:view], product_path(product.id, view: 'general'))
+			%li.nav-item.border-animated
+				= show_links('Lotes', 'location', params[:view], product_path(product.id, view: 'location'))
+			%li.nav-item.border-animated
+				= show_links('Estadísticas', 'charts', params[:view], product_path(product.id, view: 'charts'))
+			%li.nav-item.border-animated
+				= show_links('Precios', 'prices', params[:view], product_path(product.id, view: 'prices'))
+			%li.nav-item.border-animated
+				= show_links('Depósitos', 'batches', params[:view], product_path(product.id, view: 'batches'))
+		- if ['general', 'location', 'charts', 'prices', 'batches'].include?(params[:view])
+			= render "/inventaries/products/see/#{params[:view]}"

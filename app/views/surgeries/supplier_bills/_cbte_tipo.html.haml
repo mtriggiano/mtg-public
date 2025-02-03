@@ -1,0 +1,5 @@
+- collection = AfipBill.new(company: current_company, supplier: supplier_bill.supplier).available_cbte_tipos
+- if collection.empty?
+	= f.input :cbte_tipo, prompt: "Seleccione proveedor primero", collection: [] , input_html: {disabled: true}
+- else
+	= f.input :cbte_tipo, collection: collection, input_html: {disabled: true}, include_blank: false

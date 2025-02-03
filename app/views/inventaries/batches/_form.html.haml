@@ -1,0 +1,20 @@
+- random ||= @random
+- path ||= filter_by_product_products_path()
+- detail = @detail || d.object
+- parent_index ||= params[:parent_index]
+- index = @index || d.index
+- child ||= params[:child]
+- product = product_id.nil? ? nil : Product.unscoped.find(product_id)
+- consumption = consumption.nil? ? false : true
+- if detail.batch_details.any?
+	= modal("#{icon('fas', 'qrcode')} Trazabilidad", "gtin_#{random}", "gtin_#{random}_body", "big") do
+		.modal-body
+			- if ['check_in', 'check_out'].include? mode
+				= simple_nested_form_for record, html: {class: 'to_remove'} do |f|
+					- if child == "true" || child ==  true
+						= f.simple_fields_for :details, f.object.details.last, child_index: parent_index do |db|
+							= db.simple_fields_for :childs, detail, child_index: index do |c|
+								= render "/inventaries/batches/#{mode}", {d:c, path: path, product: product, consumption: consumption}
+					-else
+						= f.simple_fields_for :details, detail, child_index: index do |db|
+							= render "/inventaries/batches/#{mode}", {d:db, path: path, product: product, consumption: consumption}

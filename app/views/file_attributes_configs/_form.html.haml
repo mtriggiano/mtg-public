@@ -1,0 +1,19 @@
+= simple_nested_form_for current_company, url: new_file_attributes_config_path, wrapper: :horizontal_form do |f|
+	= error_notification(f)
+	= f.simple_fields_for :file_attributes_config, current_company.file_attributes_config.where(parent_model: params[:parent_model]), wrapper: false do |c|
+		.fields
+			.row
+				= c.input :parent_model, as: :hidden, input_html: {value: params[:parent_model]} 
+				.col-5
+					= c.input :extra_attribute, label: "Nombre del atributo"
+				.col-5
+					= c.input :quantity, label: "Cantidad de veces que aparece"
+				.col-2
+					= c.label "Remover"
+					= c.link_to_remove icon('fas', 'trash'), class: 'btn btn-danger'
+			%hr.dotted
+	.text-center
+		= f.link_to_add "#{icon('fas', 'plus')} Añadir campo".html_safe, :file_attributes_config, class: 'btn btn-success'
+	.actions
+		= save_button
+

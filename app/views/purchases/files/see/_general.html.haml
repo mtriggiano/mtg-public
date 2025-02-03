@@ -1,0 +1,26 @@
+- present file do |purchase_file_presenter|
+	.row
+		.col-12
+			.pr-2.pl-2.shadow.bg-white.p-3
+				.text-muted
+					= icon('fas', 'list-alt')
+					Información básica
+				%hr
+					%dl
+						= see_contact_dl("Ubicación actual", purchase_file_presenter.current_location)
+						%hr.dotted
+						= see_contact_dl("Número", purchase_file_presenter.number)
+						%hr.dotted
+						= see_contact_dl("Título", purchase_file_presenter.title)
+						%hr.dotted
+						= see_contact_dl("Fecha de creación", purchase_file_presenter.created_at)
+						%hr.dotted
+						= see_contact_dl("Fecha de inicio", purchase_file_presenter.init_date)
+						%hr.dotted
+						= see_contact_dl("Fecha limite de finalización", purchase_file_presenter.finish_date)
+						%hr.dotted
+						= see_contact_dl("¿Abierto?", purchase_file_presenter.open)
+						%hr.dotted
+						= see_contact_dl("Estado", purchase_file_presenter.state)
+						%hr.dotted
+						= see_contact_dl("Responsable actual", purchase_file_presenter.user_name)

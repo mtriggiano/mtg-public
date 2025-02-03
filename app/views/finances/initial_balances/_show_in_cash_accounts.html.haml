@@ -1,0 +1,45 @@
+- if initial_balances.empty?
+  - if params[:fecha] && params[:fecha].to_date != Date.today
+    %p.alert.alert-info.text-center
+      = "#{icon('fas', 'exclamation-circle')} No se registró un arqueo para la fecha seleccionada.".html_safe
+  - else
+    .text-center.mb-3
+      = link_to "#{icon('fas', 'plus')} Arqueo de caja".html_safe, new_cash_account_initial_balance_path(cash_account), class: 'btn btn-outline-success'
+- else
+  .row
+    .col-4
+      %p.mb-1.h6 Arqueo al inicio
+      .border.rounded-lg.py-3.px-2
+        %div.py-3
+          %span
+            Monto
+          %span.float-right.h4
+            = number_to_ars initial_balances.first.importe
+        %div.py-3
+          %span
+            Registro
+          %span.float-right.h4
+            = initial_balances.first.created_at
+    .col-8
+      %p.mb-1.h6 Billetes y monedas en caja
+
+      .border.rounded-lg.p-2.mb-3
+        %table.condensed-table.table.table-hover
+          %thead
+            %th Denominación
+            %th
+            %th{:style => "width: 30% !important"} Cantidad
+            %th Subtotal
+          %tbody.text-right
+            - DailyCashBalance::DENOMINACIONES.each do |denominacion|
+              %tr
+                - cantidad = initial_balances.first.cuenta_monedas? ? initial_balances.first.cuenta_monedas[denominacion] : 0
+                %td
+                  = number_to_ars denominacion
+                %td
+                  x
+                %td
+                  = text_field_tag :"cuenta_monedas[#{denominacion}]", cantidad, class: 'form-control form-control-sm text-right', disabled: true
+                %td
+                  - monto = cantidad.to_i * denominacion.to_i
+                  = number_to_ars(monto)

@@ -1,0 +1,11 @@
+.card.p-2
+  %img.card-img-top.rounded-circle.mx-auto.p-2{src: @activity.photo, style: "height: 200px !important; width: auto;"}
+  .card.body
+    %dl
+      = see_contact_dl("ID", @activity.id)
+      %hr.dotted
+      = see_contact_dl("Título", @activity.title)
+      %hr.dotted
+      = see_contact_dl("Típo", @activity.activity_type)
+      %hr.dotted
+      = see_contact_dl("Cuerpo", @activity.body)

@@ -1,0 +1,24 @@
+- child ||= d.object.is_a_child?
+- index = @index || d.index
+- random = SecureRandom.hex(9).to_s
+= document_detail(d, index, child) do
+	%td
+		= d.input :transaction_id, label: false
+	%td
+		= product_td(d)
+	%td
+		= requested_quantity_td(d)
+	%td
+		= quantity_td(d)
+		= measurement_td(d)
+	%td.text-center{class: "#{d.object.has_childs? && 'hidden-traceability'}"}
+		= button_tag icon('fas', 'qrcode'), type: :button, data: {target: "#gtin_modal_#{random}#{'_child' if child}", toggle: 'modal'}, class: "btn btn-sm btn-info gtin_modal #{'blink' if d.object.has_batches_with_errors?}"
+		= modal("#{icon('fas', 'boxes')} Trazabilidad", "gtin_modal_#{random}#{'_child' if child}", "gtin_modal_body", "big") do
+			.modal-body
+				= render '/purchases/arrivals/batches', d:d
+	%td
+		= document_detail_observation_button d, index, child
+	%td.fixed-col
+		= document_detail_actions(d, index, child)
+- unless child
+	= document_detail_observation d, index, child

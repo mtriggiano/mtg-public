@@ -1,0 +1,16 @@
+%h3 
+	Cirugias para el día #{params[:date]}"
+- @files.each_with_index do |file, index|
+	.accordion#surgery_file
+		.card
+			.card-header{id: "heading#{index}"}
+				%h2.mb-0
+					= button_tag type: :button, class: 'btn btn-link collapsed', data:{toggle: 'collapse', target: "#collapse#{index}"}, aria: {expanded: false, controls: "collapse#{index}"} do
+						.d-flex.align-items-center
+							%span.state
+								= surgery_state(file)
+							= file.title
+
+			.collapse{id: "collapse#{index}", data: {parent: "#surgery_file"}, aria: {labelledby: "heading#{index}"}}
+				.card-body
+					= render "/surgeries/files/see/general", file: file

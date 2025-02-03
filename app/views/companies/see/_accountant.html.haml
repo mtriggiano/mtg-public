@@ -1,0 +1,81 @@
+- present company do |company_presenter|
+	.pr-2.pl-2.row
+		.col-12.col-md-4.col-sm-6
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'list-alt')
+					Información básica contable
+				.card-body
+					%dl
+						= see_company_dl("Inicio de actividad", company_presenter.activity_init_date)
+						%hr.dotted
+						= see_company_dl("Moneda", company_presenter.currency)
+						%hr.dotted
+						= see_company_dl("C.B.U.", company_presenter.cbu)
+						%hr.dotted
+						= see_company_dl("C.U.I.T.", company_presenter.cuit)
+						%hr.dotted
+						= see_company_dl("Condición ante I.V.A.", company_presenter.iva_cond)
+						%hr.dotted
+		.col-12.col-md-4.col-sm-6
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'list-alt')
+					Puntos de venta
+				.card-body
+					%dl
+						- company.sale_points.each do |sale_point|
+							= see_company_dl("Nombre", sale_point.number)
+							-# current_company.online_sale_points do |sale_point|
+								= see_company_dl("Electrónico", sale_point)
+							%hr.dotted
+		.col-12.col-md-4.col-sm-6
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'chart-line')
+					I.V.A. compra vs. I.V.A. venta
+				.card-body
+					= line_chart current_company.bills.group("CASE WHEN flow = 'income' THEN 'Ingreso' WHEN flow = 'discharge' THEN 'Egreso' END").group_by_week(:created_at).sum(:iva_amount)
+		.col-12.col-md-4.col-sm-6
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'chart-bar')
+					Ingresos por cliente
+				.card-body
+					= pie_chart current_company.clients.joins(:account_movements).where(account_movements: {flow: "income"}).group(:name).sum(:total), prefix: "$"
+		.col-12.col-md-4.col-sm-6
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'chart-pie')
+					Actividad por usuario
+				.card-body
+					= pie_chart current_company.users.joins(:alerts).where(alerts: {state: "Finalizado"}).group(:email).count("alerts.id")
+		.col-12.col-md-4.col-sm-6
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'chart-bar')
+					Ingresos vs gastos
+				.card-body
+					= line_chart current_company.bills.group("CASE WHEN flow = 'income' THEN 'Ingreso' WHEN flow = 'discharge' THEN 'Egreso' END").group_by_week(:created_at).sum(:total)
+
+		.col-12.col-md-4.col-sm-6
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'chart-pie')
+					Presupuestos concretados
+				.card-body
+					= pie_chart current_company.budgets.group(:state).count
+		.col-12.col-md-4.col-sm-6
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'chart-pie')
+					Facturación en el último mes
+				.card-body
+					= area_chart company_presenter.last_month_incomes
+		.col-12.col-md-4.col-sm-6
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'chart-pie')
+					Métodos de pagos mas usados
+				.card-body
+					= pie_chart current_company.expedient_receipts.joins("INNER JOIN receipts_payments ON receipts_payments.receipt_id = receipts.id INNER JOIN payment_types ON payment_types.id = receipts_payments.payment_type_id").group("payment_types.name").count

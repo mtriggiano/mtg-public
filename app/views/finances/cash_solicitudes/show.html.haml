@@ -1,0 +1,129 @@
+%h2 Solicitud de fondos
+.card.mb-5{:class => cash_solicitude_border_color_helper(cash_solicitude)}
+  .card-body
+    .row
+      .col-4.form-group
+        %p.mb-1.text-muted Solicitante
+        %h5
+          - if cash_solicitude.user
+            = link_to cash_solicitude.user.name, profile_user_path(cash_solicitude.user)
+          - else
+            = cash_solicitude.nombre_solicitante
+      .col-4.form-group
+        %p.mb-1.text-muted Fecha solicitada
+        %h5
+          = cash_solicitude.fecha
+      .col-4.form-group
+        %p.mb-1.text-muted Código
+        %span
+          %span.h4
+            = cash_solicitude.codigo
+          = cash_solicitude_state_helper(cash_solicitude.estado)
+      .col-4.form-group
+        %p.mb-1.text-muted Motivo
+        %h5
+          = cash_solicitude.motivo.upcase
+      .col-8.form-group
+        %p.mb-1.text-muted Descripción detallada
+        %h5
+          = cash_solicitude.descripcion.upcase
+      .col-12.my-4
+        .text-center
+          = link_to "#{icon('fas', 'print')} Imprimir".html_safe, print_cash_solicitude_path(cash_solicitude, format: :pdf), class: 'btn btn-success', target: '_blank', data: { "skip-pjax": true } if cash_solicitude.finalizado?
+
+%p.text-muted.mb-1 Información de retiro y rendición
+.card.mb-5
+  .card-body
+    .row
+      - if cash_solicitude.cash_withdrawal
+        .col-6
+          .row
+            .col-12.form-group
+              %p.mb-1.text-muted Entregó
+              %h5
+                = cash_solicitude.cash_withdrawal.user.try(:name)
+            .col-6.form-group
+              %p.mb-1.text-muted Fecha de retiro
+              %h5
+                = cash_solicitude.cash_withdrawal.fecha
+            .col-6.form-group
+              %p.mb-1.text-muted Importe retirado
+              %h5
+                = number_to_ars cash_solicitude.cash_withdrawal.importe
+
+
+      - if cash_solicitude.cash_refund
+        .col-6.border-left
+          .row
+            .col-12.form-group
+              %p.mb-1.text-muted Recibió rendición
+              %h5
+                = cash_solicitude.cash_refund.user.try(:name)
+            .col-6.form-group
+              %p.mb-1.text-muted Fecha de rendición
+              %h5
+                = cash_solicitude.cash_refund.fecha
+            .col-6.form-group
+              %p.mb-1.text-muted Importe devuelto
+              %h5
+                = number_to_ars cash_solicitude.cash_refund.importe
+
+            - unless cash_solicitude.cash_refund.observacion.blank?
+              .col-12.form-group
+                %p.mb-1.text-muted Observaciones al rendir
+                %h5
+                  = cash_solicitude.cash_refund.observacion
+
+
+- if cash_solicitude.expense_details.any?
+  %p.mb-1.text-muted Comprobantes asociados
+  .card.mb-5
+    .card-body
+      .table-responsive
+        %table
+          %thead
+            %th
+            %th Emisión
+            %th Pago
+            %th Registro
+            %th Comprobante
+            %th Proveedor
+            %th.text-right IVA
+            %th.text-right Percep IVA
+            %th.text-right NO Grav.
+            %th.text-right IIBB
+            %th.text-right TOTAL
+          %tbody
+            - cash_solicitude.expense_details.each do |expense_detail|
+              %tr
+                %td{:colspan => "9"}
+                  Descripción
+                  = expense_detail.descripcion
+              %tr
+                %td
+                %td
+                  = expense_detail.fecha
+                %td
+                  = expense_detail&.fecha_pago || expense_detail.fecha
+                %td
+                  = expense_detail.fecha_registro
+                %td
+                  = expense_detail.codigo_comprobante
+                %td
+                  - if expense_detail.supplier
+                    = link_to expense_detail.supplier.name, supplier_path(expense_detail.supplier)
+                  - else
+                    = expense_detail.supplier_name
+                %td.text-right
+                  = number_to_ars expense_detail.sum_iva
+                %td.text-right
+                  = number_to_ars expense_detail.percep_iva
+                %td.text-right
+                  = number_to_ars expense_detail.no_gravados
+                %td.text-right
+                  = number_to_ars expense_detail.percep_iibb
+                %td.text-right
+                  = number_to_ars expense_detail.total
+      %p.h4.m-0.text-right
+        TOTAL DE GASTOS:
+        = number_to_ars cash_solicitude.expense_details.pluck(:total).inject(0, :+)

@@ -1,0 +1,54 @@
+- company_presenter ||= CompanyPresenter.new(external_arrival.company, self)
+.border
+  %table.width_100
+    %tr{style: "line-height: 10px !important;"}
+      %th.text_size_20.text_left.header_word_break{style:"text-align: center; width: 200px; line-height: 10px;"}
+        %p
+          = wicked_pdf_image_tag external_arrival.company.pdf_logo, width: "200px"
+      %th.header_word_break{style:"width: 300px; text-align: left; padding-left: 50px; font-size: 11px;"}
+        %p
+          = external_arrival.company.try(:address)
+        %p
+          = external_arrival.company.postal_code + " " + external_arrival.company.try(:locality).try(:province).try(:name) + " - " + external_arrival.company.try(:locality).try(:province).try(:country).try(:name)
+        %p
+          = "#{external_arrival.company.try(:contact_number)}".html_safe
+        %p
+          = "#{external_arrival.company.try(:email)}".html_safe
+        %p
+          = "C.U.I.T.: #{external_arrival.company.try(:cuit)}".html_safe
+        %p
+          www.magnus.com.ar
+      %th.header_word_break.border-left{style:"width: 250px;"}
+        %br
+        %br
+        %br
+        %br
+        %p.text_size_25
+          REMITO
+        %p.text_size_20
+          Nº
+          = external_arrival.number
+        %p.text_size_20
+          Salida:
+          = I18n.l(external_arrival.date, format: :default)
+.border
+  %table.width_100{style: 'font-size: 11px;'}
+    %tr
+      %td
+        %b
+          INSTITUCIÓN:
+        = external_arrival.entity.denomination
+    %tr
+      %td
+        %b
+          CLIENTE RAZÓN SOCIAL:
+        = external_arrival.entity.name
+      %td
+        %b
+          EXPEDIENTE:
+        = "SIN EXPEDIENTE"
+    %tr
+      %td
+        %b
+          FECHA DE SALIDA:
+          = I18n.l(external_arrival.date, format: :default)

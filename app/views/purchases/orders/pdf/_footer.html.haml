@@ -1,0 +1,47 @@
+.row.footer_bottom
+  .container.border
+    %table.width_100{style: "font-size: 11px; display: flex; padding: 20px"}
+      %tr
+        %td.text_right
+          %b Subtotal:
+        %td.text_right
+          = number_to_currency( @order.subtotal_pdf, unit: "$", format: "%u %n", seperator: ',')
+      %tr
+        %td.text_right
+          %b Bonificaciones:
+        %td.text_right
+          = number_to_currency( @order.discount_pdf, unit: "$", format: "%u %n", seperator: ',')
+      %tr
+        %td.text_right
+          %b I.V.A.:
+        %td.text_right
+          = number_to_currency( @order.iva_amount_pdf, unit: "$", format: "%u %n", seperator: ',')
+      %tr
+        %td.text_right
+          %b Importe Total:
+        %td.text_right
+          %b
+            = number_to_currency( @order.total_pdf, unit: "$", format: "%u %n", seperator: ',')
+    %table.width_100{style: "font-size: 14px; display: flex; margin-top 15px;"}
+      %tr
+        %td{style: "padding-left: 20px;"}
+          %b
+            Son:
+          = number_to_words(@order.currency_label, @order.total_pdf)
+      %tr
+        %td{style: "padding-left: 20px; display: inline-block;"}
+          %div{style: "height: 65px; text-overflow: ellipsis; overflow: hidden; withe-space: nowrap; display: inline-block; text-align: justify;"}
+            %b
+              NOTA:
+            %span
+              =  sanitize @order.note, tags:[]
+        %td
+      %tr
+        %td{style: "padding-left: 20px;"}
+          %b
+            No se recibirán productos con vto menor a 24 meses
+
+%br
+.text_center
+  Página
+  = "#{page_number} de #{total_pages}"

@@ -1,0 +1,14 @@
+= index_table(mform: true, mtarget: "#new_file_modal", icon: 'folder', config: false) do
+	= link_to "#{icon('fa', 'fa-file-archive-o')} Vencidos".html_safe, vencidos_surgeries_files_path,  class: 'btn btn-primary'
+
+= modal("#{icon('fas', 'plus')} Añadir expediente", "new_file_modal", "new_file_body", "extra-big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'plus')} Editar expediente", "edit_file_modal", "edit_file_body", "extra-big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'plus')} Añadir cliente", "new_client_modal", "new_client_body", "big") do
+	.modal-body
+		= yield

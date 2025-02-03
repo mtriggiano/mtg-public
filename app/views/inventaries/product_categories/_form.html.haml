@@ -1,0 +1,8 @@
+= simple_form_for product_category, html: {class: 'horizontal-form'}, wrapper: :horizontal_form do |f|
+	.row
+		.col-8.offset-2
+			= error_notification(f)
+			= f.input :name, label: "Nombre"
+			%hr.dotted
+			= f.input :default_iva, collection: Afip::ALIC_IVA.map{|c, v| [v,c]}, label: "I.V.A.", prompt: "Seleccione..."
+			%hr.dotted

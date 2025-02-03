@@ -1,0 +1,30 @@
+.card.mb-4
+	.card-header.bg-white
+		%h5.w-100.pt-2
+			Pagos
+	.card-body
+		= f.simple_fields_for :payments, f.object.payments.any? ? f.object.payments : f.object.payments.build(), defaults: { disabled: f.object.disabled?, label: false }, wrapper: false do |d|
+			.fields
+				.border.rounded-lg.py-3.px-2.mb-4.text-left
+					.float-right
+						= d.link_to_remove icon('fas', 'times'), class: 'text-danger' unless document_disabled
+					.row
+						- if d.object.errors.any?
+							.col-12
+								= error_notification(d)
+						.col-4
+							= d.input :payment_type_id, label: "Forma de pago", collection: current_company.payment_types.order(:name).map{ |pt| [pt.name.upcase, pt.id, { 'data-collect-type' => pt.collect_type }] }, input_html: { class: 'payment_type'}
+						.col-4
+							= d.input :checkbook_id, label: "Chequera", collection: current_company.checkbooks.map{|cb| [cb.nombre.upcase, cb.id]}, disabled: true, input_html: { class: "chequera", data: {unwrapp: true} }
+						.col-4
+							= d.input :bank_account_id, label: "Cuenta bancaria", collection: current_company.bank_accounts.map{|cb| [cb.alias_tag.upcase, cb.id]}, disabled: true, input_html: { class: "cuenta-bancaria", data: { unwrapp: true } }
+						.col-4
+							= d.input :number, label: "Número cheque/referencia", disabled: true, input_html: {class: "numero-referencia", data: { unwrapp: true } }
+						.col-4
+							= d.input :due_date, label: "Vencimiento", as: :date_picker, disabled: true, input_html: { class: "vencimiento-pago", data: { unwrapp: true } }
+						.col-4
+							= d.input :total, label: "Importe ($)", required: true, input_html: { class: 'suma-pagos text-right' }
+
+		.text-center
+			= f.link_to_add "#{icon('fas', 'plus')} Añadir pago".html_safe, :payments, class: 'btn btn-outline-success' unless payment_order.disabled?
+		.mb-1

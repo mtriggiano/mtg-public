@@ -1,0 +1,20 @@
+= index_table(mform: true, icon: 'briefcase', mtarget: "#new_client_modal", config: false) do
+	= button_tag "#{icon('fas', 'file-import')} Importar".html_safe, type: 'button', data: {target: "#import_modal", toggle: "modal"}, class: 'btn btn-info'
+	
+= modal("#{icon('fas', 'plus')} Añadir cliente", "new_client_modal", "new_client_body", "extra-big") do
+	.modal-body
+
+= modal("#{icon('fas', 'plus')} Editar cliente", "edit_client_modal", "edit_client_body", "extra-big") do
+	.modal-body
+
+= modal("#{icon('fas', 'file-import')} Importar excel", "import_modal", "import_modal_body") do
+	= form_tag import_clients_path(), {multipart: true, method: :post} do
+		.modal-body
+			.format.w-100.text-center
+				.text-muted
+					Seleccione el archivo del cual importara los clientes
+			.form-group
+				= file_field_tag :file , :class => 'btn ', accept: ".csv, .xls, .xlsx"
+		.modal-footer
+			= submit_tag "Importar", type: :submit
+			= close_button

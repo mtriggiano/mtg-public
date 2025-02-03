@@ -1,0 +1,26 @@
+.index
+  .index-title
+    .principal
+      #{icon('fas', 'share')} Movimientos de comprobantes
+    .buttons.d-flex.align-items-start
+      = link_to "#{icon('fas', 'plus')} Añadir".html_safe, new_bill_movement_path, class: 'btn btn-primary', data: {target: '#bill_movement_modal', toggle: 'modal', form: true}
+  .index-body.table-responsive
+    #bmenu.p-4.d-flex.justify-content-between.align-items-center
+    %table#paginated_table.table{data: {source: bill_movements_path(format: :json)}}
+      %thead.thead-light
+        %th.actions{scope: 'col'} ID
+        %th.actions{scope: 'col'} Fecha
+        %th.actions{scope: 'col'} Comprobante
+        %th.actions{scope: 'col'} Cliente
+        %th.actions{scope: 'col'} Entregada a
+        %th.actions{scope: 'col'} ¿Firmada?
+        %th.actions{scope: 'col'} Devolución
+        %th.actions{scope: 'col'} Observación
+        %th.actions{scope: 'col'} Acciones
+      %tbody.table-bordered.text-center
+
+= table_script(DatatableConstants::BillMovement.merge("actions" => ""))
+
+= modal("#{icon('fas', 'share')} Movimiento", "bill_movement_modal", "bill_movement_modal_body") do
+  .modal-body
+    = yield

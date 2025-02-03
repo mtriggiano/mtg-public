@@ -1,0 +1,57 @@
+.row.px-3
+  = form_tag surgeries_files_path(view: 'cards'), method: :get, class: 'form-inline mt-3 mx-3 mb-0' do
+    .input-group.mb-2.mr-sm-2
+      .input-group-prepend
+        .input-group-text
+          = icon('fas', 'folder-open')
+      = text_field_tag :search_title, params[:search_title], placeholder: "Título", class: 'form-control mr-sm-2'
+    .input-group.mb-2.mr-sm-2
+      .input-group-prepend
+        .input-group-text
+          = icon('fas', 'user')
+      = text_field_tag :client, params[:client], placeholder: "Obra social", class: 'form-control mr-sm-2'
+    .input-group.mb-2.mr-sm-2
+      .input-group-prepend
+        .input-group-text
+          = icon('fas', 'calendar-check')
+      .input-group-prepend
+        = text_field_tag :init_date, params[:init_date], placeholder: "Inicio", class: 'form-control date_picker', style: "width: 5rem;", data: {behaviour: 'datepicker'}
+      = text_field_tag :finish_date, params[:finish_date], placeholder: "Fin", class: 'form-control mr-sm-2 date_picker', style: "width: 5rem;", data: {behaviour: 'datepicker'}
+    .input-group.mb-2.mr-sm-2
+      .input-group-prepend
+        .input-group-text
+          = icon('fas', 'briefcase-medical')
+      = text_field_tag :surgery_end_date, params[:surgery_end_date], placeholder: "Fcha. Cx.", class: 'form-control mr-sm-2 date_picker', data: {behaviour: 'datepicker'}
+    .input-group.mb-2.mr-sm-2
+      .input-group-prepend
+        .input-group-text
+          = icon('fas', 'tasks')
+      .select
+        = select_tag :state, options_for_select(Surgeries::File::STATES, params[:state]) , class: 'form-control mr-sm-2', include_blank: "Estado"
+    = hidden_field_tag :view, 'cards'
+    = button_tag icon('fas', 'search'), type: :submit, class: 'btn btn-light mb-2'
+  .row.mx-1
+    - files.each do |file|
+      .col-lg-4.col-md-4
+        .card.my-3.without-shadow.rounded-lg{class: "border-left-#{file.state_color}"}
+          = link_to file, class: 'card-link' do
+            .card-body
+              %h5.card-title
+                =icon('fas', file.state_icon)
+                = file.title
+              %h6.card-subtitle.mb-2.text-muted.small
+                = icon('fas', 'user')
+                = file.entity.name
+              .card-text.text-dark
+                #{file.sale_type}
+                %br
+                Estado:
+                #{file.state}
+            .card-footer.text-muted.text-center
+              = icon('fas', 'calendar-check')
+              #{file.init_date} - #{file.finish_date}
+              %br
+              =icon('fas', 'briefcase-medical')
+              #{file.surgery_end_date || 'Sin especificar'}
+  .d-flex.justify-content-center.w-100
+    = will_paginate files

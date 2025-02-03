@@ -1,0 +1,84 @@
+.index
+  .index-title
+    .principal
+      = link_to icon('fas', 'box-open'), stock_external_shipments_path
+      = "Movimiento de stock interno"
+    .buttons.d-flex.align-items-start
+      = link_to "#{icon('fas', 'plus')} Añadir".html_safe, new_stock_external_shipments_path, class: 'btn btn-primary'
+  .card.card-body.bg-light
+    %p
+      %strong 
+        Filtros
+    = form_tag('', class: 'form', method: :get, id: 'filtro-form', "data-type" => 'json', remote: true) do
+      .row
+        .col-md-4
+          = label_tag :store_salida_id, 'Deposito de Salida', class: "control-label"
+          = collection_select(:filtros, :store_salida_id, @stores, :id, :name, { :include_blank => "Todos"}, class: 'form-control')
+        .col-sm-4
+          = label_tag :salida_fecha_desde, 'Salida Fecha Desde', :class => "control-label"
+          = text_field :filtros, :salida_fecha_desde, :class => 'form-control form-control-sm', :id => "startDate", :type => "date"
+        .col-sm-4
+          = label_tag :salida_fecha_hasta, 'Salida Fecha Hasta', :class => "control-label"
+          = text_field :filtros, :salida_fecha_hasta, :class => 'form-control form-control-sm', :id => "startDate", :type => "date"
+        .col-md-4
+          = label_tag :estado_salida, 'Salida Estado', class: "control-label"
+          = collection_select(:filtros, :estado_salida, @estados_salidas, :to_s, :to_s, { :include_blank => "Todos"}, class: 'form-control')
+        .col-md-4
+          = label_tag :store_entrada_id, 'Deposito de entrada', class: "control-label"
+          = collection_select(:filtros, :store_entrada_id, @stores, :id, :name, { :include_blank => "Todos"}, class: 'form-control')
+        .col-sm-4
+          = label_tag :entrada_fecha_desde, 'Entrada Fecha Desde', :class => "control-label"
+          = text_field :filtros, :entrada_fecha_desde, :class => 'form-control form-control-sm', :id => "startDate", :type => "date"
+        .col-sm-4
+          = label_tag :entrada_fecha_hasta, 'Entrada Fecha Hasta', :class => "control-label"
+          = text_field :filtros, :entrada_fecha_hasta, :class => 'form-control form-control-sm', :id => "startDate", :type => "date"
+        .col-md-4
+          = label_tag :estado_entrada, 'Entrada Estado', class: "control-label"
+          = collection_select(:filtros, :estado_entrada, @estados_entradas, :to_s, :to_s, { :include_blank => "Todos"}, class: 'form-control')
+        .col-md-3.col-sm-4
+          %br
+          = button_tag(type: "submit", class: "btn btn-success") do
+            %span.glyphicon.glyphicon-search
+            Buscar
+
+
+  #bmenu.mx-4.d-flex.justify-content-between.align-items-center
+  .index-body.table-responsive
+    %table#paginated_table.table{ data: { title: "Salida de stock interna", source: stock_external_shipments_path(format: :json) } }
+      %thead.thead-light
+        %th{ scope: 'col' } Fecha salida
+        %th{ scope: 'col' } Salida
+        %th{ scope: 'col' } Estado
+        %th{ scope: 'col' } Deposito salida
+        %th{ scope: 'col' } Productos Salida
+        %th{ scope: 'col' } Productos Entrada
+        %th{ scope: 'col' } Deposito Entrada
+        %th{ scope: 'col' } Estado Entrada
+        %th{ scope: 'col' } Entrada
+        %th{ scope: 'col' } Fecha Entrada
+        %th{ scope: 'col' } Acciones
+      %tbody.table-bordered
+
+= table_script(DatatableConstants::ExternalShipmentStock.merge("actions" => ""))
+
+:javascript
+  $(document).ready(function() {
+    var data_filters = {
+      tabla: null,
+      url_base: "#{stock_external_shipments_path(format: :json)}?",
+      filtro_form: $("#filtro-form"),
+      on_submit_filter_form: function(event){
+        var url = data_filters.url_base + $(event.target).serialize();
+        if (!data_filters.tabla){
+          data_filters.tabla = $("#paginated_table").DataTable();
+        } else {
+          data_filters.tabla.ajax.url(url);
+          data_filters.tabla.ajax.reload();
+        }
+        return false;
+      }
+    }
+    data_filters.tabla = null;
+    data_filters.filtro_form.submit(data_filters.on_submit_filter_form);
+		
+  })

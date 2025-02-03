@@ -1,0 +1,47 @@
+- params[:view] ||= 'general'
+- present supplier_contact do |contact_presenter|
+	.container-fluid.d-inline-block
+		.bg-secondary.text-white.mx-4
+			.row
+				.col-md-2.col-12.p-4.justify-content-center
+					.card.bg-secondary.border-0
+						%center
+							= image_tag "/images/default_user.png", class: 'card-img-top rounded-circle border bg-white contact-avatar'
+							.card-body
+								%h5 #{supplier_contact.name}
+				.col-md-5.col-6.p-4
+					.card.bg-secondary.border-0.ml-4
+						= contact_presenter.badge_span
+						= contact_presenter.email_span
+						= contact_presenter.phone_span
+						= contact_presenter.mobile_phone_span
+				.col-md-5.col-6.p-4
+					.p-1
+						%i.small
+							= icon('fas', 'building')
+							= supplier_contact.entity.name
+					.p-1
+						%i.small
+							= icon('fas', 'map-marked-alt')
+							= supplier_contact.entity.address
+					.p-1
+						%i.small
+							= icon('fas', 'id-card')
+							= supplier_contact.entity.full_document
+					.p-1
+						%i.small
+							= icon('fas', 'university')
+							= supplier_contact.entity.bank
+	.container-fluid.d-inline-block
+		%ul.nav.bg-white.border-bottom.border-top.p-2.m-4
+			%li.title.nav-item
+				= link_to "#{icon('fas', 'plane')} #{supplier.name}".html_safe, supplier_path(supplier.id), class: 'btn btn-light float-left'
+			%li.title.nav-item.border-right
+				= link_to  "#{icon('fas', 'user')} #{supplier_contact.name}".html_safe, supplier_supplier_contact_path(supplier_contact.entity.id, supplier_contact.id), class: 'btn btn-light float-left'
+			%li.nav-item.border-animated
+				= show_links('General', 'general', params[:view], supplier_supplier_contact_path(supplier_contact.entity.id, supplier_contact.id, view: 'general'))
+			%li.nav-item.border-animated
+				= show_links('Registros', 'contact_records', params[:view], supplier_supplier_contact_path(supplier_contact.entity.id, supplier_contact.id, view: 'contact_records'))
+		.mx-4
+			- if ['general', 'contact_records'].include?(params[:view])
+				= render "/entities/suppliers/supplier_contacts/see/#{params[:view]}"

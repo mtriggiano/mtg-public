@@ -1,0 +1,12 @@
+= modal("#{icon('fas', 'check')} Añadir/Quitar permisos", "new_role_modal", "new_role_body", "big") do
+	.modal-body
+
+= modal("#{icon('fas', 'plus')} Editar rol", "edit_role_modal", "edit_role_body", "big") do
+	.modal-body
+		= yield
+
+.d-flex.align-items-stretch
+	.user-profile.mr-1
+		= render template: "/human_resources/users/show.html.haml", user: user
+	.user-roles.flex-grow-1.ml-1
+		= index_table(mform: true, icon: 'lock', ltext: "Agregar/Quitar roles",text: "Permisos de #{user.name}", path: new_user_user_role_path, jpath: user_user_roles_path(user.id, format: :json), mtarget: "#new_role_modal", collection: user.roles )

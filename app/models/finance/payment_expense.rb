@@ -1,0 +1,2 @@
+class PaymentExpense < Expense
+end

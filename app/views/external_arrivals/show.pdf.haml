@@ -1,0 +1,12 @@
+- total_page = 0
+- @external_arrival ||= external_arrival
+- group_details = DetailPdf.new(@external_arrival, with_childs: true).build.reject{|d| d['quantity'] <= 0}.in_groups_of(28)
+- group_details.each_with_index do |details_page, index|
+	.alwaysbreak
+		= render template: '/external_arrivals/pdf/_header.html.haml', locals: { external_arrival: @external_arrival}
+		= render template: '/external_arrivals/pdf/_details.html.haml', :locals => { :details => details_page.compact, external_arrival: @external_arrival}
+		= render template: '/external_arrivals/pdf/_footer.html.haml', :locals => { :page_number => (index + 1), :total_pages => group_details.count, external_arrival: @external_arrival }
+- if @external_arrival.attachments.any?
+	.alwaysbreak
+		= render template: '/external_arrivals/pdf/_header.html.haml', locals: { external_arrival: @external_arrival}
+		= render template: '/external_arrivals/pdf/_attachments.html.haml', external_arrival: @external_arrival

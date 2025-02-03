@@ -1,0 +1,17 @@
+- if current_user.can?(:read, "Sales::File")
+	= index_table(mform: true, icon: 'exchange-alt', text: "Movimientos", path: new_sales_file_movement_path(sale_file_id: file.id), jpath: sales_file_movements_path(sale_file_id: file.id, format: :json), mtarget: "#new_movement_modal", model_name: "Sales::FileMovement")
+- else
+	.mt-4
+		= render template: "/home/forbidden.html.haml", locals: {subject: "Sales::File"}
+
+= modal("#{icon('fas', 'plus')} Editar movimiento", "edit_movement_modal", "edit_movement_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'eye')} Ver movimiento", "show_movement_modal", "show_movement_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'plus')} Añadir movimiento", "new_movement_modal", "new_sale_file_sale_file_movement_body", "big") do
+	.modal-body
+		= yield

@@ -1,0 +1,17 @@
+data_method: ExpedientBillDetail.custom_data_method
+measure:
+  key: expedient_bill_detail
+  name: "Vendedores"
+  aggregation: total_selled
+filters:
+- seller
+- date
+dimensions:
+- key: seller
+order: dimension1.label asc
+chart:
+  type: pie
+  options:
+    legend:
+      display: true
+      position: bottom

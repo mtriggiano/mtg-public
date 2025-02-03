@@ -1,0 +1,10 @@
+<% simple_nested_form_for external_arrival do |f| %>
+	<% @builder = f %>
+<% end %>
+$("table.parent-table > tbody").html("<%= j render '/sales/shared_details_form', f: @builder %>");
+<% unless external_arrival.entity_id.nil? %>
+	$("#external_arrival_entity_id").val("<%= external_arrival.entity_id %>").trigger('change');
+<% end %>
+'<% if external_arrival.date %>'
+	$("#external_arrival_date").val("<%= external_arrival.date %>").trigger('change');
+'<% end %>'

@@ -1,0 +1,65 @@
+.row.footer_bottom
+  .container.border{style: "padding-left: 40px; font-size: 11px;"}
+    %table.width_100
+      %tr
+        %td.text_right
+          %b Subtotal:
+        %td.text_right
+          = @budget.currency == "ARS" ? number_to_ars(@budget.subtotal_pdf) : number_to_us(@budget.subtotal_pdf)
+      %tr
+        %td.text_right
+          %b Bonificaciones:
+        %td.text_right
+          = @budget.currency == "ARS" ? number_to_ars(@budget.discount_pdf) : number_to_us(@budget.subtotal_pdf)
+      %tr
+        %td.text_right
+          %b I.V.A.:
+        %td.text_right
+          = @budget.currency == "ARS" ? number_to_ars(@budget.iva_amount_pdf) : number_to_us(@budget.subtotal_pdf)
+      %tr
+        %td.text_right
+          %b Importe Total:
+        %td.text_right
+          %b
+            = @budget.currency == "ARS" ? number_to_ars(@budget.total_pdf) : number_to_us(@budget.subtotal_pdf)
+      %tr
+        %td{style: "padding-left: 40px;"}
+          %b
+            Firma
+      %tr
+        %td{style: "padding-left: 40px;"}
+          %b
+            Son:
+          = number_to_words(@budget.currency_label, @budget.total_pdf)
+  .container.border{style: "font-size:11px;"}
+    %table.width_100
+      %tr
+        %td{style: "padding-left: 40px;"}
+          %b
+            Condiciones de pago:
+          = @budget.payment_type.try(:upcase)
+  .container.border{style: "font-size:11px;"}
+    %table.width_100
+      %tr
+        %td.text_justify{style: "padding-left: 40px;"}
+          %b
+            Observación:
+          = raw sale_budget.observation
+  .container.border{style: "padding: 20px 40px; font-size: 8px;"}
+    %table.width_100
+      %tr
+        %td.text_justify
+          * El vencimiento de los productos es superior a 12 (doce) meses.
+      %tr
+        %td.text_justify
+          * Una vez entregados los productos, los mismos no tendrán devolución bajo ninguna circunstancia.
+      %tr
+        %td.text_justify
+          * La forma de pago y el límite de crédito quedan sujetos a la decisión de la gerencia, luego del análisis correspondiente a la documentación presentada.class_selector.
+      %tr
+        %td.text_justify
+          * "En virtud de lo dispuesto por el art. 2 de la Ley 26.529, no podrá ser exigible la presentación médica del paciente como requisito para el pago del precio de los productos. Con la Factura se acompañará únicamente el correspondiente remito y el certificado de implante."
+%br
+.text_center
+  Página
+  = "#{page_number} de #{total_pages}"

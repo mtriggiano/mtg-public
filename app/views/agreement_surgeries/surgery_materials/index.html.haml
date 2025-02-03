@@ -1,0 +1,9 @@
+= index_table(mform: true, icon: 'ticket-alt', mtarget: "#new_surgery_material_modal", collection: surgery_materials, text: "Nomenclador", path: new_agreement_surgeries_surgery_material_path, jpath: agreement_surgeries_surgery_materials_path(format: :json), config: false) do 
+	= link_to "#{icon('fas', 'dollar-sign')} Actualizar Precios".html_safe, new_agreement_surgeries_price_update_path,  class: 'btn btn-primary'
+
+= modal("#{icon('fas', 'plus')} Añadir material", "new_surgery_material_modal", "new_surgery_material_body", "extra-big") do
+	.modal-body
+
+= modal("#{icon('fas', 'plus')} Editar material", "edit_surgery_material_modal", "edit_surgery_material_body", "extra-big") do
+	.modal-body
+		= yield

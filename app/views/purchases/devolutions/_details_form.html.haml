@@ -1,0 +1,23 @@
+- child ||= d.object.is_a_child?
+- index = d.index
+- random = SecureRandom.hex(9).to_s
+- parent_index ||= @index || d.index
+= document_detail(d, index, child) do
+	%td
+		= product_td(d)
+		= measurement_td(d)
+	%td
+		= quantity_td(d)
+	%td{class: "#{d.object.has_childs? && 'hidden-traceability'}"}
+		- if d.object.batch_details.any?
+			=# button_tag icon('fas', 'qrcode'), class: "btn btn-info", type: :button, onclick: "showBatchModal('#gtin_#{random}')"
+			=# render '/inventaries/batches/form', {d: d, random: random, mode: 'check_out', parent_index: parent_index, child: child}
+			%div.h4
+				= link_to  icon('fas', 'qrcode'), new_batch_detail_purchases_devolutions_path(detail_id: d.object.id, index: index, link_id: random, child: child, parent_index: parent_index, product_id: d.object.product_id), type: :button, remote: true, class: 'btn btn-info', id: random
+		-else
+			- unless d.object.new_record?
+				= link_to icon('fas', 'qrcode'), new_batch_detail_purchases_devolutions_path(detail_id: d.object.id, index: index, link_id: random, child: child, parent_index: parent_index, product_id: d.object.product_id), remote: true, class: "btn btn-sm btn-info gtin_modal #{'blink' if d.object.has_batches_with_errors?}", id: random
+	%td
+		= d.input :return_reason, label: false, placeholder: "Ej: Fallas, sobrantes, etc"
+	%td.fixed-col
+		= document_detail_actions(d, index, child)

@@ -1,0 +1,13 @@
+.index
+	.index-title
+		.principal
+			= icon('fas', 'list-alt')
+			Usuarios del banco
+		.buttons.d-flex.align-items-start
+			= link_to "#{icon('fas', 'envelope')} Invitar usuario".html_safe, new_invitation_stores_users_path(store_id: external_store.id), class: 'btn btn-light border float-right', data: {target: '#newUserModal', toggle: 'modal', form: true}
+
+= render template: '/stores/users/index.html.haml', locals:{store: external_store}
+
+= modal("#{icon('fas', 'envelope')} Invitar usuario", 'newUserModal', 'new_user_modal') do
+	.modal-body
+		= yield

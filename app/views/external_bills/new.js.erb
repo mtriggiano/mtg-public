@@ -1,0 +1,6 @@
+<% simple_nested_form_for external_bill do |f| %>
+	<% @builder = f %>
+<% end %>
+<% if params[:documents] %>
+	$(".parent-table tbody").html("<%= j render '/purchases/shared_details_form', {f: @builder, colspan: 10} %>");
+<% end %>

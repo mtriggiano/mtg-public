@@ -1,0 +1,2 @@
+module Surgeries::SurgeryInvoiceHelper
+end

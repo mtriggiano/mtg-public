@@ -1,0 +1,57 @@
+= simple_form_for([cash_account, cash_account_expenditure], url: cash_account_cash_account_expenditures_path) do |f|
+	.row
+		.col-12.text-center.my-4
+			%h3
+				Caja:
+				= cash_account.nombre
+			%p.alert.alert-info Al registrar un gasto se generará un movimiento (egreso) de caja en efectivo
+
+	%p.text-muted.mb-1 Información del comprobante
+	.border.rounded.pt-2.px-2.mb-4
+		.row
+			.col-12
+				= error_explanation(f.object)
+			.col-2
+				= f.input :letra, label: "Tipo", collection: ExpenseDetail::COMP_TYPES
+			.col-2
+				= f.input :punto_venta, label: "Punto de venta", input_html: { maxlength: "5" }
+			.col-4
+				= f.input :num_comprobante, label: "Número comprobante", input_html: { maxlength: "8" }
+			.col-4
+				= f.input :fecha, label: "Fecha de emisión", as: :date_picker, value: f.object.fecha || Date.today
+			.col-4
+				= f.input :entity_id, label: "Proveedor", collection: Supplier.all.order(:name)
+			.col-4
+				= f.input :supplier_name, label: "Proveedor no registrado", required: false
+			.col-4
+				= f.input :order_id, label: "OC o NV asociado", as: :select, collection: ExpedientOrder.where(company_id: current_company.id).map{ |order| [order.name, order.id] }, input_html: { required: false }
+			.col-4
+				= f.input :tipo_pago, label: "Tipo de pago", prompt: "Seleccione tipo de pago",collection: cash_account.payment_types.order(:name).pluck(:name).map{|name|  [name, name]  }
+			.col-12
+				= f.input :descripcion, label: "Descripción", as: :text
+
+	%p.text-muted.mb-1 Recibo de dinero
+	.border.rounded.pt-2.px-2.mb-4
+		.row
+			.col-6
+				= f.input :recibe, label: "Recibe"
+			.col-6
+				= f.input :representa, label: "En representación de"
+
+	%p.text-muted.mb-1 Datos contables
+	.border.rounded.pt-2.px-2.mb-4
+		.row
+			.col-4
+				= f.input :fecha_registro, label: "Fecha de registro", as: :date_picker, input_html: { autocomplete: :off }
+			.col-4
+				= f.input :sum_iva, label: "IVA", required: true, input_html: { class: "text-right" }
+			.col-4
+				= f.input :percep_iva, label: "Percep. IVA", required: true, input_html: { class: "text-right" }
+			.col-4
+				= f.input :percep_iibb, label: "IIBB", required: true, input_html: { class: "text-right" }
+			.col-4
+				= f.input :no_gravados, label: "No gravado", required: true, input_html: { class: "text-right" }
+			.col-4
+				= f.input :total, label: "TOTAL", required: true, input_html: { class: "text-right" }
+	.actions
+		= save_button

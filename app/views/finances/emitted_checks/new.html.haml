@@ -1,0 +1,25 @@
+%h2 Nueva emisión de cheque
+= simple_form_for emitted_check do |f|
+  .card.mb-4.border-left-info
+    .card-body
+      = error_notification(f)
+      .row
+        .col-3.form-group
+          = f.input :checkbook_id, collection: current_company.checkbooks, label_method: :nombre, required: true, label: "Chequera", selected: f.object.checkbook_id || params[:checkbook_id]
+        .col-3.form-group
+          = f.input :numero, required: true, label: "Número"
+        .col-3.form-group
+          %p.mb-1 Fecha de emisión
+          %h2.text-center
+            = Date.today
+        .col-3.form-group
+          = f.input :vencimiento, as: :date_picker, label: "Fecha de vencimiento"
+        .col-6.form-group
+          = f.input :entity_id, collection: current_company.suppliers, label_method: :name, required: true, label: "A la orden de"
+        .col-3.form-group
+          = f.input :estado, collection: EmittedCheck::ESTADOS, label: "Estado", required: true
+        .col-3.form-group
+          = f.input :importe, required: true, label: "Importe"
+
+  .actions.text-center.mt-3
+    = save_button

@@ -1,0 +1,56 @@
+= simple_nested_form_for(product, html: { class: 'horizontal-form directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }, wrapper: :horizontal_form) do |f|
+
+	= error_notification(f)
+	.row
+		.col-sm-3.d-flex.align-items-center.justify-content-end
+			= label_tag "Foto"
+		.col-sm-9.d-flex
+			= f.simple_fields_for :images, wrapper: false do |i|
+				.fields{class: "#{i.index}"}
+					.caption.captionload
+						= image_tag "/images/load.gif", class: 'img-fluid'
+					.mx-2.text-center.img_wrp
+						= image_tag i.object.source, width: '75px', height: '75px', alt: 'Añadir imagen', class: 'border img-fuild image', data: {index: i.index}
+						%br
+						= i.link_to_remove icon('fas', 'times'), class: 'rm-img-btn text-dark'
+						= i.input :source, as: :file, input_html: { hidden: true, class: "file_input", data: {index: i.index} }, label: false
+
+			= f.link_to_add image_tag("/images/plus.png", width: '75px', height: '75px'), :images, data: {limit: 5}
+	%hr.dotted
+	= f.association :product_category, collection: current_company.product_categories.map{|pc| [pc.name, pc.id]}, label: "Categoría", include_blank: false
+	%hr.dotted
+	= f.input :family, label: "Sub-categoría", collection: current_company.families, include_blank: false, input_html: {tags: true}
+	%hr.dotted
+	= f.input :branch, label: "Marca", placeholder: "Marca"
+	%hr.dotted
+	= f.input :name, label: "Nombre", placeholder: "Nombre del producto"
+	%hr.dotted
+	= f.input :source, label: "Origen", placeholder: "Origen"
+	%hr.dotted
+	= f.input :code, label: "Código interno", placeholder: "Si deja en blanco se crea automáticamente"
+	%hr.dotted
+	= f.input :measurement_unit, label: "Unidad de medida", collection: Product::MEASUREMENT_UNITS.map{ |k,v| [v, k]}
+	%hr.dotted
+	= f.input :gtin, label: "G.T.I.N."
+	%hr.dotted
+	= f.input :pm, label: "P.M."
+	%hr.dotted
+	= f.input :minimum_stock, label: "Stock mínimo"
+	%hr.dotted
+	= f.input :recommended_stock, label: "Stock recomendado"
+	%hr.dotted
+	= f.input :buy_price, label: "Precio de compra"
+	%hr.dotted
+	= f.input :supplier_id, label: "Proveedor", prompt: "Por favor seleccione", collection: Supplier.all || []
+	%hr.dotted
+	.row.form-group
+		= f.label :own, "¿Propio?", class: "col-md-4 col-lg-3 col-form-label col-form-label-sm select optional"
+		.col-md-8.col-lg-9
+			= f.input :own, label: false, input_html: { data: { toggle: 'toggle', onstyle: 'success', offstyle: 'danger', on: "Si", off: "No" } }, wrapper_html: { class: 'flex-grow-1', style: 'margin-left: -1.25rem; padding-right: 1.25rem;' }
+	%hr.dotted
+	.row.form-group
+		= f.label :selectable, "¿Vigente?", class: "col-md-4 col-lg-3 col-form-label col-form-label-sm select optional"
+		.col-md-8.col-lg-9
+			= f.input :selectable, label: false, input_html: { data: { toggle: 'toggle', onstyle: 'success', offstyle: 'danger', on: "Si", off: "No" } }, wrapper_html: { class: 'flex-grow-1', style: 'margin-left: -1.25rem; padding-right: 1.25rem;' }
+	.actions
+		= save_button

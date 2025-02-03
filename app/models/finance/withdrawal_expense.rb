@@ -1,0 +1,2 @@
+class WithdrawalExpense < Expense
+end

@@ -1,0 +1,37 @@
+.card.shadow.mx-4.mb-4.collapse#tributes{data: {parent:"#document-accordion"}}
+	.card-header.bg-white
+		%h5.w-100.pt-2
+			Tributos
+	.card-body
+		.table-responsive
+			%table.table#table-tributes
+				%thead
+					%tr
+						%th Descripción
+						%th Base imponible($)
+						%th Alícuota(%)
+						%th Importe($)
+						%th Acción
+				%tbody
+					= f.simple_fields_for :tributes, wrapper: false do |t|
+						%tr.fields
+							%td
+								= t.input :afip_id, label: false, label_method: :last, value_method: :first, collection: ExpedientBillTribute::TRIBUTOS.map{|a, b| [a, b]}, include_blank: false
+								= t.input :description, as: :hidden, input_html: { value: t.object.description || "Impuestos nacionales" }
+							%td
+								= t.input :base_imp, label: false, input_html: {min: 0, disabled: true}
+							%td
+								= t.input :alic, label: false, input_html: {min: 0}
+							%td
+								= t.input :amount, label: false, input_html: {min: 0, disabled: true}
+							%td
+								= t.link_to_remove icon('fas', 'trash'), class: 'btn btn-danger'
+
+
+	.text-center
+		= f.link_to_add "#{icon('fas', 'plus')} Añadir tributo".html_safe, :tributes, class: 'btn btn-success', data: {target: "#table-tributes"}
+
+	- unless f.object.disabled?
+		.text-center.mb-3
+			%hr
+				= save_button

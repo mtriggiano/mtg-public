@@ -1,0 +1,22 @@
+= new_helper("#{cash_account.nombre} - Registro de ingreso manual") do
+	= simple_form_for([cash_account, general_cash_income], url: cash_account_general_cash_incomes_path) do |f|
+		= error_explanation(f.object)
+		.row
+			.col-8
+				= f.input :descripcion, label: "Descripción", input_html: { autofocus: true, autocomplete: :off }, required: true
+			.col-4
+				= f.input :codigo, label: "Comprobante", required: true
+			.col-6
+				= f.input :user_id, label: "Responsable", collection: current_company.users, label_method: :name, selected: current_user.id, prompt: "Seleccione...", required: true
+			.col-6
+				= f.input :lugar, label: "Lugar/Persona", required: true
+			.col-4
+				= label_tag :tipo_pago, "Tipo de pago"
+				= select_tag :tipo_pago, options_from_collection_for_select(cash_account.payment_types.order(:name), :id, :upcase_name), { prompt: "Seleccione...", class: "form-control", required: true }
+			.col-4
+				= f.input :fecha, as: :date_picker, label: "Fecha", value: Date.today
+			.col-4
+				= f.input :importe, label: "Importe", prompt: "Seleccione...", required: true, input_html: { class: "text-right autonumeric-price" }, as: :string
+		.actions
+			%hr
+			= save_button

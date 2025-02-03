@@ -1,0 +1,19 @@
+- random ||= @random
+= modal("#{icon('fas', 'qrcode')} Trazabilidad", "gtin_#{random}", "gtin_#{random}_body", "big") do
+	.modal-body
+		.table-responsive
+			%table{class: "table gtin-table-#{d.index}"}
+				%thead
+					%th.w-25 Cantidad
+					%th.w-100 Código trazable
+					%th.w-25 Acción
+				%tbody
+					= d.simple_fields_for :batch_details, wrapper: false do |g|
+						%tr.fields
+							%td.w-25
+								= g.input :quantity, label: false
+							%td.w-100
+								= g.association :batch, label: false, input_html:{data: { url: filter_by_delivered_product_products_path}}, collection: d.object.batches.map{|b| [b.full_text, b.id]}
+							%td.w-25
+								= g.link_to_remove icon('fas', 'trash'), class: 'btn btn-sm btn-danger'
+		= d.link_to_add "Añadir", :batch_details, class: 'btn btn-success', data: {target: "table.gtin-table-#{d.index}"}

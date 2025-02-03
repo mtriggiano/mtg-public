@@ -1,0 +1,27 @@
+.card.shadow{style: 'max-width: 23rem'}
+	.px-4.py-3
+		= image_tag user.avatar, class: 'rounded-circle shadow avatar-border', style: 'width: 300px !important; max-width: 300px; !important'
+	.card-body
+		%h5.card-title.text-center.border-bottom.pb-2
+			= user.name
+		.row.text-muted
+			.col
+				.position.text-truncate
+					= icon('fas', 'id-card-alt')
+					= user.position || "Sin asignar"
+				.birthday.text-truncate
+					= icon('fas', 'birthday-cake')
+					= user.birthday
+				.mobile.text-truncate
+					= icon('fas', 'mobile-alt')
+					= user.mobile_phone.blank? ? "Sin asignar" : user.mobile_phone
+			.col
+				.address.text-truncate
+					= icon('fas', 'map-marked-alt')
+					= user.address.blank? ? "Sin asignar" : user.address
+				.email.text-truncate
+					= icon('fas', 'at')
+					= user.email
+				.document.text-truncate
+					= icon('fas', 'passport')
+					= user.document_number

@@ -1,0 +1,2 @@
+module Inventaries::BatchesHelper
+end

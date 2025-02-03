@@ -1,0 +1,16 @@
+const modalId = '#gtin_' + "<%= @random %>";
+data = $("<%= j render '/inventaries/batches/form', {d: @builder, mode: 'check_out', product_id: params[:product_id], consumption: true} %>")
+data.find('table').unwrap('div.fields')
+data.find('[name=authenticity_token]').remove()
+data.find('[name=utf8]').remove()
+while(data.find('.simple_form.to_remove').length > 0) {
+	data.find('table').unwrap('form.simple_form.to_remove');
+}
+
+$("a#<%= params[:link_id] %>")
+	.closest("td")
+	.html(data)
+	.append(`<button type='button' data-target=${modalId} data-toggle='modal' class='btn btn-sm btn-info gtin_modal'><i class='fas fa-qrcode'></i></button>`)
+
+$(modalId).modal("show")
+setSelect2()

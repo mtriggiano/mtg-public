@@ -1,0 +1,60 @@
+%p.mb-1 Transferencias realizadas
+.card.mb-4
+  .card-body
+    - if emitted_transfer_payments.any?
+      .table-responsive
+        %table
+          %thead
+            %th Número
+            %th Órden de pago
+            %th Proveedor
+            %th Registro
+            %th.text-center Importe
+          %tbody
+            - emitted_transfer_payments.each do |transfer|
+              %tr
+                %td
+                  = transfer.number
+                %td
+                  = link_to transfer.payment_order.name, edit_purchases_payment_order_path(transfer.payment_order_id)
+                %td
+                  = link_to transfer.payment_order.supplier.name, supplier_path(transfer.payment_order.supplier)
+                %td
+                  = transfer.created_at
+                %td.text-right
+                  = number_to_ars transfer.total
+    - else
+      %h5.text-center.text-muted.my-3
+        = icon('fas', 'exclamation-circle')
+        No encontramos transferencias realizadas desde la cuenta
+
+
+%p.mb-1 Transferencias recibidas
+.card.mb-4
+  .card-body
+    - if bank_transfer_payments.any?
+      .table-responsive
+        %table
+          %thead
+            %th Recibo
+            %th Proveedor
+            %th Vencimiento
+            %th Registro
+            %th.text-center Importe
+          %tbody
+            - bank_transfer_payments.each do |transfer|
+              %tr
+                %td
+                  = transfer.number
+                %td
+                  = link_to transfer.receipt.name, edit_expedient_receipt_path(transfer.receipt_id)
+                %td
+                  = transfer.receipt.client.try(:name)
+                %td
+                  = transfer.created_at
+                %td.text-right
+                  = number_to_ars transfer.total
+    - else
+      %h5.text-center.text-muted.my-3
+        = icon('fas', 'exclamation-circle')
+        No encontramos transferencias realizadas desde la cuenta

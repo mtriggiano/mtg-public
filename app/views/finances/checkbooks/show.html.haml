@@ -1,0 +1,62 @@
+%h1 Chequera
+
+%p.mb-2
+  Información general
+  %span.float-right
+    = link_to "#{icon('fas', 'edit')} Editar chequera".html_safe, edit_checkbook_path(checkbook)
+.card.mb-4
+  .card-body
+    .row
+      .col-8.mb-3
+        %p.text-muted.mb-1 Cuenta bancaria
+        %h3
+          = link_to "#{checkbook.bank_account.bank.name} - #{checkbook.bank_account.alias_tag}", checkbook.bank_account
+      .col-4.mb-3
+        %p.text-muted.mb-1 Numeración
+        %h3
+          = "#{checkbook.init_number} - #{checkbook.final_number}"
+      .col-8.mb-3
+        %p.text-muted.mb-1 Número de talonario
+        %h3
+          = checkbook.number
+      .col-4.mb-3
+        %p.text-muted.mb-1 Serie
+        %h3
+          = checkbook.serie.upcase
+
+%p.mb-2
+  Cheques emitidos
+  %span.float-right
+    = link_to "#{icon('fas', 'plus')} Nuevo cheque".html_safe, new_emitted_check_path(checkbook_id: checkbook.id)
+.card.mb-4
+  .card-body
+    %table.table.table-hover
+      %thead
+        %th Estado
+        %th Número
+        %th Emisión
+        %th Vencimiento
+        %th Días
+        %th Proveedor
+        %th Importe
+        %th Saldo
+      %tbody
+        - checkbook.emitted_checks.each do |check|
+          %tr
+            %td
+              %span.badge{:class => "badge-#{emitted_check_color_state(check)}"}
+                = check.estado
+            %td
+              = link_to check.numero, emitted_check_path(check)
+            %td
+              = check.created_at
+            %td
+              = check.vencimiento
+            %td{:class => color_por_dias_faltantes(check.dias_restantes)}
+              = check.dias_restantes
+            %td
+              = check.supplier.name
+            %td
+              = number_to_ars check.importe
+            %td
+              = number_to_ars check.saldo

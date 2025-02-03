@@ -1,0 +1,44 @@
+%p.mb-1
+  Movimientos del día
+  %span.float-right.mx-2
+    = link_to "#{icon('fas', 'plus')} Registro de Egreso".html_safe, new_cash_account_general_cash_expense_path(regular_cash_account)
+  %span.float-right.mx-2
+    = link_to "#{icon('fas', 'plus')} Registro de Ingreso".html_safe, new_cash_account_general_cash_income_path(regular_cash_account)
+%table.contable-table
+  %thead
+    %th Fecha
+    %th Comp.
+    %th Lugar/Persona
+    %th Concepto
+    %th Importe
+    %th Forma
+  %tbody
+    - @transactions.each do |log|
+      - if log.income?
+        %tr
+          %td
+            = log.created_at
+          %td
+            = link_to log.codigo, income_path(log.logable_id)
+          %td.word-breakeable
+            = log.entidad
+          %td.word-breakeable
+            = log.description
+          %td.text-right{ :class => negative_colored_number_klass(log.monto) }
+            = number_to_ars log.monto
+          %td
+            = log.forma
+      - else
+        %tr
+          %td
+            = log.created_at
+          %td
+            = link_to log.codigo, expense_path(log.logable_id)
+          %td.word-breakeable
+            = log.entidad
+          %td.word-breakeable
+            = log.description
+          %td.text-right{ :class => negative_colored_number_klass(-log.monto) }
+            = number_to_ars -log.monto
+          %td
+            = log.forma

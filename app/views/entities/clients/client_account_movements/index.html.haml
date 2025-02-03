@@ -1,0 +1,6 @@
+= index_table(mform: true, text: "Cuenta corriente", config: false, can_new_path: false, icon: 'briefcase', collection: collection, jpath: client_client_account_movements_path(client_id: client.id, format: :json)) do
+	= link_to "#{icon('fas', 'plus')} Recibo".html_safe, new_expedient_receipt_path(entity_id: client.id), class: 'btn btn-success'
+
+= modal("#{icon('fas', 'dollar-sign')} Imputar pago a cuenta", "assig_bill_modal", "assig_bill_modal_body", "big") do
+	.modal-body
+		= yield

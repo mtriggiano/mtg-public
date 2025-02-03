@@ -1,0 +1,4 @@
+= simple_form_for(store_line, url: polymorphic_path([:stores, :external, store_line], external_id: external_store.id), html: { class: 'horizontal-form' }, wrapper: :horizontal_form) do |f|
+
+	= error_notification(f)
+	= f.input :name, label: "Nombre", placeholder: "Nombre del hospital/cliente"

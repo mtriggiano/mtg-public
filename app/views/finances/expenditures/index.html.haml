@@ -1,0 +1,9 @@
+= index_table(mform: true, collection: collection, icon: 'money-check-alt', text: "Gastos abonados", mtarget: "#new_expenditure_modal")
+
+= modal("#{icon('fas', 'plus')} Registro de gasto", "new_expenditure_modal", "new_expenditure_modal_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'edit')} Registro de gasto", "edit_expenditure_modal", "edit_expenditure_modal_body", "big") do
+	.modal-body
+		= yield

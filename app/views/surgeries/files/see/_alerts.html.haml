@@ -1,0 +1,16 @@
+= index_table( mform: true, collection: file.alerts(current_user), mtarget: "#new_alert_surgery_file_modal", jpath: polymorphic_path([:display, :alerts, file]), path: [:new, :alert, file])
+
+
+= modal("#{icon('fas', 'plus')} Añadir alerta", "edit_alert_modal", "edit_alert_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'eye')} Ver alerta", "show_alert_modal", "show_alert_body", "big") do
+	.modal-body
+		= yield
+	.modal-footer
+		= close_button
+
+= modal("#{icon('fas', 'plus')} Añadir alerta", "new_alert_surgery_file_modal", "new_alert_surgery_file_body", "big") do
+	.modal-body
+		= yield

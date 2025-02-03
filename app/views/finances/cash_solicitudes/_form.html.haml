@@ -1,0 +1,15 @@
+= simple_form_for(cash_solicitude) do |f|
+  = error_notification(f)
+  %p.alert.alert-info
+    = "#{icon('fas', 'exclamation-circle')} Está a punto de abrir una solicitud de fondos".html_safe
+  .row
+    .col-8
+      = f.input :motivo, label: "Motivo de la solicitud", input_html: { autofocus: true, autocomplete: :off }, required: true
+    .col-4
+      = f.input :fecha, label: "Fecha", as: :date_picker, required: true
+    .col-12
+      = f.input :descripcion, label: "Descripción detallada", required: true
+    
+  .actions
+    %hr
+    = save_button

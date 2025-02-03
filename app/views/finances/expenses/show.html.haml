@@ -1,0 +1,22 @@
+%h3.mb-3 Registro de gasto
+.card.mb-5
+  .card-body
+    %p.h4.mt-2.mb-5.text-center
+      = "#{expense.descripcion_completa.upcase} - #{expense.codigo}"
+    .row
+      .col-3.mb-3
+        %p.mb-1 Fecha
+        %p.h5
+          = expense.fecha
+      .col-3.mb-3
+        %p.mb-1 Forma
+        %p.h5
+          = expense.forma
+      .col-3.mb-3
+        %p.mb-1 Responsable
+        %p.h5
+          = link_to expense.user.name, profile_user_path(expense.user)
+      .col-3.mb-3
+        %p.mb-1 Importe
+        %p.h4.text-right.text-success
+          = number_to_ars expense.importe

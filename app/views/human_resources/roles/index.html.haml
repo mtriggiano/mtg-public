@@ -1,0 +1,9 @@
+= index_table(icon: 'user-shield', text: "Roles", collection: current_company.roles, jpath: roles_path(format: :json))
+
+
+= modal("#{icon('fas', 'plus')} Añadir rol", "new_role_modal", "new_role_body", "big") do
+	.modal-body
+
+= modal("#{icon('fas', 'plus')} Editar rol", "edit_role_modal", "edit_role_body", "big") do
+	.modal-body
+		= yield

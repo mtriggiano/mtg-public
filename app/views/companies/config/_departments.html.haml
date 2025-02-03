@@ -1,0 +1,13 @@
+= simple_nested_form_for(company) do |f|
+	= error_notification(f)
+	= f.hidden_field :view, value: params[:view]
+	%fieldset.text-center.offset-sm-1.col-10.col-xs-12
+		= f.simple_fields_for :departments, company.build_initial_departments, wrapper: :horizontal_form do |s|
+			.row.fields
+				= s.input :name, label: "Nombre", wrapper_html:{class: 'col'}
+				= s.input :user_id, label: "Administrador", collection: current_company.users.map{|u| [u.name, u.id]}, wrapper_html:{class: 'col'}
+			%hr.dotted
+	%center
+		= f.link_to_add "#{icon('fas', 'plus')} Añadir departamento".html_safe, :departments, class: 'btn btn-secondary ml-2 mb-4', data: {target: 'fieldset'}
+	%hr
+	= save_button

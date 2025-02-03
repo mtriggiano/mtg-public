@@ -1,0 +1,14 @@
+measure:
+  key: reports/costing
+  name: "Gastos vs Ganancias"
+  aggregation: total_billed
+dimensions:
+- bill_type
+contextual_filters:
+- for_file_bills
+chart:
+  type: pie
+  options:
+    legend:
+      display: true
+      position: bottom

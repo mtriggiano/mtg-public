@@ -1,0 +1,98 @@
+= simple_form_builder bill, default: {label_html: {class: :h6}} do |f|
+  = shared_nav(f)
+  .card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+    .card-body
+      = file_header(f)
+      .header-detail
+        = error_notification(f)
+        .row
+          .col-sm-4.col-12
+            .row
+              .col
+                = f.label :number, "Número"
+                .row
+                  .col-5
+                    = f.input :sale_point, label: false, input_html: { maxlength: 4, type: "number" }, required: true, placeholder: "Pto. vta"
+                  .col-7
+                    = f.input :number, label: false, placeholder: "Número", input_html: {disabled: true}
+              .col
+                = f.input :manual, collection: [["Manual", "M"],["Electrónica", "E"]], label: "Método"
+            .row
+              .col-6
+                = sale_client_select(f)
+              .col-6
+                = f.association :payment_type, selected: bill.payment_type_id || 4 || bill.client.try(:payment_type_id) || current_company.payment_types, label: "Tipo de pago"
+            .row
+              .col
+                = f.input :cbte_tipo, collection: bill.cbte_types.map{ |tipo| [tipo[:text], tipo[:id]] }, prompt: "Seleccione..."
+              .col
+                = f.input :parent_bill, label: "Factura asociada", collection: bills.confirmed.only_bills.map{|u| [u.name(:short), u.id]}
+          .col-sm-4.col-12
+            .row
+              .col-6
+                = f.input :total_trib, min: 0, input_html: {disabled: true}
+              .col-6
+                = f.input :iva_amount, input_html:{id: 'parent_iva_amount', disabled: true}
+            .row
+              .col-6
+                = total_usd_input(f)
+              .col-6
+                = usd_price_input(f)
+            .row
+              .col-6
+                = f.input :gross_amount, input_html: {id: 'parent_gross_price', disabled: true}
+              .col-6
+                = f.input :total, input_html:{id: 'parent_total', disabled: true}
+          .col-sm-4.col-12
+            .row
+              .col-6
+                = currency_input(f)
+              .col-6
+                = state_input(f, with_button: false)
+            = f.input :concept, collection: Afip::CONCEPTOS.keys
+            = f.input :cbte_fch, as: :date_picker, input_html: {value: Date.today, disabled: true}
+        .dynamic-bill-info
+          = render 'dynamic_attributes', f:f
+        .row
+          .col-6
+            = new_associated_document(f, :assign)
+          .col-6
+            = new_associated_document(f, :filter)
+        = observation_to_user("Solo se vincularan los detalles del presupuesto con estado 'Aprobado'.")
+        #bill_state.text-center
+          = render "bill_state"
+  = render '/sales/bills/file_data', {f:f, bill: bill}
+  = content_for(:extra_links) do
+    %li.nav-item
+      = button_tag "#{icon('fas', 'hand-holding-usd')} Tributos".html_safe, type: :button, aria: {selected: false, controls: 'tributes'}, data: {toggle: 'tab', target: '#tributes'}, class: 'nav-link bg-white'
+    %li.nav-item
+      = button_tag "#{icon('fas', 'eraser')} Notas de crédito".html_safe, type: :button, aria: {selected: true, controls: 'credits'}, data: {toggle: 'tab', target: '#credits'}, class: 'nav-link bg-white' if bill.has_credit_note?
+    %li.nav-item
+      = button_tag "#{icon('fas', 'pencil')} Notas de débito".html_safe, type: :button, aria: {selected: true, controls: 'debits'}, data: {toggle: 'tab', target: '#debits'}, class: 'nav-link bg-white' if bill.has_debit_note?
+    %li.nav-item
+      = button_tag "#{icon('fas', 'sticky-note')} Nota de factura".html_safe, type: :button, aria: {selected: false, controls: 'note'}, data: {toggle: 'tab', target: '#note'}, class: 'nav-link bg-white'
+
+  = document_table(f) do
+    = render '/tributes/form', f: f
+    = render 'credit_notes', bill: bill
+    = render 'debit_notes', bill: bill
+    = render '/file_attributes_configs/shared_extra_attributes', f:f, object: bill
+    = observation_input(f)
+    = note_input(f)
+    = render '/tenders/shared_attachment', f:f
+
+= modal("#{icon('fas', 'plus')} Recibos vinculados", "receipts_modal", "receipts_modal_body", "big") do
+  .modal-body
+    - bill.receipts.each do |receipt|
+      .media
+        = image_tag "/images/receipt.png", class: 'mr-3', style: 'height: 100px;'
+        .media-body
+          %h5.mt-0
+            = receipt.name
+          %strong
+            Total: $
+          = receipt.total.round(2)
+          %br
+          %strong
+            Fecha:
+          = I18n.l(receipt.created_at, format: :date)

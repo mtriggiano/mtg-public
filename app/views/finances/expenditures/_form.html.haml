@@ -1,0 +1,39 @@
+= simple_form_for expenditure, wrapper: false do |f|
+	= error_notification(f)
+	%p.text-muted.mb-1 Información del comprobante
+	.border.rounded.pt-2.px-2.mb-4
+		.row
+			.col-2
+				= f.input :letra, label: "Tipo", collection: ExpenseDetail::COMP_TYPES, input_html: { class: 'text-center'}
+			.col-2
+				= f.input :punto_venta, label: "Punto de venta", input_html: { maxlength: "5" }
+			.col-4
+				= f.input :num_comprobante, label: "Número comprobante"
+			.col-4
+				= f.input :fecha, label: "Fecha Emisión", as: :date_picker, input_html: {class: "form-control", autocomplete: :off, maxlength: "8" }
+			.col-4
+				= f.input :entity_id, label: "Proveedor", collection: Supplier.all.order(:name), prompt: "SIN VINCULAR"
+			.col-4
+				= f.input :supplier_name, label: "Proveedor no registrado", required: false
+			.col-4
+				= f.input :order_id, label: "OC o NV vinculada", as: :select, collection: ExpedientOrder.where(company_id: current_company.id).map{ |order| [order.name, order.id] }, input_html: { required: false }, prompt: "SIN VINCULAR"
+			.col-12
+				= f.input :descripcion, label: "Descripción", as: :text
+
+	%p.text-muted.mb-1 Datos contables
+	.border.rounded.pt-2.px-2.mb-4
+		.row
+			.col-4
+				= f.input :fecha_registro, label: "Fecha Registro", as: :date_picker, input_html: { class: "form-control", autocomplete: :off }
+			.col-4
+				= f.input :sum_iva, label: "IVA (suma)", required: true, input_html: { class: "text-right" }
+			.col-4
+				= f.input :percep_iva, label: "Percep. IVA", required: true, input_html: { class: "text-right" }
+			.col-4
+				= f.input :percep_iibb, label: "Percep. IIBB", required: true, input_html: { class: "text-right" }
+			.col-4
+				= f.input :no_gravados, label: "No gravado", required: true, input_html: { class: "text-right" }
+			.col-4
+				= f.input :total, label: "TOTAL", required: true, input_html: { class: "text-right" }
+	.actions
+		= save_button

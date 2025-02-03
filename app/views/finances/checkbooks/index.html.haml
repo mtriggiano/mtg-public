@@ -1,0 +1,8 @@
+= index_table(mform: true, icon: 'money-check', mtarget: "#new_checkbook_modal")
+
+= modal("#{icon('fas', 'plus')} Añadir talonario", "new_checkbook_modal", "new_checkbook_body") do
+	.modal-body
+
+= modal("#{icon('fas', 'plus')} Editar talonario", "edit_checkbook_modal", "edit_checkbook_body") do
+	.modal-body
+		= yield

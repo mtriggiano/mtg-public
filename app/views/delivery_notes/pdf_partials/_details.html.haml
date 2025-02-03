@@ -1,0 +1,16 @@
+/ DETALLE
+.row
+  .container{style: "height: 980px;"}
+    %table.width_100
+      %tr
+        %th.description_header Codigo
+        %th.description_header Producto/Servicio
+        %th.description_header Cantidad
+        %th.description_header U.Medida
+      - details.compact.each do |det|
+        %tr
+          %td= det.product_supplier_code
+          %td= det.product_name
+          %td.text_right= det.returned_quantity
+          %td.text_right= det.product.measurement_unit
+/ FIN DEL DETALLE

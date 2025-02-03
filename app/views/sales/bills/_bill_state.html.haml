@@ -1,0 +1,2 @@
+= link_to "#{icon('fas', 'dollar-sign')} Registrar cobro".html_safe, new_expedient_receipt_path(pay_bill: bill.id), class: "btn btn-outline-success mb-3" if bill.confirmed? && bill.real_total_left > 0
+= switch_bill_state_button(bill)

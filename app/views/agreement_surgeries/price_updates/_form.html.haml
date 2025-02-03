@@ -1,0 +1,9 @@
+- disabled ||= false
+= simple_form_for @price_update, defaults: {disabled: false }, html: {class: 'horizontal-form directUpload'}, wrapper: :horizontal_form, defaults: { disabled: disabled } do |f|
+  = error_notification(f)
+  
+  = f.input :percent, label: "Porcentaje", required: true
+
+  .actions
+    %hr
+    = save_button unless disabled

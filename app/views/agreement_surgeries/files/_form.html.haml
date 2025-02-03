@@ -1,0 +1,34 @@
+= simple_nested_form_for file, data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host }, html: {class: 'horizontal-form directUpload'}, wrapper: :horizontal_form, defaults: {disabled: file.disabled? } do |f|
+	= error_notification(f)
+
+	.row
+		.col-6
+			= f.association :client, label: "Cliente", collection: current_company.clients.order(:denomination).map{|c| [c.denomination, c.id]}
+			= f.input :number,  label: "Número", disabled: true
+			= f.input :first_name,  label: "Nombres"
+			= f.input :last_name,  label: "Apellidos"
+			= f.input :document_type,  label: "Tipo Documento"
+			= f.input :document_number,  label: "Numero Documento"
+			= f.input :address,  label: "Direccion"
+			= f.input :birthday,  label: "Fecha Nacimiento", as: :date_picker
+			= f.input :age,  label: "Edad"
+			= f.input :gender,  label: "Sexo"
+			= f.input :mobile_phone,  label: "Celular"
+			= f.input :province,  label: "Provincia"
+			= f.input :locality,  label: "Localidad"
+		.col-6
+			= f.input :surgery_request,  label: "Solicitud", disabled: true
+			= f.input :request_date,  label: "Fecha solicitud", as: :date_picker
+			= f.input :surgery_type,  label: "Tipo de Cirujia"
+			= f.input :surgery_date,  label: "Fecha Cirujia", as: :date_picker
+			= f.input :social_work,  label: "Obra Social"
+			= f.input :pacient_number,  label: "Numero Paciente"
+			= f.input :medical_history,  label: "Historia Clínica"
+			= f.input :institution,  label: "Institucion"
+			= f.input :doctor,  label: "Medico"
+			= f.input :internal_stock,  label: "Stock Interno?"
+			= f.input :surgery_time,  label: "Tiempo cirujia"
+			= f.input :observation,  label: "Observación", as: :text
+	.actions.text-center.w-100
+		- unless f.object.disabled?
+			= save_button

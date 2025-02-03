@@ -1,0 +1,32 @@
+%hr
+%p.text-center
+%strong Aclaracion:
+Solo se muestran las ultimas 20 actualizaciones.
+.table-responsive
+- surgery_request_presenter ||= AgreementSurgeries::SurgeryRequestPresenter.new(surgery_request_presenter, self)
+%table.table.table-striped.table-sm.table-bordered.table-hover
+  %thead
+    %tr
+      %th Usuario
+      %th Fecha
+      %th Cambios
+
+  %tbody
+    - surgery_request.versions.where("object_changes like ?", "%aasm_state%").last(20).reverse_each do |version|
+      %tr
+        %td= User.find(version.whodunnit).try(:email) rescue ""
+        %td= version.created_at
+        - cambios = YAML.load(version.object_changes)
+        %td
+          - cambios.each do |campo, cambio|
+            %p.m-0
+              - if cambio.is_a? Array
+                = "Estado"
+                | : 
+                = surgery_request_presenter.state_for_audits(cambio[0])
+                |  => 
+                = surgery_request_presenter.state_for_audits(cambio[1])
+              - else
+                = campo
+                | : 
+                = cambio

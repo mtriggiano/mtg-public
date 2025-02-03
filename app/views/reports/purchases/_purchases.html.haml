@@ -1,0 +1,19 @@
+.index-body.table-responsive
+	%table#paginated_table.table{data: {title: "Reporte FACTURAS COMPRA", source: reports_purchases_path(format: :json)}}
+		%thead.thead-light
+			%th.actions{scope: 'col'} Tipo y clase
+			%th.actions{scope: 'col'} Pto. vta
+			%th.actions{scope: 'col'} Número
+			%th.actions{scope: 'col'} Emisión
+			%th.actions{scope: 'col'} Proveedor
+			%th.actions{scope: 'col'} Vencimiento
+			%th.actions{scope: 'col'} Importe
+			%th.actions{scope: 'col'} Pago
+			%th.actions{scope: 'col'} Saldo
+			%th.actions{scope: 'col'} O.C.
+			%th.actions{scope: 'col'} Estado
+			%th.actions{scope: 'col'} Cancelación
+			%th.actions{scope: 'col'} Nota
+		%tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::Purchase.merge("actions" => ""))

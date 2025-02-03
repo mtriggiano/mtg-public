@@ -1,0 +1,36 @@
+.text-center
+	%h4
+		.row
+			.col
+				.small
+					%strong Lote:
+					= batch.code
+					%strong Serie:
+					= batch.serial
+			.col
+				.small
+					Cantidad total:
+				= batch.total_quantity
+	%hr.dotted
+	%table.table
+		%thead
+			%th Fecha
+			%th Documento
+			%th Estado
+			%th Cantidad
+			%th Tipo
+		%tbody
+			- batch.batch_details.order(created_at: :desc).includes(:detail).each do |batch_detail|
+				%tr
+					- document = batch_detail.document
+					- if document
+						%td
+							= document.date
+						%td
+							= link_to document.number, edit_polymorphic_url(document)
+						%td
+							= document.state
+						%td
+							= batch_detail.quantity
+						%td
+							= batch_detail.movement_type

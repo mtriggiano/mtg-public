@@ -1,0 +1,33 @@
+- present product do |product_presenter|
+	.pr-2.pl-2.w-100.shadow.bg-white.p-3.w-100
+		.text-muted
+			= icon('fas', 'list-alt')
+			Información básica
+		%hr
+			%dl
+				= see_contact_dl("Nombre", product.name)
+				%hr.dotted
+				= see_contact_dl("Categoría", product_presenter.category)
+				%hr.dotted
+				= see_contact_dl("Familia", product.family)
+				%hr.dotted
+				= see_contact_dl("Código interno", product_presenter.code)
+				%hr.dotted
+				= see_contact_dl("G.T.I.N.", product.gtin)
+				%hr.dotted
+				= see_contact_dl("P.M.", product.pm)
+				%hr.dotted
+				= see_contact_dl("Medidas", product_presenter.measurements)
+				%hr.dotted
+				= see_contact_dl("Stock mínimo", product_presenter.minimum_stock)
+				%hr.dotted
+				= see_contact_dl("Stock disponible", product_presenter.available_stock)
+				%hr.dotted
+				= see_contact_dl("Stock recomendado", product_presenter.recommended_stock)
+				%hr.dotted
+				= see_contact_dl("Proveedor", product_presenter.supplier)
+				%hr.dotted
+				= see_contact_dl("Precio de compra", product_presenter.buy_price)
+
+
+= # render "/inventaries/products/see/precios_compra"

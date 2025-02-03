@@ -1,0 +1,33 @@
+= simple_form_builder devolution, default: {label_html: {class: :h6}} do |f|
+	= shared_nav(f)
+	.card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+		.card-body
+			= file_header(f)
+			.header-detail
+				= error_explanation(f.object)
+				.row
+					.col-sm-4.col-12.border-right
+						= number_input(f)
+						= store_input(f)
+					.col-sm-4.col-12.border-right
+						= date_input(f, :date)
+						= supplier_input(f)
+					.col-sm-4.col-12
+						= state_input(f)
+						= shipping_price_input(f, devolution.disabled?, t('activerecord.attributes.devolution.shipping_price', raise: true))
+					.col-sm-4.col-12
+						= f.label :shipment_number, "Ingrese el N° de remito"
+						= f.text_field :shipment_number, required: false, disabled: devolution.disabled?, class: 'form-control'
+				.row
+					.col-4
+						= new_associated_document(f, :secondary_assign)
+					.col-4
+						= new_associated_document(f, :assign)
+					.col-4
+						= new_associated_document(f, :rest)
+				= state_manager(f)
+				= file_state_manager(f)
+	= document_table(f) do
+		= render '/file_attributes_configs/shared_extra_attributes', f:f, object: devolution
+		= observation_input(f)
+		= render '/purchases/shared_attachment', f:f

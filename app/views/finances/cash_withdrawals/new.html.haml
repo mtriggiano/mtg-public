@@ -1,0 +1,20 @@
+= new_helper("Retiro de fondos") do
+  = simple_form_for([cash_solicitude, cash_withdrawal]) do |f|
+    = error_notification(f)
+    %p.text-muted.mb-1 Información de la solicitud
+    .border.rounded.p-2.mb-4
+      = render '/finances/cash_solicitudes/show', cash_solicitude: cash_solicitude
+
+    .row
+      .col-md-4
+        = f.input :fecha, label: "Fecha de retiro", value: Date.today, input_html: { disabled: true }, disabled: true
+      .col-md-4
+        %p Importe aprobado
+        %h5.text-center
+          = number_to_ars cash_solicitude.monto_aprobado
+      .col-md-4
+        = f.input :importe, label: "Importe entregado", required: true, input_html: { max: cash_solicitude.monto_aprobado, class: "text-right" }
+
+    .actions
+      %hr
+      = save_button

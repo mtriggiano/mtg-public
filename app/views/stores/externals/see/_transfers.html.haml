@@ -1,0 +1,8 @@
+.row
+	.col-12
+		.pr-2.pl-2.shadow.bg-white.p-3.d-flex
+			.text-muted.flex-grow-1
+				= icon('fas', 'list-alt')
+				Registro de transferencias
+			= link_to_new("Transferir", new_transfer_note_path(store_id: external_store.id))
+		= index_table(mform: false, title: "false", icon: 'list-alt', text: "Transferencias", jpath: transfer_notes_path(store_id: params[:id], format: :json), columns: TransferNote::TABLE_COLUMNS)

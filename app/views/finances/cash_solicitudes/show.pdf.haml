@@ -1,0 +1,1 @@
+= render '/finances/_shared/receipts.pdf.haml', texto: "Solicitud de fondos", fecha: cash_solicitude.cash_withdrawal.fecha, numero: cash_solicitude.id, recibe: cash_solicitude.user.try(:name) || cash_solicitude.nombre_solicitante, recibi_de: current_company.name, importe: cash_solicitude.cash_withdrawal.importe, concepto: cash_solicitude.motivo

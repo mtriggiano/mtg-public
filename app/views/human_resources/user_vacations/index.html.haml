@@ -1,0 +1,19 @@
+= index_table(icon: 'umbrella-beach',mform: true, jpath: user_vacations_path, path: new_user_vacation_path, collection: current_company.user_vacations, mtarget: "#new_user_vacation_modal")
+
+= modal("#{icon('fas', 'plus')} Editar asignacion de vacaciones", "edit_user_vacation_modal", "edit_user_vacation_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'eye')} Ver asignación de vacaciones", "show_user_vacation_modal", "show_user_vacation_body") do
+	.modal-body
+		= yield
+	.modal-footer
+		= close_button
+
+= modal("#{icon('fas', 'plus')} Añadir asignación de vacaciones", "new_user_vacation_modal", "new_user_vacation_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'check')} Evaluar asignación de vacaciones", "approve_user_vacation_modal", "approve_user_vacation_body", "big") do
+	.modal-body
+		= yield

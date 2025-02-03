@@ -1,0 +1,12 @@
+<% simple_nested_form_for purchase_request do |f|
+	@builder = []
+	f.simple_fields_for :details, defaults: {disabled: purchase_request.disabled?, label: false}, wrapper: false do |d|
+		@builder << d
+	end
+end %>
+
+$("tbody").html("");
+
+<% @builder.each_with_index do |b, index| %>
+	$("tbody").append("<%= j render '/purchases/purchase_request/details_form', {d: b, child: false} %>");
+<% end %>

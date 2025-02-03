@@ -1,0 +1,20 @@
+- present user do |user_presenter|
+  .pr-2.pl-2.w-100.shadow.bg-white.p-3.w-100
+    .text-muted
+      = icon('fas', 'list-alt')
+      Información básica
+    %hr
+      %dl
+        = see_contact_dl("Nombre", user.first_name)
+        %hr.dotted
+        = see_contact_dl("Apellido", user.last_name)
+        %hr.dotted
+        = see_contact_dl("Documento", user.document_number)
+        %hr.dotted
+        = see_contact_dl("Cumpleaños", user.birthday)
+        %hr.dotted
+        = see_contact_dl("Dirección", "#{user.address} - #{user.postal_code}")
+        %hr.dotted
+        = see_contact_dl("Telefono", user.phone)
+        %hr.dotted
+        = see_contact_dl("Celular", user.mobile_phone)

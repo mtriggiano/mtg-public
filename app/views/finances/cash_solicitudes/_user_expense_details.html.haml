@@ -1,0 +1,32 @@
+= f.simple_fields_for :expense_details do |i|
+  .fields.text-left
+    .card.mb-4
+      .card-body
+        = i.link_to_remove icon('fas', 'times'), class: "btn btn-danger float-right"
+        .row
+          .col-6
+            .row
+              .col-2
+                = i.input :fecha, label: "Emisión", as: :date_picker, input_html: { class: 'text-center' }
+              .col-2
+                = i.input :fecha_registro, label: "Fecha de registro", as: :date_picker, input_html: { class: 'text-center', value: Date.today.to_s, readonly: true }
+              .col-3
+                = i.input :letra, label: "Tipo", collection: ExpenseDetail::COMP_TYPES, input_html: { class: 'text-center', size: "1", maxlength: "1" }
+              .col-2
+                = i.input :punto_venta, label: "PtoVta", input_html: { class: 'text-center', size: "5", maxlength: "5", required: false }, required: false
+              .col-3
+                = i.input :num_comprobante, label: "Comprobante", input_html: { class: 'text-center', size: "8", maxlength: "8", required: false }, required: false
+          .col-6
+            .row
+              .col-6
+                = i.input :supplier_name, label: "Nombre proveedor (opcional)", input_html: { required: false }, required: false
+              .col-6
+                = i.input :entity_id, collection: current_company.suppliers.map{ |supplier| ["#{supplier.name} - CUIT: #{supplier.document_number}", supplier.id] }, label: "Proveedor"
+          .col-9
+            = i.input :descripcion, label: "Descripción", as: :text
+          .col-3
+            = i.input :order_id, label: "OC o NV asociado", as: :select, collection: ExpedientOrder.where(company_id: current_company.id).map{ |order| [order.name, order.id] }, input_html: { required: false }
+          .col-9
+          .col-3
+            = i.input :total, label: "TOTAL ($)", input_html: { class: 'text-center expense-bill-total', onkeyup: 'calculateRefundTotal()' }
+          = i.input :archived, as: :hidden, input_html: {value: true}

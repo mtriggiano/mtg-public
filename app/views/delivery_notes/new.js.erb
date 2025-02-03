@@ -1,0 +1,5 @@
+<% simple_nested_form_for delivery_note do |f| %>
+	<% @builder = f %>
+<% end %>
+$("tbody").html("<%= j render '/delivery_notes/details_form', f: @builder %>");
+setSelect2()

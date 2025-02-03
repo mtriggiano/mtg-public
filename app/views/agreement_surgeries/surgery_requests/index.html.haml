@@ -1,0 +1,4 @@
+= index_table(mform: true, icon: 'ticket-alt', mtarget: "#new_surgery_request_modal", collection: surgery_requests, text: "Solicitudes", path: new_agreement_surgeries_surgery_request_path, jpath: agreement_surgeries_surgery_requests_path(format: :json), config: false)
+
+= modal("#{icon('fas', 'plus')} Añadir solicitud", "new_surgery_request_modal", "new_surgery_request_body", "extra-big") do
+	.modal-body

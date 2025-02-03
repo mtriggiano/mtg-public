@@ -1,0 +1,52 @@
+%p.mb-1
+  Chequeras registradas
+  %span.float-right
+    = link_to "#{icon('fas', 'plus')} Registrar nueva chequera".html_safe, new_checkbook_path(bank_account_id: bank_account.id)
+.card.mb-4
+  .card-body
+    - if bank_account.checkbooks.any?
+      %ul.list-group
+        - bank_account.checkbooks.each do |checkbook|
+          %li.list-group-item.text-center
+            = link_to checkbook.nombre, checkbook
+    - else
+      %h5.text-center.text-muted.my-3
+        = icon('fas', 'exclamation-circle')
+        No encontramos chequeras registradas
+
+%p.mb-1
+  Cheques emitidos
+  %span.float-right
+    = link_to "#{icon('fas', 'plus')} Emitir cheque".html_safe, new_emitted_check_path()
+.card.mb-4
+  .card-body
+    - if emitted_checks.any?
+      .table-responsive
+        %table.table.table-hover
+          %thead
+            %th Número
+            %th Estado
+            %th Vencimiento
+            %th Días
+            %th Proveedor
+            %th Importe
+          %tbody
+            - emitted_checks.each do |check|
+              %tr
+                %td
+                  = link_to check.numero, emitted_check_path(check)
+                %td.text-center
+                  %span.badge{:class => "badge-#{emitted_check_color_state(check)}"}
+                    = check.estado
+                %td
+                  = check.vencimiento
+                %td{:class => color_por_dias_faltantes(check.dias_restantes)}
+                  = check.dias_restantes
+                %td
+                  = check.supplier.name
+                %td.text-right
+                  = number_to_ars check.importe
+    - else
+      %h5.text-center.text-muted.my-3
+        = icon('fas', 'exclamation-circle')
+        No encontramos cheques emitidos en la cuenta

@@ -1,0 +1,42 @@
+<% child_index = 0 %>
+<% simple_nested_form_for record do |f|
+	@builder = []
+	f.simple_fields_for :details, @detail, child_index: @index, defaults: {disabled: f.object.disabled?, label: false}, wrapper: false do |d|
+		@detail.childs.each_with_index do |child, index|
+			d.simple_fields_for :childs, child, child_index: index + (50 * (params[:page].to_i - 1)), wrapper: false do |c|
+				@builder << c
+			end
+		end
+	end
+end %>
+
+<% if @detail.has_childs? %>
+
+	$("tr#parent_<%= @index %>")
+		.find("button.child_button")
+		.removeClass("disabled")
+		.addClass("highlightButton",1000,"easeOutBounce");
+	$("tr#parent_<%= @index %>").find(".btn.gtin_modal").addClass("hidden")
+<% else %>
+	$("tr#parent_<%= @index %>")
+		.find("button.child_button")
+		.addClass( "disabled" )
+	$("tr#parent_<%= @index %>").find(".btn.gtin_modal").removeClass("hidden")
+<% end %>
+
+$("tr#parent_<%= @index %>")
+	.find("input[id$=_discount]")
+	.val("<%= - @recharge %>");
+
+<% @detail.childs.each_with_index.reverse_each do |child, index| %>
+	$('<%= j render "/#{record.class.name.deconstantize.snakecase.pluralize}/#{controller_name}/details_form", {d: @builder[index], child: true} %>')
+		.insertAfter($("tr#parent_<%= @index %>"));
+<% end %>
+
+var billInfo = $(".dynamic-bill-info")
+
+<% if record.class.name.demodulize == "ClientBill" %>
+	if (billInfo != null){
+		billInfo.html("<%= j render 'dynamic_attributes', f: @builder %>")
+	}
+<% end %>

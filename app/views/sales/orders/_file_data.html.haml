@@ -1,0 +1,9 @@
+.card.shadow.mb-4.mx-4.rounded-lg
+	.card-header
+		%h5 #{icon('fas', 'list-alt')} Datos adicionales
+	.card-body
+		.row.small-form
+			= f.simple_fields_for :file, wrapper: false do |ff|
+				= ff.input :id, as: :hidden, input_html: {value: sale_order.file_id}
+				.col
+					= ff.input :external_purchase_order_number, label: "N° O.C. de la obra social"

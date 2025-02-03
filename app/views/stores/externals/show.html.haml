@@ -1,0 +1,20 @@
+- params[:view] ||= 'general'
+.container-fluid.d-inline-block
+	%ul.nav.bg-white.border-bottom.border-top.p-2.mb-4.mt-4
+		%li.title.nav-item.border-right
+			= link_to external_store.name, stores_external_path(external_store.id),class: 'btn btn-light float-left'
+		%li.nav-item.border-animated
+			= show_links('General', 'general', params[:view], stores_external_path(external_store.id, view: 'general'), {disabled: !can?(:show, ExternalStore)})
+		%li.nav-item.border-animated
+			= show_links('Almacén', 'stock', params[:view], stores_external_path(external_store.id, view: 'stock'), {disabled: !can?(:read, Stock)})
+		%li.nav-item.border-animated
+			= show_links('Usuarios', 'users', params[:view], stores_external_path(external_store.id, view: 'users'), {disabled: !can?(:read, StoreUser)})
+		%li.nav-item.border-animated
+			= show_links('Actividades', 'activity', params[:view], stores_external_path(external_store.id, view: 'activity'), {disabled: !can?(:read, StoreActivity)})
+		%li.nav-item.border-animated
+			= show_links('Solicitudes', 'requests', params[:view], stores_external_path(external_store.id, view: 'requests'), {disabled: !can?(:read, StockRequest)})
+		%li.nav-item.border-animated
+			= show_links('Reposiciones', 'transfers', params[:view], stores_external_path(external_store.id, view: 'transfers'), {disabled: !can?(:read, TransferNote)})
+		
+	- if ['general', 'activity', 'stock', 'requests','transfers', 'users'].include?(params[:view])
+		= render "/stores/externals/see/#{params[:view]}"

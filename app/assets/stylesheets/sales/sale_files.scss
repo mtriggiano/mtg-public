@@ -1,0 +1,11 @@
+td.product_description{
+	max-width: 500px;
+}
+td.product_description > *{
+	word-break: break-all !important;
+	white-space: normal !important;
+}
+
+select[id$='file_id'], select[id$='product_id']{
+	max-width: 250px;
+}

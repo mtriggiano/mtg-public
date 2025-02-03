@@ -1,0 +1,8 @@
+<% simple_nested_form_for supplier_bill do |f| %>
+	<% @builder = f %>
+<% end %>
+'<% if params[:documents] %>'
+	$(".parent-table tbody").html("<%= j render '/surgeries/shared_details_form', {f: @builder, colspan: 10} %>");
+'<% else %>'
+	$(".cbte_tipo").html("<%= j render 'cbte_tipo', f: @builder %>")
+'<% end %>'

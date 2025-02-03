@@ -1,0 +1,19 @@
+= index_table(icon: 'file-alt',mform: true, jpath: permissions_path, path: new_permission_path, collection: current_company.permissions, mtarget: "#new_permission_modal")
+
+= modal("#{icon('fas', 'plus')} Editar justificación", "edit_permission_modal", "edit_permission_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'eye')} Ver justificación", "show_permission_modal", "show_permission_body") do
+	.modal-body
+		= yield
+	.modal-footer
+		= close_button
+
+= modal("#{icon('fas', 'plus')} Añadir justificación", "new_permission_modal", "new_permission_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'check')} Evaluar justificación", "approve_permission_modal", "approve_permission_body", "big") do
+	.modal-body
+		= yield

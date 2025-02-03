@@ -1,0 +1,5 @@
+<% simple_nested_form_for sale_bill do |f|
+	@builder = f
+end %>
+
+$("tbody").html("<%= j render '/sales/sale_bills/details_form', f: @builder %>");

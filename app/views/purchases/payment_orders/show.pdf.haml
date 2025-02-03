@@ -1,0 +1,8 @@
+- total_page = 0
+- @payment_order ||= payment_order
+- group_details = @payment_order.details.includes(:bill).in_groups_of(15, fill_with= nil)
+- group_details.each_with_index do |details_page, index|
+	.alwaysbreak
+		= render '/purchases/payment_orders/pdf/header.html.haml', payment_order: @payment_order
+		= render '/purchases/payment_orders/pdf/details.html.haml', taxes: @payment_order.taxes, details: details_page.compact, payments: @payment_order.payments, payment_order: @payment_order
+		= render '/purchases/payment_orders/pdf/footer.html.haml', :page_number => (index + 1), :total_pages => group_details.count, payment_order: @payment_order

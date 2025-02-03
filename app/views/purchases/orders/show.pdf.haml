@@ -1,0 +1,7 @@
+- total_page = 0
+- group_details = DetailPdf.new(@order, with_childs: true).build.in_groups_of(25)
+- group_details.each_with_index do |details_page, index|
+	.alwaysbreak
+		= render template: '/purchases/orders/pdf/_header.html.haml', locals: {order: @order}
+		= render template: '/purchases/orders/pdf/_details.html.haml', :locals => { :page_number => (index + 1), :details => details_page.compact, order: @order}
+		= render template: '/purchases/orders/pdf/_footer.html.haml', :locals => { :page_number => (index + 1), :total_pages => group_details.count, order: @order }

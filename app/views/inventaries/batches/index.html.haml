@@ -1,0 +1,7 @@
+= index_table(icon: 'warehouse', text: "Lotes", can_new_path: false, collection: collection, jpath: product_batches_path(product.id, format: :json) )  do 
+	= # link_to "#{icon('fas', 'check')} Arreglar stock".html_safe, fix_stock_product_path(product), method: :patch, class: 'btn btn-primary'
+	= link_to "#{icon('fas', 'check')} Limpiar stock".html_safe, new_clean_stock_product_path(product), method: :get, class: 'btn btn-primary'
+
+= modal("#{icon('fas', 'plus')} Editar producto", "batch_modal", "batch_modal_body", size = "big") do
+	.modal-body
+		= yield

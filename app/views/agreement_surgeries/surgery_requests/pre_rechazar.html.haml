@@ -1,0 +1,11 @@
+= edit_helper("Rechazar Solicitud") do
+  = link_to "Listado de solicitudes", agreement_surgeries_surgery_requests_path  
+  %hr
+  = simple_form_builder @surgery_request, url: rechazar_agreement_surgeries_surgery_request_path(@surgery_request), html: { method: :put }, defaults: {disabled: @surgery_request.disabled?}, html: {class: 'horizontal-form directUpload'}, wrapper: :horizontal_form do |f|
+    = error_notification(f)
+    .row
+      .col-6
+        = f.input :reason_for_rejection, label: "Motivo de rechazo"
+    .actions
+      %hr
+      = save_button

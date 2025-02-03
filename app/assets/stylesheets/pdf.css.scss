@@ -1,0 +1,268 @@
+* {
+  font-family: sans-serif;
+  text-transform: uppercase;
+  -webkit-box-sizing: border-box;
+}
+
+.background-image {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+// Maquetado
+  .m-0 {
+    margin: 0;
+  }
+  .mb-0 {
+    margin-bottom: 0;
+  }
+  .mb-1 {
+    margin-bottom: 0.4rem;
+  }
+  .mb-2 {
+    margin-bottom: 1rem;
+  }
+  .mb-3 {
+    margin-bottom: 2rem;
+  }
+  .mb-4 {
+    margin-bottom: 3rem;
+  }
+  .mb-5 {
+    margin-bottom: 5rem;
+  }
+
+  .mt-0 {
+    margin-top: 0;
+  }
+  .mt-1 {
+    margin-top: 1rem;
+  }
+  .mt-5 {
+    margin-top: 5rem;
+  }
+
+  .mx-1 {
+    margin-right: 0.4rem;
+    margin-left: 0.4rem;
+  }
+  .px-1 {
+    padding-right: 0.4rem;
+    padding-left: 0.4rem;
+  }
+  .mx-auto {
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .vertical-align-top {
+    vertical-align: top;
+  }
+// Maquetado
+
+.h4 {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.h6 {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.mx-3 {
+  margin-left: 3rem;
+  margin-right: 3rem;
+}
+
+.completed-field {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  font-weight: bolder;
+  border-bottom: 1px solid;
+
+  &.darker-background {
+    background-color: rgba(0,0,0,0.15);
+    border: none;
+  }
+}
+
+.signature-border {
+  height: 1rem;
+  border-bottom: 1px dashed;
+}
+
+.signature-border-top {
+  height: 1rem;
+  border-top: 1px dashed;
+  padding:0 25px;
+}
+
+.darker-background {
+  background-color: rgba(0,0,0,0.15);
+}
+
+///// TEXTOS
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-small { font-size: 11px; }
+.text-medium { font-size: 13px; }
+
+.width_100 {
+  width:100%;
+}
+.width_50 {
+  width:50%;
+}
+.width_75 {
+  width:75%;
+}
+.width_25 {
+  width:25%;
+}
+
+.text_size_25 {
+  font-size: 25px;
+}
+
+.text_size_30 {
+  font-size: 30px;
+}
+
+.text_size_35 {
+  font-size: 35px;
+}
+
+.text_size_20 {
+  font-size: 20px;
+}
+
+.text_size_12 {
+  font-size: 12px;
+}
+
+.text_size_10 {
+  font-size: 10px;
+}
+
+.text_size_invoice_type{
+  font-size: 50px;
+}
+
+.dottedUnderline { border-bottom: 1px dotted; }
+
+.border {
+  border: 1px solid black;
+}
+
+.border_round {
+  border: 1px solid black;
+  border-radius: 16px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.border-left {
+  border-left: 1px solid black;
+}
+.side_borders{
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+}
+
+.text_right {
+  text-align: right;
+}
+
+.text_left {
+  text-align: left;
+}
+
+.text_center {
+  text-align: center;
+}
+
+.text_justify {
+  text-align: justify;
+}
+
+.right_border{
+  border-right: solid 1px;
+}
+
+.description_header {
+  background: lightgray;
+  border: 1px solid black;
+  font-size: 11px !important;
+}
+.header_word_break {
+  width: 200px;
+  word-break: break-all;
+}
+
+
+.shipment_type{
+  vertical-align: top;
+  border: 1px solid;
+  padding:20px;
+  margin: 0px;
+  outline-width: 0px;
+}
+
+.invoice_pdf {
+  font-size: 12px;
+}
+
+.border-top {
+  border-top: 1px solid !important;
+}
+
+tr.parent{
+  background-color: rgba(0,0,0,.2)
+}
+
+tr.child{
+  text-align: center;
+}
+
+.text_justify {
+  text-align: justify;
+}
+
+// Saltos de página
+.alwaysbreak {
+   page-break-before: always;
+ }
+.nobreak:before {
+  clear:both;
+}
+.nobreak {
+  page-break-inside: avoid;
+}
+// Saltos de página
+
+
+// Tabla con filas con background alternado
+	.TFtable{
+		width:100%;
+		border-collapse:collapse;
+	}
+
+	/* provide some minimal visual accomodation for IE8 and below */
+	.TFtable tr{
+		background: #b8d1f3;
+	}
+	/*  Define the background color for all the ODD background rows  */
+	.TFtable tr:nth-child(odd){
+		background: #CCC;
+	}
+	/*  Define the background color for all the EVEN background rows  */
+	.TFtable tr:nth-child(even){
+		background: #FFF;
+	}
+// Fin tabla con filas alternadas

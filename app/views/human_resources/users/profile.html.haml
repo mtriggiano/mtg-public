@@ -1,0 +1,24 @@
+- params[:view] ||= 'general'
+
+- present user do |user_presenter|
+  .px-3.pb-3.row
+    = client_card('3', user.name, "Empleado", 'id-card', 'info')
+    = client_card('3', user_presenter.hours_worked_in_month, 'Horas trabajadas este mes', 'clock', 'success')
+    = client_card('3', user_presenter.extra_hours_worked_in_month, 'Horas extra este mes', 'clock', 'info')
+    = client_card('3', user_presenter.cumpliment_in_month, 'Cumplimiento este mes', 'percent', 'danger')
+  %ul.nav.justify-content-center.bg-white.border-bottom.border-top.mx-3.shadow.rounded-top
+    %li.nav-item.border-animated
+      = show_links('General', 'general', params[:view], profile_user_path(user.id, view: 'general'))
+    %li.nav-item.border-animated
+      = show_links('Laboral', 'labor' , params[:view], profile_user_path(user.id, view: 'labor'))
+    %li.nav-item.border-animated
+      = show_links('Asistencias', 'attendances', params[:view], profile_user_path(user.id, view: 'attendances'))
+    %li.nav-item.border-animated
+      = show_links('Estadisticas', 'charts', params[:view], profile_user_path(user.id, view: 'charts'))
+    %li.nav-item.border-animated
+      = show_links('Comisiones', 'comissions', params[:view], profile_user_path(user.id, view: 'comissions'))
+
+  .container-fluid.mt-2
+    #config_fields
+    - if ['general', 'labor', 'attendances','charts', 'comissions'].include?(params[:view])
+      = render "/human_resources/users/profile/#{params[:view]}", attendances: user.attendances

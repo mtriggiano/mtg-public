@@ -1,0 +1,77 @@
+- company_presenter ||= CompanyPresenter.new(order.company, self)
+.border
+  %table.width_100
+    %tr{style: "line-height: 10px !important;"}
+      %th.text_size_20.text_left.header_word_break{style:"text-align: center; width: 200px; line-height: 10px;"}
+        %p
+          = wicked_pdf_image_tag order.company.pdf_logo, width: "200px"
+      / %th.text_size_invoice_type
+      /   .budget_type
+      /     = order.budget_type == "Oficial" ? "R" : "X"
+      %th.header_word_break{style:"width: 300px; text-align: left; padding-left: 50px; font-size: 11px;"}
+        %p
+          = order.company.try(:address)
+        %p
+          = order.company.postal_code + " " + order.company.try(:locality).try(:province).try(:name) + " - " + order.company.try(:locality).try(:province).try(:country).try(:name)
+        %p
+          = "#{order.company.try(:contact_number)}".html_safe
+        %p
+          = "#{order.company.try(:email)}".html_safe
+        %p
+          = "C.U.I.T.: #{order.company.try(:cuit)}".html_safe
+        %p
+          www.magnus.com.ar
+      %th.header_word_break.border-left{style:"width: 250px;"}
+        %br
+        %p.text_size_20
+          ORDEN DE VENTA
+        %p.text_size_20
+          Nº
+          = order.number
+.border
+  %table.width_100{style: 'font-size: 11px;'}
+    %tr
+      %td
+        %b
+          Cliente razón social:
+        = order.client.name
+      %td
+        %b
+          Fecha de cirugía:
+        = order.file.try(:surgery_end_date) || order.try(:expected_delivery_date)
+    %tr{style: 'font-size: 13px;'}
+      %td
+        %b
+          Afiliado:
+        = order.file.try(:pacient)
+      %td
+        %b
+          Nº Afiliado:
+        = order.file.try(:pacient_number)
+    %tr
+      %td
+        %b
+          Nº Expediente:
+        = order.file.try(:number)
+      %td
+        %b
+          Clinica:
+        = order.file.try(:place)
+    %tr
+      %td
+        %b
+          Médico:
+        = order.file.try(:doctor)
+      %td
+        %b
+          Vendedor:
+        = order.budgets.map(&:seller).map{|seller| seller.try(:name)}.join(", ")
+    %tr{style: 'font-size: 13px;'}
+      %td
+        %b
+          N° Orden de compra de Obra social:
+        = order.file.try(:external_purchase_order_number)
+      %td
+        %b
+          Nº Expediente OS:
+        = order.file.try(:external_number)

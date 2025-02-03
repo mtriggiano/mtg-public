@@ -1,0 +1,11 @@
+- child ||= false
+- index = d.index
+- random = SecureRandom.hex(9).to_s
+= document_detail(d, index, child) do
+	%td
+		= d.input :transaction_id, label: false
+	%td
+		= d.input :request_material_id, label: false
+	%td
+		= d.input :quantity, label: false
+	%td.fixed-col

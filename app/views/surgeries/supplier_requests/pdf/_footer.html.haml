@@ -1,0 +1,45 @@
+.row.footer_bottom
+  .container.border_round
+    %table.width_100{style: "font-size: 11px;"}
+      %tr
+        %td.text_right
+          %b Subtotal:
+        %td.text_right
+          = number_to_ars(@supplier_request.subtotal)
+      %tr
+        %td.text_right
+          %b Importe Total:
+        %td.text_right
+          %b
+            = number_to_ars(@supplier_request.total)
+%table.width_100{style: 'font-size: 11px;'}
+  %tr
+    %td.width_50.border_round
+      %table{style: "padding-left: 20px;"}
+        %tr
+          %td
+            %b
+              Coordinar envío con área de logística INT 227-222
+        %tr
+          %td
+            %b
+              Consultas técnicas INT: 224
+        %tr
+          %td
+            %b
+              Vincular factura a Nº de pedido o nombre de paciente
+        %tr
+          %td
+            %b
+              AUTORIZA MARIANA SAFAR EXENI - GTE DE COMPRAS.
+    %td.width_50.border_round
+      %table{style: "padding-left: 20px;"}
+        %tr
+          %td
+            %b Observación:
+            %span
+              #{sanitize supplier_request.observation.gsub(%r{</?[^>]+?>}, "")}
+%br
+.text_center
+  Página
+  = "#{page_number} de #{total_pages}"

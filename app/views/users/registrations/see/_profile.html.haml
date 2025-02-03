@@ -1,0 +1,37 @@
+.card
+  .card-body
+    %h5
+      = icon('fas', 'list')
+      Datos básicos
+    = simple_nested_form_for resource, as: resource_name, url: registration_path(resource_name), html: { class: 'horizontal-form directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }, wrapper: :horizontal_form do |f|
+      = error_notification(f)
+      = hidden_field_tag :view, params[:view]
+      .row
+        .col-sm-3.d-flex.align-items-center
+          = f.input :avatar, as: :file, input_html: { hidden: true, class: 'file_input' }, label: 'Avatar'
+        .col-sm-9
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid'
+          = image_tag resource.avatar, width: '75px', alt: 'Añadir imagen', class: 'border image'
+      %hr.dotted
+      = f.input :first_name, label: "Nombre"
+      %hr.dotted
+      = f.input :last_name, label: "Apellido"
+      %hr.dotted
+      = f.input :document_type, as: :string, required: false, label: "Documento", wrapper: :input_group do
+        %span.input-group-addon
+          = f.input_field :document_type, collection: Afip::DOCUMENTOS, class: "form-control", prompt: "Seleccione..."
+        = f.input_field :document_number, class: 'form-control', as: :numeric, placeholder: "Sin guiones ni puntos, solo números"
+      %hr.dotted
+      = f.input :birthday, as: :string, input_html: {class: 'bootstrap-datepicker'}, label: "Nacimiento"
+      %hr.dotted
+      = f.input :address, label: "Dirección"
+      %hr.dotted
+      = f.input :postal_code, label: "Código postal"
+      %hr.dotted
+      = f.input :phone, label: "Teléfono"
+      %hr.dotted
+      = f.input :mobile_phone, label: "Celular"
+      %hr
+      .actions.text-center
+        = save_button

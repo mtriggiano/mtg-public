@@ -1,0 +1,129 @@
+.border
+  .container{style: "height: 630px;"}
+    %table.width_100.text-small
+      %thead
+        %th.description_header
+          Fecha
+        %th.description_header
+          Comp.
+        %th.description_header
+          Persona
+        %th.description_header
+          Concepto
+        %th.description_header
+          Efectivo
+        %th.description_header
+          Tarjeta
+      %tbody
+        - details.each do |log|
+          - if log.income?
+            %tr
+              %td
+                = log.date
+              %td
+                = log.codigo
+              %td
+                = log.entidad
+              %td
+                = log.description
+              - if log.tarjeta?
+                %td
+                %td.text_right
+                  = number_to_ars log.monto
+              - else
+                %td.text_right
+                  = number_to_ars log.monto
+                %td
+          - else
+            %tr
+              %td
+                = log.date
+              %td
+                = log.codigo
+              %td
+                = log.entidad
+              %td
+                = log.description
+              - if log.tarjeta?
+                %td
+                %td.text_right
+                  = number_to_ars -log.monto
+              - else
+                %td.text_right
+                  = number_to_ars -log.monto
+                %td
+
+      %tfooter
+        %tr
+          %td
+          %td
+          %td
+          %td.text_right{:style => "font-size: 22px;"}
+            %b
+              SubTotal
+          %td.text_right{:style => "font-size: 22px;"}
+            %b
+              = number_to_ars @total_efectivo
+          %td.text_right{:style => "font-size: 22px;"}
+            %b
+              = number_to_ars @total_tarjeta
+
+
+.border
+  .container{style: "height: 310px;"}
+    %table.width_100
+      %td
+        %table.width_100
+          %thead
+            %th.description_header{colspan: 3} A Rendir
+          %thead
+            %th.description_header Denominación
+            %th.description_header{:style => "width: 30% !important"} Cantidad
+            %th.description_header Subtotal
+          %tbody.text_right
+            - ImprestClearing::DENOMINACIONES.each do |denominacion|
+              %tr.fields
+                %td
+                  = number_to_ars denominacion
+                %td
+                  = cantidad = imprest_clearing.cuenta_monedas_a_rendir? ? imprest_clearing.cuenta_monedas_a_rendir[denominacion] : 0
+                %td
+                  - monto = cantidad.to_i * denominacion.to_i
+                  %b
+                    = number_to_ars(monto)
+            %tr
+              %td
+              %td{:style => "font-size: 22px;"}
+                %b
+                  TOTAL
+              %td{:style => "font-size: 22px;"}
+                %b
+                  = number_to_ars imprest_clearing.a_rendir
+
+      %td
+        %table.width_100
+          %thead
+            %th.description_header{colspan: 3} Fondo fijo
+          %thead
+            %th.description_header Denominación
+            %th.description_header{:style => "width: 30% !important"} Cantidad
+            %th.description_header Subtotal
+          %tbody.text_right
+            - ImprestClearing::DENOMINACIONES.each do |denominacion|
+              %tr.fields
+                %td
+                  = number_to_ars denominacion
+                %td
+                  = cantidad = imprest_clearing.cuenta_monedas_saldo_en_caja? ? imprest_clearing.cuenta_monedas_saldo_en_caja[denominacion] : 0
+                %td
+                  - monto = cantidad.to_i * denominacion.to_i
+                  %b
+                    = number_to_ars(monto)
+            %tr
+              %td
+              %td{:style => "font-size: 22px;"}
+                %b
+                  EN CAJA
+              %td{:style => "font-size: 22px;"}
+                %b
+                  = number_to_ars imprest_clearing.saldo_en_caja

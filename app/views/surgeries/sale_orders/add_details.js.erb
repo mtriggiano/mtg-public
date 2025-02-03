@@ -1,0 +1,16 @@
+<% simple_nested_form_for surgery_sale_order do |f|
+	@builder = []
+	f.simple_fields_for :details, @detail, child_index: @index, wrapper: false do |d|
+		d.simple_fields_for :childs, @detail.childs, wrapper: false do |c|
+			@builder << c
+		end
+	end
+end %>
+
+$("tr#parent_<%= @index %>").find("button").addClass( "highlightButton" ).removeClass("highlightButton",1000,"linear");
+
+<% @detail.childs.each_with_index do |child, index| %>
+	$("<%= j render '/surgeries/surgery_sale_orders/details_form', {d: @builder[index], child: true} %>").insertAfter($("tr#parent_<%= @index %>"));
+<% end %>
+setSelect2();
+toogleBody();

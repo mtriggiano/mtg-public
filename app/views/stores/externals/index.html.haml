@@ -1,0 +1,8 @@
+= index_table(mform: true, icon: 'store', text: "Bancos", path: new_stores_external_path, jpath: stores_externals_path(format: :json), mtarget: "#new_stores_external_modal", columns: Store::TABLE_COLUMNS)
+
+= modal("#{icon('fas', 'plus')} Añadir banco", "new_stores_external_modal", "new_stores_external_body", "big") do
+	.modal-body
+
+= modal("#{icon('fas', 'plus')} Editar banco", "edit_stores_external_modal", "edit_stores_external_body", "big") do
+	.modal-body
+		= yield

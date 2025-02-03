@@ -1,0 +1,14 @@
+.index-body.table-responsive
+	%table#paginated_table.table{data: {title: "Reporte ESTADOS EXPEDIENTES VENTAS/CIRUGIAS",source: reports_bills_path(view: 'expedient_state', format: :json)}}
+		%thead.thead-light
+			%th.actions{scope: 'col'} Expediente
+			%th.actions{scope: 'col'} Crt. Implante
+			%th.actions{scope: 'col'} Foja Quirúrgica
+			%th.actions{scope: 'col'} Notas
+			%th.actions{scope: 'col'} Stickers
+			%th.actions{scope: 'col'} O.C.
+			%th.actions{scope: 'col'} ¿Entrega parcial?
+			%th.actions{scope: 'col'} ¿Entrega total?
+		%tbody.table-bordered.text-center
+
+= table_script(DatatableConstants::Reports::ExpedientState.merge("actions" => ""))

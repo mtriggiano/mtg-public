@@ -1,0 +1,65 @@
+-# col = bills.not_credito_notes.where(state: 'Confirmado').sub_search(from: params[:from], to: params[:to], sellers: params[:sellers])
+-# col = bill_details.select("bill_details.*, CASE WHEN bills.cbte_tipo IN ('03', '08', '13', '203', '208', '213') THEN -bills.total ELSE bills.total END as real_total ").joins(:expedient_bill).includes(expedient_bill: :entity).where(bills:{state: 'Confirmado'}).sub_client_search(from: params[:from] || (Date.today - 1.months) , to: params[:to] || Date.today, clients: params[:clients]).distinct("bills.id")
+- col = bill_details.joins(:expedient_bill).includes(expedient_bill: :entity).where(bills:{state: 'Confirmado'}).sub_client_search(from: params[:from] || (Date.today.at_beginning_of_month) , to: params[:to] || Date.today, clients: params[:clients]).distinct("bills.id")
+- all_only_dates = bill_details.joins(:expedient_bill).includes(expedient_bill: :entity).where(bills:{state: 'Confirmado'}).search_by_date(from: params[:from] || (Date.today.at_beginning_of_month), to: params[:to] || Date.today)
+- pp total_bills = col.group_by{|a| a.expedient_bill}.size
+- dolar_billete_buy, dolar_billete_sell = TodayDolarGetter.new.call
+%center
+	.row.h-100
+		.col-6
+			.d-flex.justify-content-center.w-100
+				= form_tag reports_bills_path(), method: :get do
+					= hidden_field_tag :view, 'total_selled_per_month'
+					.row
+						.col-5.d-flex.align-items-center
+							.d-flex
+								.form-group
+									= label_tag :from, "Desde", class: 'mr-2'
+									= text_field_tag :from, params[:from] || Date.today.at_beginning_of_month, data: { behaviour: 'datepicker' }, placeholder: "Desde", class: 'form-control mr-2'
+								.form-group
+									= label_tag :to, "Hasta", class: 'mr-2'
+									= text_field_tag :to, params[:to] || Date.today, data: { behaviour: 'datepicker' }, placeholder: "Hasta", class: 'form-control mx-2'
+						.col-5.align-items-center
+							= label_tag :clients, "Cliente/es", class: 'mr-2'
+							= select_tag :clients, options_from_collection_for_select(current_company.clients, :id, :name, params[:clients]), { multiple: true, class: 'form-control mr-2'}
+						.col-2{style: 'margin-top: 28px;'}
+							= submit_tag "Buscar", class: 'btn btn-primary'
+			%hr
+			.table-responsive
+				%table
+					%thead
+						%th Cliente
+						%th Suma ARS
+						%th Suma USD
+						%th Facturas
+					%tbody
+						- col.group_by{|b| b.expedient_bill.entity.name}.each do |entity, bill_details|
+							%tr
+								%td
+									= entity
+								%td
+									=  number_to_ars(bill_details.sum(&:real_total))
+								%td
+									= number_to_us(bill_details.map{|bi| (bi.real_total / bi.expedient_bill.usd_price.to_f) unless bi.expedient_bill.usd_price == 0 }.compact.reduce(:+))
+								%td
+									= link_to bill_details.group_by{|c| c.expedient_bill}.size, reports_bills_path(bill_ids: bill_details.map(&:bill_id).uniq, not_draw: true)
+						%tr{style: "background-color: #CDCDCD"}
+							%td
+								TOTALES
+							%td
+								= number_to_ars(col.sum(&:real_total))
+							%td
+								= number_to_us(col.map{|bi| (bi.real_total / bi.expedient_bill.usd_price.to_f) unless bi.expedient_bill.usd_price == 0 }.compact.reduce(:+))
+							%td
+								= col.group_by{|a| a.expedient_bill}.size
+
+		.col-6{style: 'height: auto; border-left: 1px solid #f0f0f0'}
+			%hr
+			%p.h4
+				Ventas por vendedor
+			= pie_chart col.includes(:seller).group_by{|b| b.seller.try(:name) }.map{|entity, records| [entity, ((records.group_by{|c| c.expedient_bill}.size.to_f / total_bills.to_f).to_f * 100).round(2)]}, height: "650px", suffix: "%"
+	.col-12
+		%hr
+		%p.h4
+			Grafico total monto facturado por cliente
+		= column_chart all_only_dates.group_by{|b| b.expedient_bill.entity&.name }.map{|entity, records| [entity, records.map{|a| a.real_total.to_f}.reduce(:+)]}, height: "650px", thousands: ".", decimal: ",", prefix: "$", min: 0

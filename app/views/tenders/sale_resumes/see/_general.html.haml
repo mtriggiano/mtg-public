@@ -1,0 +1,27 @@
+.pr-2.pl-2.row
+  %table.table-responsive
+    %thead
+      %th
+        Concepto
+      %th
+        Total
+    %tbody
+      - tender_resume.bills.each do |bill|
+        %tr
+          %td
+            = "#{Afip::CBTE_TIPO[bill.cbte_tipo]}: #{bill.number}"
+          %td
+            - if bill.is?(:credit_note)
+              = "+ $#{bill.total}"
+            - else
+              = "- $#{bill.total}"
+      - tender_resume.receipts.each do |receipt|
+        %tr
+          %td
+            = "Recibo: #{receipt.number}"
+          %td
+            = "+ $#{receipt.total}"
+        %tr
+          %td
+          %td
+            = "$ #{tender_resume.balance_l}"

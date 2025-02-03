@@ -1,0 +1,2 @@
+class ExpenditureExpense < Expense
+end

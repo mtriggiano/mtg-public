@@ -1,0 +1,25 @@
+= simple_nested_form_for receipt, defaults: {disabled: receipt.disabled?} do |f|
+	.card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+		.card-body
+			= surgery_header(f)
+			.header-detail
+				= error_notification(f)
+				.row
+					.col-sm-4.col-12
+						= number_input(f)
+						= sale_client_select(f)
+						= user_input(f)
+					.col-sm-4.col-12
+						= f.association :sale_point, label: "Punto de venta", as: :select, collection: current_company.sale_points.map{|sp| [sp.number, sp.id]}
+						= state_input(f)
+					.col-sm-4.col-12
+						= date_input(f, :date)
+						= total_input(f)
+				.row.mt-3.mx-1
+					%hr
+					= f.input :concept, as: :summernote, placeholder: "En concepto de...", label: false, wrapper: :inline_input, wrapper_html: {class: 'w-100'}
+				= state_manager(f)
+				
+	= document_table(f) do
+		= render '/file_attributes_configs/shared_extra_attributes', f:f, object: receipt
+		= render '/sales/shared_attachment', f:f

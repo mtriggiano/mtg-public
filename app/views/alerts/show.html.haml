@@ -1,0 +1,29 @@
+- present @alert do |alert_presenter|
+	.row
+		.col-12
+			.pr-2.pl-2.bg-white.p-3
+				.d-flex
+					.text-muted.flex-grow-1
+						= icon('fas', 'list-alt')
+						Información de actividad
+					.pull-right
+						= link_to "#{icon('fas', 'edit')} Editar".html_safe, edit_alert_user_path(alert_id: @alert.id), class: 'btn btn-primary'
+				%hr
+					%dl
+						= see_contact_dl("ID", @alert.id)
+						%hr.dotted
+						= see_contact_dl("Título", alert_presenter.title)
+						%hr.dotted
+						= see_contact_dl("Fecha de inicio", alert_presenter.init_date)
+						%hr.dotted
+						= see_contact_dl("Fecha limite de finalización", alert_presenter.final_date)
+						%hr.dotted
+						= see_contact_dl("Cuerpo", @alert.body)
+						%hr.dotted
+						= see_contact_dl("Observación", @alert.observation)
+						%hr.dotted
+						= see_contact_dl("Creada por", alert_presenter.user)
+						%hr.dotted
+						= see_contact_dl("Estado", alert_presenter.state)
+						%hr.dotted
+						= see_contact_dl("Asignado a", alert_presenter.users)

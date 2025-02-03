@@ -1,0 +1,8 @@
+<% simple_nested_form_for client_bill, html: { class: 'form-horizontal' }, wrapper: :horizontal_form  do |f| %>
+	<% @builder = f %>
+<% end %>
+
+$(".parent-table tbody").html("<%= j render '/surgeries/shared_details_form', {f: @builder} %>");
+$("#client_bill_entity_id").val("<%= client_bill.entity_id %>")
+
+//$(".dynamic-bill-info").html("<%= j render 'dynamic_attributes', f: @builder %>")

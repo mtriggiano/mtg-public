@@ -1,0 +1,74 @@
+= simple_form_for ticket, html: {class: 'horizontal-form'}, wrapper: :horizontal_form do |f|
+  - present ticket do |ticket_presenter|
+    .card
+      .card-body
+        %h4.card-title
+          =icon('fas', 'ticket-alt')
+          Ticket
+      .row
+        .col-6.px-4
+          .mx-3.rounded
+            %hr
+            %li.media
+              %img.mr-3.rounded{src: ticket.user.avatar, width: '50px', height: '50px'}
+              .media-body
+                %h5.mt-0.mb-1
+                  = ticket_presenter.title
+                  %small
+                    = ticket_presenter.state
+
+                .text-italic.font-italic.font-weight-lighter.text-secondary{style: "font-size: 0.8rem"}
+                  = icon('fas', 'clock')
+                  = I18n.l(ticket.created_at, format: :short)
+                = ticket.body
+              - if current_user.admin?
+                = link_to "#{} Iniciar".html_safe, start_ticket_path(ticket), method: :post,  class: 'btn btn-primary text-center' if ticket.can_start?
+                = link_to "#{} Finalizar".html_safe, finish_ticket_path(ticket), method: :post, class: 'btn btn-primary text-center' if ticket.can_finish?
+            - unless ticket.attachment == "/images/default_product.png"
+              %hr
+              .text-center
+                = link_to ticket.attachment, target: '_blank' do
+                  = image_tag ticket.attachment, width: '75px', height: '75px', class: "border img-fuild image"
+            %hr
+            .row
+              .col
+                - if current_user.admin?
+                  = f.input :function_points, collection: [1, 2, 3, 5, 8, 13], label: "Puntos de función"
+                - else
+                  .d-flex
+                    PUNTOS DE FUNCIÓN:  #{ticket_presenter.function_points}
+              - if current_user.company_owner?
+                .col
+                  = f.input :state, collection: Ticket::STATES.map{|k,v| [v,k]}, label: "Estado"
+            - if current_user.admin? || current_user.company_owner
+              %hr
+              .actions.w-100.pb-4
+                = save_button
+        .col-6.px-4
+          .mx-3.rounded
+            %hr
+            %h5.mt-0.mb-1
+              = icon('fas', 'comments')
+              Chatea con nosotros
+            .rounded{style:"background-color: #f0f0f0; height: auto"}
+              %ul.list-unstyled.p-2
+                - ticket.comments.each do |comment|
+                  - if comment.user.admin?
+                    %li.media.bg-white.p-2.rounded{style: 'margin-left: 10rem'}
+                      .media-body.text-right.mr-3
+                        = comment.body
+                        %div.d-flex.justify-content-end{style: "font-size: 0.7rem"}
+                          = I18n.l(comment.created_at, format: :short)
+                          = "Visto" if comment.seen
+                      %img.mr-3.rounded{src: comment.user.avatar, width: '50px', height: '50px'}
+                  - else
+                    %li.media.bg-white.p-2.rounded{style: 'margin-right: 10rem'}
+                      %img.mr-3.rounded{src: comment.user.avatar, width: '50px', height: '50px'}
+                      .media-body
+                        = comment.body
+            %hr.d-flex
+              = f.simple_fields_for :comments, ticket.comments.build, wrapper: false do |c|
+                .input-group.w-100
+                  = c.input :body, as: :text, label: false, placeholder: "Escribí un comentario...", wrapper_html: {style: 'flex: 1;'}
+                  .input-group-append
+                    = button_tag "#{icon('fas', 'paper-plane')} Enviar".html_safe, type: 'submit', class: 'btn btn-lg btn-primary mb-3'

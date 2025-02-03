@@ -1,0 +1,40 @@
+.card.shadow.mx-4.mb-4.collapse#credits{data: {parent:"#document-accordion"}}
+	.card-header.bg-white
+		%h5.w-100.pt-2
+			%span.dropdown.display-th
+				= button_tag icon('fas', 'cogs'), id: "hideConceptsButton", type: 'button', class: 'btn btn-light border btn-sm dropdown-toggle', data: {toggle: 'dropdown', for: "tenders/bills"}, aria:{haspopup: true, expanded: false}
+				.dropdown-menu>
+			Notas de crédito
+	.card-body
+		.table-responsive
+			%table.table
+				%thead
+					%tr
+						- hidden_attributes = current_user.table_configs.custom_hidden_attributes("tenders/bills")
+						%th Nº
+						- Tenders::BillDetail::TABLE_COLUMNS.each do |detail, options|
+							%th{class: "#{'hidden' if hidden_attributes.include? detail} #{'important' if options["important"]} #{'fixed-col' if  options["fixed"]}"}
+								= detail unless detail == "Acción"
+				%tbody
+					-bill.credit_notes.each do |credit_note|
+						- credit_note.details.each do |detail|
+							%tr
+								%td
+									= credit_note.name(:short)
+								%td
+									= detail.tipo
+								%td
+									= detail.product_name
+								%td
+									= detail.quantity
+								%td
+									= detail.product_measurement
+								%td
+									= "$ #{detail.price}"
+								%td
+									= detail.discount
+								%td
+									= detail.iva_aliquot
+								%td.fixed-col
+									= "$ #{detail.total}"
+								%td.fixed-col

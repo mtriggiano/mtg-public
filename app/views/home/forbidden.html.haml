@@ -1,0 +1,15 @@
+- subject ||= params[:subject]
+- permissions = RoleAbility::DEFAULT_CLASSES.values.flat_map{ |i| i }.select{ |a| a.last == subject }
+.d-flex.justify-content-center
+	.jumbotron{style: 'width: 50rem;'}
+		%h1.display-4
+			= icon('fas', 'exclamation-triangle')
+			¡Ups! Acceso restringido.
+		- if permissions.empty?
+			%p.lead
+				Permisos faltantes. Comunícate con un administrador del sistema
+		- else
+			%p.lead
+				Para poder acceder necesitas nuevos permisos. Comunícate con el encargado de usuarios y solicita permisos para
+				%span.text-info
+					= permissions.first.first

@@ -1,0 +1,6 @@
+= simple_form_for(external_store, url: stores_externals_path, html: { class: 'horizontal-form' }, wrapper: :horizontal_form) do |f|
+
+	= error_notification(f)
+	= f.input :name, label: "Nombre", placeholder: "Nombre del hospital/cliente"
+	%hr.dotted
+	= f.input :location, label: "Ubicación", placeholder: "Dirección"

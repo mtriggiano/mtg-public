@@ -1,0 +1,69 @@
+-# col = bills.not_credito_notes.where(state: 'Confirmado').sub_search(from: params[:from], to: params[:to], sellers: params[:sellers])
+- col = current_company.batches.joins(:product).includes(:product, product: :product_category).where.not(due_date: nil).order("batches.due_date DESC, products.product_category_id ASC, products.family ASC").by_product_code(params[:code]).by_product_name(params[:product]).by_product_branch(params[:branch]).search_by_product_categories(params[:categories]).search_by_date(from: params[:from] || Date.today.beginning_of_year, to: params[:to] || Date.today.end_of_year).first(50)
+
+
+%center.col-12
+	= form_tag reports_storages_path(), method: :get do
+		= hidden_field_tag :view, 'batches'
+		.row
+			.col-2.align-items-center
+				= label_tag :from, "Desde", class: 'mr-2'
+				= text_field_tag :from, params[:from] || Date.today.beginning_of_year, data: { behaviour: 'datepicker' }, placeholder: "Desde", class: 'form-control mr-2'
+				=# label_tag :month, "Mes", class: 'mr-2'
+				=# select_tag :month, options_for_select([["Enero", 1], ["Febrero", 2], ["Marzo", 3], ["Abril", 4], ["Mayo", 5], ["Junio", 6], ["Julio", 7], ["Agosto", 8], ["Septiembre", 9], ["Octubre", 10], ["Noviembre", 11], ["Diciembre", 12]], params[:month]), { multiple: true, class: 'mr-2'}
+			.col-2.align-items-center
+				= label_tag :to, "Hasta", class: 'mr-2'
+				= text_field_tag :to, params[:to] || Date.today.end_of_year, data: { behaviour: 'datepicker' }, placeholder: "Hasta", class: 'form-control mx-2'
+			.col-4.align-items-center
+				= label_tag :categories, "Categoria", class: 'mr-2'
+				= select_tag :categories, options_for_select(current_company.product_categories.map{|a| [a.name, a.id]}, params[:categories]), {multiple: true, class: 'form-control mr-2'}
+			.col-4.align-items-center
+				= label_tag :product, "Nombre Producto", class: 'mr-2'
+				= text_field_tag :product, params[:product], class: 'form-control mx-2'
+			.col-4.align-items-center
+				= label_tag :branch, "Marca", class: 'mr-2'
+				= text_field_tag :branch, params[:branch], class: 'form-control mx-2'
+			.col-4.align-items-center
+				= label_tag :code, "Codigo Producto", class: 'mr-2'
+				= text_field_tag :code, params[:code], class: 'form-control mx-2'
+		%br
+		.row
+			.col-12.text-center
+				= submit_tag "Buscar", class: 'btn btn-primary'
+				= link_to "#{icon('fas', 'file-excel')} Exportar".html_safe, export_batches_reports_storages_path(batches: col.map(&:id), format: :xlsx), class: 'btn btn-success', target: '_blank', data: {'skip-pjax' => true} unless col.blank?
+%hr
+.row.text-center
+	%table.table
+		%thead
+			%tr{class: 'thead-light', role: 'row'}
+				%th{class: 'text-truncate', toggle: 'tooltip'} Categoria
+				%th{class: 'text-truncate', toggle: 'tooltip'} Sub categoria
+				%th{class: 'text-truncate', toggle: 'tooltip'} Producto
+				%th{class: 'text-truncate', toggle: 'tooltip'} Codigo
+				%th{class: 'text-truncate', toggle: 'tooltip'} Marca
+				%th{class: 'text-truncate', toggle: 'tooltip'} Lote codigo
+				%th{class: 'text-truncate', toggle: 'tooltip'} Lote serie
+				%th{class: 'text-truncate', toggle: 'tooltip'} Cantidad
+				%th{class: 'text-truncate', toggle: 'tooltip'} Vto
+		%tbody{class: 'table-bordered'}
+			- col.each do |batch|
+				- product = batch.product
+				%tr{role: 'row', class:'odd'}
+					%td{class: 'text-truncate', toggle: 'tooltip'}
+						= product.try(:product_category).try(:name)
+					%td{class: 'text-truncate', toggle: 'tooltip'}
+						= product.family
+					%td{class: 'text-truncate', toggle: 'tooltip'}
+						= link_to "#{product.try(:name).size > 50 ? "#{product.try(:name)[0..50]}..." : product.try(:name)}", product_url(product), class: 'linkeable', target: '_blank'
+					%td{class: 'text-truncate', toggle: 'tooltip'}
+						= product.try(:code)
+					%td{class: 'text-truncate', toggle: 'tooltip'}
+						= product.try(:branch)
+					%td{class: 'text-truncate', toggle: 'tooltip'}
+						= batch.code
+					%td{class: 'text-truncate', toggle: 'tooltip'}
+						= batch.serial
+					%td
+						= batch.quantity
+					%td{class: 'text-truncate', toggle: 'tooltip'}
+						= batch.due_date

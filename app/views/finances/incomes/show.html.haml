@@ -1,0 +1,22 @@
+%h3.mb-3 Registro de ingreso
+.card.mb-5
+  .card-body
+    %p.h4.mt-2.mb-5.text-center
+      = income.descripcion_completa.upcase
+    .row
+      .col-3.mb-3
+        %p.mb-1 Fecha
+        %p.h5
+          = income.fecha
+      .col-3.mb-3
+        %p.mb-1 Forma
+        %p.h5
+          = income.forma
+      .col-3.mb-3
+        %p.mb-1 Responsable
+        %p.h5
+          = link_to income.user.name, profile_user_path(income.user)
+      .col-3.mb-3
+        %p.mb-1 Importe
+        %p.h4.text-right.text-success
+          = number_to_ars income.importe

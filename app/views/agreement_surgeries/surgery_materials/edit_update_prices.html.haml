@@ -1,0 +1,10 @@
+= edit_helper("Actualizar precios") do
+  = link_to "Listado", agreement_surgeries_surgery_materials_path  
+  = form_with(model: AgreementSurgeries::SurgeryMaterial, url: update_prices_agreement_surgeries_surgery_materials_path, local: :true, html: { method: :post }, data: { turbolinks_cache: false }) do |form|
+    .row
+      .col-6
+        = form.label :percent, "Porcentaje" , class: 'btn btn-secundary'
+        = form.number_field :percent, class: 'form-control', step: 0.1
+    .actions
+      %hr
+      = save_button

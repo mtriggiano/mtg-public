@@ -1,0 +1,10 @@
+- file.versions.last(20).reverse_each do |version|
+	- present version do |version_presenter|
+		.card.h-100.mb-3
+			.card-body
+				%h5.card-title
+					= version_presenter.title
+				%hr
+					= version_presenter.version_author
+					%hr.dotted
+					= version_presenter.changes

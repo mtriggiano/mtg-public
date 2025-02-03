@@ -1,0 +1,2 @@
+class BankCheckExpense < Expense
+end

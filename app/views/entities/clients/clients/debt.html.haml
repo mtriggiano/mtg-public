@@ -1,0 +1,3 @@
+= index_table(mform: true, icon: 'search-dollar', can_new_path: false, config: false, jpath: debt_client_path(client.id, format: :json), columns: DatatableConstants::ClientDebt, text: "Deudas acumuladas") do
+  .current_balance
+    = "TOTAL: $#{client.current_balance}"

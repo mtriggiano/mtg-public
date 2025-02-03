@@ -1,0 +1,45 @@
+- unless f.object.imported
+	.card.mb-4
+		.card-header.bg-white
+			%h5.pt-2
+				Comprobantes a pagar
+		.card-body
+			%table.table.table-hover#table-details
+				%thead
+					%th Comprobante
+					%th Saldo
+					%th A pagar
+					%th
+				%tbody
+					= f.simple_fields_for :details, f.object.details.any? ? f.object.details : f.object.details.build(), defaults: {disabled: f.object.disabled?}, wrapper: false do |d|
+						%tr.text-left.fields{id: "parent_#{d.index}"}
+							- if d.object.errors.any?
+								%td{:colspan => "4"}
+									%tr
+										= error_notification(d)
+							%td
+								= d.input :bill_id, label: false, as: :select, placeholder: "PAGO A CUENTA", collection: [ [d.object.bill.try(:name), d.object.bill.try(:id)] ], input_html: { data: { url: index_by_supplier_purchases_bills_path(all: true), secondary_data: "#purchases_payment_order_entity_id" } }, required: false
+								= d.hidden_field :previous_debt, value: d.object.previous_debt || "0.0", input_html: {class: 'previous_debt'}
+								-# = hidden_field_tag :"bill_tipo_comprobante_#{d.index}", d.object.bill.try(:cbte_tipo)
+							%td{:style => "width: 25% !important"}
+								= d.input :total_left, label: false, input_html: {disabled: true, value: d.object.total_left, class: 'text-right total_left', data: { original: d.object.bill.try(:real_total_left) } }
+							%td{:style => "width: 25% !important"}
+								= d.input :total, placeholder: "Subtotal ($)", label: false, input_html: { class: 'text-right total' }
+							%td{:style => "width: 7px !important"}
+								= d.link_to_remove icon('fas', 'times'), class: 'text-danger text-center' unless document_disabled
+			.text-center
+				= f.link_to_add "#{icon('fas', 'plus')} Añadir comprobante".html_safe, :details, class: 'btn btn-outline-success', data: { target: "#table-details" } unless payment_order.disabled?
+			.mb-1
+- else
+	%h5 Comprobantes a pagar
+	.card.mb-4
+		.card-body
+			%p.h4
+				=#La lista de cbtes es demasiado larga para ser mostrada. El total de cbtes asociados a este recibo es
+				- if f.object.details.any?
+					%ul
+						- f.object.details.includes(:bill).each do |detail|
+							%li
+								= "#{detail.bill.full_name} - Monto: #{number_to_ars(detail.total)}"
+					Total
+					= number_to_ars(f.object.details.sum(&:total))

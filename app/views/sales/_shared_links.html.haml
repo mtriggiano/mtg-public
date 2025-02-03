@@ -1,0 +1,22 @@
+%li.nav-item
+	= button_tag "#{icon('fas', 'list')} Conceptos".html_safe, type: :button, aria: {selected: true, controls: 'concepts'}, data: {toggle: 'tab', target: '#concepts', target: '#concepts'}, class: 'nav-link bg-white active'
+= yield(:extra_links)
+%li.nav-item
+	= button_tag "#{icon('fas', 'eye')} Mostrar adjuntos".html_safe, type: :button, aria: {selected: false, controls: 'attachments'}, data: {toggle: 'tab', target: '#attachments'}, class: 'nav-link bg-white '
+%li.nav-item
+	= button_tag "#{icon('fas', 'ellipsis-v')} Campos adicionales".html_safe, type: :button, aria: {selected: false, controls: 'custom_attributes'}, data: {toggle: 'tab', target: '#custom_attributes'}, class: 'nav-link bg-white collapsed'
+-if !["Sales::Receipt", "Tenders::Receipt", "Surgeries::Receipt"].include?(f.object.class.name)
+	%li.nav-item
+		= button_tag "#{icon('fas', 'comment')} Observación".html_safe, type: :button, aria: {selected: false, controls: 'observation'}, data: {toggle: 'tab', target: '#observation'}, class: 'nav-link bg-white collapsed'
+- if f.object.disabled? && !f.object.canceled? && !["Surgeries::Consumption", "Sales::Bill", "Purchases::Bill", "Surgeries::Bill", "Surgeries::ClientBill", "Surgeries::SupplierBill", "Tenders::Bill", "Purchases::PaymentOrder", "ExpedientReceipt", "Sales::Shipments", "Surgeries::Shipments"].include?(f.object.class.name)
+	%li.nav-item
+		= link_to "#{icon('fas', 'backspace')} Solicitar reapertura".html_safe, [:open, f.object], class: 'nav-link bg-white collapsed btn-outline-danger text-danger', data: {"skip-pjax" => true}
+- if f.object.disabled? && !f.object.canceled? && f.object.class.name == "Surgeries::Consumption" && (current_user.admin? || current_user.company_owner? || current_user.roles.where(id: 21).any?)
+	%li.nav-item
+		= link_to "#{icon('fas', 'backspace')} Solicitar reapertura".html_safe, [:open, f.object], class: 'nav-link bg-white collapsed btn-outline-danger text-danger', data: {"skip-pjax" => true}
+- if f.object.has_pdf?
+	%li.nav-item
+		= pdf_button(f.object)
+- if f.object.file.try(:surgery_request)
+	%li.nav-item
+		= button_tag "#{icon('fas', 'list')} Solicitud".html_safe, type: :button, aria: {selected: true, controls: 'surgery_request'}, data: {toggle: 'tab', target: '#surgery_request', target: '#surgery_request'}, class: 'nav-link bg-white'

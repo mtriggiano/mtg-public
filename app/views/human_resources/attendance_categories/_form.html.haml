@@ -1,0 +1,28 @@
+= simple_form_for(attendance_category, html: { class: 'horizontal-form' }, wrapper: :horizontal_form) do |f|
+	.row
+		.col-8.offset-2
+			= error_notification(f)
+			=f.input :name, label: "Nombre del turno", input_html: {placeholder: "Area de compras"}
+			.row
+				.col-6
+					%hr.dotted
+						= turn_days_toggle(f, "Lunes", :monday)
+					%hr.dotted
+						= turn_days_toggle(f, "Miercoles", :wednesday)
+					%hr.dotted
+						= turn_days_toggle(f, "Viernes", :friday)
+					%hr.dotted
+						= turn_days_toggle(f, "Domingo", :sunday)
+				.col-6
+					%hr.dotted
+						= turn_days_toggle(f, "Martes", :tuesday)
+					%hr.dotted
+						= turn_days_toggle(f, "Jueves", :thursday)
+					%hr.dotted
+						= turn_days_toggle(f, "Sabado", :saturday)
+				%hr.dotted
+					= f.input :check_in, as: :time, label: "Ingreso"
+				%hr.dotted
+					= f.input :check_out, as: :time, label: "Egreso"
+			%hr.dotted
+				=f.input :late, label: "Tolerancia tarde", input_html: { placeholder: "En minutos"}

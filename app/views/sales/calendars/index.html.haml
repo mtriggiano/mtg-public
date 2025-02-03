@@ -1,0 +1,23 @@
+.index
+	.index-title
+		.principal
+			= icon('fas', 'calendar')
+			Calendario de ventas
+#index-body.table-responsive.border.p-4
+	.row
+		.col-6.calendar
+			= month_calendar events: @sales do |date, meetings|
+				= date.strftime("%d")
+				- if meetings.count > 0
+					- meetings.group_by(&:sale_type).each do |file_type, files|
+						.text-truncate
+							= link_to "javascript:void(0)", onclick: "displaySales('#{date}')" do
+								#{files.count} #{file_type || "Sin especificar"}
+		.col-6.sale_general
+			- if @sales.closest_file
+				= render "/sales/files/see/general", file: @sales.closest_file
+			- else
+				%h4.text-center
+					= icon('fas', 'exclamation')
+					No hay más ventas programadas.
+

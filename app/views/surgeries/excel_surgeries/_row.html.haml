@@ -1,0 +1,33 @@
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :paciente, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :material, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 8%'}
+  = f.input :fecha, as: :date_picker, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :lugar, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :transporte, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :quirofano, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :horario, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :buscar_quirofano, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :estado, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :tipo_cx, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :vendedor, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :tecnico, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :medico, label: false, input_html: {style: 'height: 150px !important'}
+%td.text-truncate{style: 'width: 7%'}
+  = f.input :obs, label: false, input_html: {style: 'height: 150px !important'}
+%td
+  = button_tag "#{icon('fas', 'check')}".html_safe, type: 'submit', class: "btn btn-primary text-center"
+- unless f.object.new_record?
+  %td
+    = link_to "#{icon('fas', 'trash')}".html_safe, surgeries_excel_surgery_path(f.object), method: :delete, class: 'btn btn-danger', data: {confirm: '¿Esta seguro de eliminar esta fila?'}

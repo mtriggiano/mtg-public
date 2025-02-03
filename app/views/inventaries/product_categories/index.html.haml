@@ -1,0 +1,8 @@
+= index_table(icon: 'list-alt', mtarget: "#new_product_category_modal", mform: true)
+= modal("#{icon('fas', 'plus')} Añadir categoría", "new_product_category_modal", "new_product_category_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'plus')} Editar categoría", "edit_product_category_modal", "new_product_category_body", "big") do
+	.modal-body
+		= yield

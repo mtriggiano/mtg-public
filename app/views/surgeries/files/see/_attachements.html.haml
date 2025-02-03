@@ -1,0 +1,110 @@
+.bg-white
+  = simple_nested_form_for file, data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host }, html: {class: 'horizontal-form directUpload'}, wrapper: :horizontal_form, defaults: {disabled: file.disabled? } do |f|
+    = error_notification(f)
+    - present file do |file_presenter|
+      .row
+        .col-12
+          .px-2.p-3
+            .text-muted
+              = icon('fas', 'list-alt')
+              Adjuntos
+            %hr
+            .row
+              - if file.need_implant
+                .col.text-center
+                  .row.d-block.with-title
+                    .mx-2.1.justify-content-center
+                      .caption.captionload
+                        = image_tag "/images/load.gif", class: 'img-fluid'
+                      .img_wrp
+                        = image_tag file.implant_certificate, width: '90px', height: '75px', class: "border img-fuild image", data: {index: 1}
+                      - if (file.implant_certificate != "/images/attachment.png") && (!file.implant_certificate.include?("ActionDispatch::Http::UploadedFile") )
+                        %br
+                        = link_to "Ver certificado", file.implant_certificate
+                      = f.input :implant_state, as: :radio_buttons, collection: Attachment::STATES.map(&:reverse), label: false, wrapper_html: {class: 'd-flex justify-content-center'}
+                      .mt-3
+                        = f.input :implant_original_filename, label: "Crt. de implante"
+                      - # Si esta aprobado solo usuarios admin pueden modificarlo
+                      - if can?(:edit, file) && (file.implant_state != 'success' || (file.implant_state == 'success' && current_user.admin?))
+                        = f.input :implant_certificate, as: :file, input_html: { hidden: true, class: "file_input", data: {index: 1} }, label: false
+              - if file.need_surgical_sheet
+                .col.text-center
+                  .row.d-block.with-title
+                    .mx-2.1.justify-content-center
+                      .caption.captionload
+                        = image_tag "/images/load.gif", class: 'img-fluid'
+                      .img_wrp
+                        = image_tag file.surgical_sheet, width: '90px', height: '75px', class: "border img-fuild image", data: {index: 1}
+                        - if file.surgical_sheet != "/images/attachment.png"
+                          %br
+                          = link_to "Ver foja", file.surgical_sheet
+                      = f.input :surgical_sheet_state, as: :radio_buttons, collection: Attachment::STATES.map(&:reverse), label: false, wrapper_html: {class: 'd-flex justify-content-center'}
+                      .mt-3
+                        = f.input :surgical_sheet_original_filename, label: "Foja Quirúrgica"
+                      - # Si esta aprobado solo usuarios admin pueden modificarlo
+                      - if can?(:edit, file) && (file.surgical_sheet_state != 'success' || (file.surgical_sheet_state == 'success' && current_user.admin?))
+                        = f.input :surgical_sheet, as: :file, input_html: { hidden: true, class: "file_input", data: {index: 1} }, label: false
+              - if file.need_surgical_sheet_2
+                .col.text-center
+                  .row.d-block.with-title
+                    .mx-2.1.justify-content-center
+                      .caption.captionload
+                        = image_tag "/images/load.gif", class: 'img-fluid'
+                      .img_wrp
+                        = image_tag file.surgical_sheet_2, width: '90px', height: '75px', class: "border img-fuild image", data: {index: 1}
+                        - if file.surgical_sheet_2 != "/images/attachment.png"
+                          %br
+                          = link_to "Ver foja 2", file.surgical_sheet_2
+                      = f.input :surgical_sheet_state_2, as: :radio_buttons, collection: Attachment::STATES.map(&:reverse), label: false, wrapper_html: {class: 'd-flex justify-content-center'}
+                      .mt-3
+                        = f.input :surgical_sheet_original_filename_2, label: "Foja Quirúrgica 2"
+                      - # Si esta aprobado solo usuarios admin pueden modificarlo
+                      - if can?(:edit, file) && (file.surgical_sheet_state_2 != 'success' || (file.surgical_sheet_state_2 == 'success' && current_user.admin?))
+                        = f.input :surgical_sheet_2, as: :file, input_html: { hidden: true, class: "file_input", data: {index: 1} }, label: false
+              - if file.need_note
+                .col.text-center
+                  .row.d-block.with-title
+                    .mx-2.1.justify-content-center
+                      .caption.captionload
+                        = image_tag "/images/load.gif", class: 'img-fluid'
+                      .img_wrp
+                        = image_tag file.note, width: '90px', height: '75px', class: "border img-fuild image", data: {index: 1}
+                        - if file.note != "/images/attachment.png"
+                          %br
+                          = link_to "Ver nota", file.note
+                      .mt-3
+                        = f.input :note_original_filename, label: "Nota"
+                      = f.input :note, as: :file, input_html: { hidden: true, class: "file_input", data: {index: 1} }, label: false
+              - if file.need_sticker
+                .col.text-center
+                  .row.d-block.with-title
+                    .mx-2.1.justify-content-center
+                      .caption.captionload
+                        = image_tag "/images/load.gif", class: 'img-fluid'
+                      .img_wrp
+                        = image_tag file.sticker, width: '90px', height: '75px', class: "border img-fuild image", data: {index: 1}
+                        - if file.sticker != "/images/attachment.png"
+                          %br
+                          = link_to "Ver certificado", file.sticker
+                      .mt-3
+                        = f.input :sticker_original_filename, label: "Stickers"
+                      = f.input :sticker, as: :file, input_html: { hidden: true, class: "file_input", data: {index: 1} }, label: false
+            .row.border-top.pt-3
+              - unless file.attachments.blank?
+                - file.attachments.each do |attachment|
+                  .col-6
+                    %dl.d-flex.justify-content-between
+                      %dt{class: "text-#{attachment.state}"}
+                        = attachment.attachable.to_s
+                      %dd
+                        = link_to(attachment.original_filename, attachment.file, target: '_blank')
+                        = link_to edit_attachment_path(attachment.id), class: 'btn btn-sm btn-primary ml-3', data: {target: '#edit_attachment', toggle: 'modal'}, form: true do
+                          = icon('fas', 'user-check')
+                          Verificar
+                    %hr.dotted
+    %center.py-4
+      %hr
+      = save_button
+
+= modal("#{icon('fas', 'pencil')} Editar adjunto", "edit_attachment", "edit_attachment_body") do
+  .modal-body

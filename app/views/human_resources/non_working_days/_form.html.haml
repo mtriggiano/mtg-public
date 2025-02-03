@@ -1,0 +1,16 @@
+= simple_nested_form_for(non_working_day, html: { class: 'horizontal-form' }, wrapper: :horizontal_form) do |f|
+	.row
+		.col-8.offset-2
+			= error_notification(f)
+			= f.input :reason, label: "Razón", input_html: {placeholder: "Día de la Independencia"}
+			%hr.dotted
+				= date_input(f, :date)
+			%hr.dotted
+				= f.input :holiday_type, as: :select, label: "Tipo", collection: NonWorkingDay::HOLIDAY_TYPES
+			%hr.dotted
+				%p
+					Empleados excluidos
+			%hr.dotted
+				= f.simple_fields_for :non_working_day_details do |d|
+					= render 'fields_form', d: d
+				= f.link_to_add "#{icon('fas', 'plus')}".html_safe, :non_working_day_details, class: 'btn btn-primary'

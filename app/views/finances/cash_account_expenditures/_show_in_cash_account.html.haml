@@ -1,0 +1,49 @@
+.text-center
+  = link_to "#{icon('fas', 'plus')} Gasto".html_safe, new_cash_account_cash_account_expenditure_path(cash_account), class: "btn btn-outline-success"
+  = link_to "#{icon('fas', 'search')} Buscador".html_safe, expenditures_path, class: 'btn btn-outline-info'
+%p.mb-1
+  Gastos registrados
+  %table.contable-table
+    %thead
+      %th
+        Recibo
+      %th
+        Comp.
+      %th
+        Fecha
+      %th
+        Descripción
+      %th
+        Proveedor
+      %th
+        Documento
+      %th
+        Tipo Pago
+      %th
+        TOTAL
+      %th
+    %tbody
+      - expenditures.order(id: :desc).each do |expenditure|
+        %tr
+          %td
+            = link_to expenditure.codigo_recibo, cash_account_cash_account_expenditure_path(expenditure.cash_account, expenditure)
+          %td
+            = expenditure.codigo_comprobante
+          %td
+            = expenditure.fecha
+          %td.word-breakeable
+            = expenditure.descripcion
+          %td.word-breakeable
+            = expenditure.supplier_name
+          %td
+            = expenditure.order.try(:name)
+          %td
+            = expenditure.tipo_pago.try(:titleize)
+          %td
+            = number_to_ars expenditure.total
+          %td
+            - if expenditure.active?
+              = link_to_pdf cash_account_cash_account_expenditure_path(expenditure.cash_account, expenditure, format: :pdf)
+            - else
+              %span.badge.badge-danger.py-2
+                Anulado

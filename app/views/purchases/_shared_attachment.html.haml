@@ -1,0 +1,22 @@
+#attachments.card.shadow.mx-4.mb-4.collapse{data: {parent: "#document-accordion"}}
+	.card-header.bg-white
+		%h5.w-100.pt-2 Documentos adjuntos
+	.card-body
+		.d-flex.attachments-fields
+			= f.simple_fields_for :attachments, wrapper: false do |i|
+				.row.mx-3.fields.with-title{class: "#{i.index}"}
+					.caption.captionload
+						= image_tag "/images/load.gif", class: 'img-fluid'
+					.text-center.img_wrp
+						= image_tag i.object.display_file, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image #{i.object.new_record? ? 'hidden' : nil}", data: {index: i.index, source: i.object.file}
+						- if i.object.new_record?
+							= i.input :original_filename, value: i.object.original_filename, as: i.object.new_record? ? :hidden : :string, label: false, wrapper_html: {style: 'width: 90px'}
+						- else
+							.row.text-center
+								= link_to i.object.original_filename, i.object.file, style: 'max-width: 200px', target: '_blank'
+						= i.link_to_remove icon('fas', 'times'), class: 'rm-img-btn text-dark'
+					= i.input :file, as: :file, input_html: { hidden: true, class: "file_input", data: {index: i.index, required: false} }, label: false
+		= f.link_to_add "#{icon('fas', 'paperclip')} Adjuntar archivo".html_safe, :attachments, class: "btn btn-success btn-sm align-self-start #{'disabled' if f.object.disabled?}", data: {target: '.attachments-fields'}
+		%center
+			%hr
+				= save_button unless f.object.disabled?

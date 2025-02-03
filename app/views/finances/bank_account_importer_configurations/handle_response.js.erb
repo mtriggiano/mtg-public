@@ -1,0 +1,6 @@
+<% if configuration.errors.empty? %>
+  $("#importerConfigurationModal").modal('hide');
+  document.location.replace("<%= bank_account_path(bank_account) %>")
+<% else %>
+  $('#importerConfigurationModal .modal-content').html('<%= j render "form", configuration: configuration %>')
+<% end %>

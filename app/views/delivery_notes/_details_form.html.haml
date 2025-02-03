@@ -1,0 +1,15 @@
+= f.simple_fields_for :details, wrapper: false do |d|
+	%tr.fields{class: "#{'hidden' if d.object.marked_for_destruction?}"}
+		%td
+			= d.input :product_id, collection: current_company.products.map{|p| [p.name, p.id]}, label: false, prompt: "Seleccione...", input_html: {class: 'select2 form-control', data: {url: index_by_company_products_path(current_product: d.object.try(:product_id))}}
+			= d.hidden_field :product_name
+		%td
+			= d.input :product_supplier_code, label: false, placeholder: "Código interno de proveedor"
+		%td
+			= d.input :returned_quantity, label: false
+		%td
+			= d.input :batch_id, as: :select, label: false, placeholder: "Nº de lote", label_method: :code, value_method: :id, disabled: (d.object.product.nil? || delivery_note.disabled?), prompt: d.object.batch_prompt, collection: d.object.available_batches
+		%td
+			= d.input :observation, as: :string, label: false
+		%td
+			= d.link_to_remove icon('fas', 'trash'), class: 'btn btn-danger ml-3'

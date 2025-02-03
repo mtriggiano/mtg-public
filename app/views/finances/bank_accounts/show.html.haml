@@ -1,0 +1,38 @@
+- params[:view] = "transactions" unless ["transactions", "emitted_checks", "checks", "bank_transfers"].include?(params[:view])
+
+.card.mb-4
+  .card-body
+    %p.h3.text-center
+      Cuenta bancaria:
+      = bank_account.alias_tag
+    %p.h5.text-center
+      = bank_account.bank.name
+    %p.text-center.mb-0
+      = bank_account.type
+    %p.text-center.text-muted.text-small
+      = bank_account.number
+    .text-center
+      = link_to "#{icon('fas', 'edit')} Editar".html_safe, edit_bank_account_path(bank_account)
+
+%ul.nav.home-nav.mb-3.align-items-end.justify-content-center
+  %li.nav-item
+    = link_to "Transacciones", bank_account_path(view: "transactions"), class: "nav-link #{'active' if params[:view] == 'transactions'}"
+  %li.nav-item
+    = link_to "Cheques emitidos", bank_account_path(view: "emitted_checks"), class: "nav-link #{'active' if params[:view] == 'emitted_checks'}"
+  %li.nav-item
+    = link_to "Cheques depositados", bank_account_path(view: "checks"), class: "nav-link #{'active' if params[:view] == 'checks'}"
+  %li.nav-item
+    = link_to "Transferencias", bank_account_path(view: "bank_transfers"), class: "nav-link #{'active' if params[:view] == 'bank_transfers'}"
+  %li.nav-item
+    = link_to "Reporte", bank_account_path(view: "general"), class: "nav-link #{'active' if params[:view] == 'general'}"
+
+- if bank_account.errors.any?
+  %div.alert.alert-danger.mb-5
+    %p Por favor, revisa los siguientes errores:
+    %ul
+      - bank_account.errors.each do |attr, msg|
+        %li
+          = msg
+
+.mb-3
+  = render "/finances/bank_accounts/#{params[:view]}"

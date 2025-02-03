@@ -1,0 +1,39 @@
+%div{style: 'background-color: white; height: 200px;'}
+.border
+  %table.width_100{style: " font-size: 11px;"}
+    %tr
+      %td
+        %b
+          Proveedor razón social:
+        = supplier.name
+      %td
+        %b
+          Tipo de venta:
+        = @devolution.file.sale_type
+    %tr
+      %td
+        %b
+          Departamento de emisión:
+        = "LOGÍSTICA"
+      %td
+        %b
+          Nº Expediente:
+        = @devolution.file.try(:number)
+    %tr
+      %td
+        %b
+          C.U.I.T.:
+        = supplier.try(:document_number)
+      %td
+        %b
+          Condición I.V.A:
+        = supplier.try(:iva_cond)
+    %tr
+      %td
+        %b
+          Nº Expediente:
+        = @devolution.file.try(:number)
+      %td
+        %b
+          Fecha:
+        = @devolution.try(:date)

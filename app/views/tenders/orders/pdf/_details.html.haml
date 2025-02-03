@@ -1,0 +1,39 @@
+.row
+  .container{style: "height: 800px;"}
+    %table.width_100
+      %tr
+        %th.description_header
+          Codigo
+        %th.description_header
+          Producto/Servicio
+        %th.description_header
+          Precio
+        %th.description_header
+          Cantidad
+        %th.description_header
+          Descuento (%)
+        %th.description_header
+          U.Medida
+        %th.description_header
+          I.V.A (%)
+        %th.description_header
+          Subtotal
+
+      - details.compact.each do |det|
+        %tr
+          %td
+            = det[:product_code]
+          %td
+            = det[:product_name]
+          %td.text_right
+            = det[:price]
+          %td.text_right
+            = det[:quantity]
+          %td.text_right
+            = det[:discount]
+          %td.text_right
+            = det[:product_measurement]
+          %td.text_right
+            = det[:iva] * 100
+          %td.text_right
+            = det[:total]

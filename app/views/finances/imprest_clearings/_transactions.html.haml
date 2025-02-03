@@ -1,0 +1,52 @@
+%table.condensed-table.table.table-hover
+  %thead.text-center
+    %th Comprobante
+    %th Lugar/Persona
+    %th Concepto
+    %th Efectivo
+    %th Tarjeta
+  %tbody
+    - @transactions.each do |log|
+      - if log.income?
+        %tr
+          %td
+            = link_to log.codigo, income_path(log.logable_id)
+          %td
+            = log.entidad
+          %td
+            = log.description
+          - if log.tarjeta?
+            %td
+            %td.text-right{ :class => negative_colored_number_klass(log.monto) }
+              = number_to_ars log.monto
+          - else
+            %td.text-right{ :class => negative_colored_number_klass(log.monto) }
+              = number_to_ars log.monto
+            %td
+      - else
+        %tr
+          %td
+            = link_to log.codigo, expense_path(log.logable_id)
+          %td
+            = log.entidad
+          %td
+            = log.description
+          - if log.tarjeta?
+            %td
+            %td.text-right{ :class => negative_colored_number_klass(-log.monto) }
+              = number_to_ars -log.monto
+          - else
+            %td.text-right{ :class => negative_colored_number_klass(-log.monto) }
+              = number_to_ars -log.monto
+            %td
+    %tr
+      %td
+      %td
+      %td.text-right SubTotal
+      %td.text-right
+        = number_to_ars @total_efectivo
+      %td.text-right
+        = number_to_ars @total_tarjeta
+%p.text-right.text-muted
+  = @transactions.count
+  movimientos registrados.

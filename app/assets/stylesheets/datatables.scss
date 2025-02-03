@@ -1,0 +1,278 @@
+@import 'datatables/dataTables.bootstrap4';
+
+// optional remove '//=' to enable
+
+@import 'datatables/extensions/AutoFill/autoFill.bootstrap4';
+@import 'datatables/extensions/Buttons/buttons.bootstrap4';
+//@import 'datatables/extensions/ColReorder/colReorder.bootstrap4';
+//@import 'datatables/extensions/FixedColumns/fixedColumns.bootstrap4';
+//@import 'datatables/extensions/FixedHeader/fixedHeader.bootstrap4';
+//@import 'datatables/extensions/KeyTable/keyTable.bootstrap4';
+//@import 'datatables/extensions/Responsive/responsive.bootstrap4';
+//@import 'datatables/extensions/RowGroup/rowGroup.bootstrap4';
+//@import 'datatables/extensions/RowReorder/rowReorder.bootstrap4';
+//@import 'datatables/extensions/Scroller/scroller.bootstrap4';
+@import 'datatables/extensions/Select/select.bootstrap4';
+
+@media print{
+	table.dataTable th{
+		button, div{
+			display: none;
+		}
+	}
+}
+
+.dataTables_filter{
+	float: right;
+}
+th#search_date > div{
+	margin-top: -2.35rem;
+}
+
+.dt-buttons > button{
+	border-radius: 0px !important;
+}
+
+table.dataTable td, table.dataTable th {
+	border-top: none !important;
+	background-color: white !important;
+}
+
+table.dataTable td{
+	border-right: none;
+}
+
+#paginated_table{
+	margin-top: -1.25rem !important;
+}
+
+.dt-buttons button{
+	@extend .btn-outline-secondary;
+}
+.yadcf-filter-range-date{
+	display: block;
+	width: 100%;
+	height: calc(2.25rem + 2px);
+	padding: 0.375rem 0.75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.yadcf-filter-range-start{
+	display: inline-block;
+	width: 40%;
+	height: calc(1.8125rem + 2px);
+	padding: 0.25rem 0.5rem;
+	font-size: 0.875rem;
+	line-height: 1.5;
+	border-radius: 0.2rem;
+}
+
+.yadcf-filter-range-end{
+	display: inline-block;
+	width: 40%;
+	height: calc(1.8125rem + 2px);
+	padding: 0.25rem 0.5rem;
+	font-size: 0.875rem;
+	line-height: 1.5;
+	border-radius: 0.2rem;
+
+}
+button.yadcf-filter-reset-button{
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-align: center;
+	align-items: center;
+	padding: .375rem .75rem;
+	margin-bottom: 0;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #495057;
+	text-align: center;
+	white-space: nowrap;
+	background-color: #e9ecef;
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	position: relative;
+	flex: 1 1 auto;
+	max-width: 3rem;
+	margin-bottom: 0;
+}
+
+.input-daterange{
+	display: flex;
+	margin-right: -1px;
+}
+
+.dataTables_filter, .dataTables_info { display: none; }
+
+.index{
+	@extend .card;
+
+	#paginated-table{
+		@extend .table-responsive;
+		@extend .pl-4;
+		@extend .pr-4;
+		@extend .table;
+		@extend .table-responsive;
+		margin-left: -30px;
+	}
+}
+
+.index-title{
+	@extend .card-header;
+	@extend .bg-white;
+	@extend .d-flex;
+	border-bottom: none !important;
+
+	.principal{
+		@extend h3;
+		@extend .w-100;
+		@extend .mt-1;
+		@extend .mb-0;
+	}
+	.buttons{
+		@extend .flex-shrink-1;
+	}
+}
+
+.index-body{
+	@extend .card-body;
+	@extend .px-0;
+}
+
+.dataTables_length select {
+    width: initial;
+}
+
+.index #paginated-table th{
+	border-top: none;
+	vertical-align: middle !important;
+}
+
+.table thead th, .index #paginated-table thead th {
+  vertical-align: middle !important;
+  border-top: none;
+}
+
+.table-bordered  td {
+	border: 1px solid rgba(167, 170, 173, 0.24);
+	border-left: none;
+}
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+  margin: 15px 0;
+  white-space: nowrap;
+  justify-content: center;
+}
+
+
+#general_search{
+	width: 100%;
+}
+
+thead.border-top-0 > tr > th {
+	@extend .border-top-0;
+}
+
+
+.dataTables_filter {
+  display: none;
+}
+
+.yadcf-filter-wrapper {
+  display: flex;
+  white-space: normal;
+  margin-top: 7px;
+}
+
+.yadcf-filter-range-date-seperator,
+.yadcf-filter-range-number-seperator {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.yadcf-filter-range {
+  min-width: 70px;
+}
+
+.yadcf-filter-range-number-slider-min-tip-inner,
+.yadcf-filter-range-number-slider-max-tip-inner {
+  color: black;
+}
+
+.yadcf-filter,
+.yadcf-filter-range-date,
+.yadcf-filter-range,
+.chosen-container.chosen-container-single .chosen-single,
+.chosen-container-multi .chosen-choices li.search-field input[type="text"] {
+  line-height: 1;
+  min-height: 28px;
+  font: inherit;
+  font-weight: normal;
+  font-size: 14px;
+  color: black;
+  background-color: #FFF;
+  border: 1px solid #CCC;
+  border-radius: 4px;
+  padding-left: 5px;
+}
+
+table.dataTable thead .sorting:hover:after,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:after {
+  opacity: 1
+}
+
+table.dataTable td:hover{
+	white-space: normal;
+}
+
+#yadcf-filter-wrapper-inner--example-4 .chosen-container.chosen-container-single .chosen-single,
+.chosen-container-multi .chosen-choices li.search-field input[type="text"] {
+  color: #a9a9a9;
+}
+
+.yadcf-filter-wrapper-inner {
+  border: none;
+}
+
+.yadcf-filter-reset-button {
+  text-decoration: none;
+  font-size: 0px;
+  background: none;
+  border: none;
+  opacity: 0.3;
+}
+
+.yadcf-filter-reset-button:hover {
+  color: #337ab7;
+  opacity: 1;
+}
+
+
+.sorting:hover:after,
+.sorting_asc:hover:after,
+.sorting_desc:hover:after,
+.sorting_asc_disabled:hover:after,
+.sorting_desc_disabled:hover:after {
+  color: #337ab7;
+  opacity: 1;
+}
+
+.sorting_asc:after,
+.sorting_desc:after {
+  color: #337ab7;
+  opacity: 1;
+}

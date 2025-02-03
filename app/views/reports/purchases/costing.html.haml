@@ -1,0 +1,80 @@
+.index
+  .index-title
+    .principal
+      = icon('fas', 'folder-open')
+      = @file.title
+    .buttons.d-flex.align-items-start
+      = link_to "Facturas", reports_purchases_path(view: 'purchases'), class: "btn btn-outline-dark #{'active' if params[:view] == 'purchases'}", data: {'skip-pjax' => true}
+      = link_to "Pagos", reports_purchases_path(view: 'payment_orders'), class: "btn btn-outline-dark #{'active' if params[:view] == 'payment_orders'}", data: {'skip-pjax' => true}
+      = link_to "Costeo", reports_purchases_path(view: 'costing'), class: "btn btn-outline-dark #{'active' if params[:view] == 'costing'}", data: {'skip-pjax' => true}
+  .mx-4.d-flex.justify-content-between.align-items-center
+    - present @file do |file_presenter|
+      .row.w-100.mt-4
+        .col-6
+          %table
+            %thead
+              %th
+              %th Ganado
+              %th Gastado
+              %th Detalle
+            %tbody
+              %tr
+                %td Productos
+                %td #{file_presenter.earned_product_amount}
+                %td #{file_presenter.expended_product_amount}
+                %td
+                  = button_tag icon('fas', 'bars'), type: :button, class: 'btn btn-light', data: {toggle: 'modal', target: '#products_modal'}
+              %tr
+                %td Servicios
+                %td #{file_presenter.earned_service_amount}
+                %td #{file_presenter.expended_service_amount}
+                %td
+                  = button_tag icon('fas', 'bars'), type: :button, class: 'btn btn-light', data: {toggle: 'modal', target: '#services_modal'}
+              %tr
+                %td Honorarios
+                %td
+                %td #{file_presenter.fee}
+                %td
+              %tr
+                %td Envíos
+                %td
+                %td #{file_presenter.shipment_cost}
+                %td
+              %tr
+                %td Logística
+                %td
+                %td #{file_presenter.logistics}
+                %td
+              %tr
+                %td Gastos
+                %td -
+                %td #{file_presenter.cash_account_expenditures}
+                %td
+              %tr
+                %td TOTAL
+                %td #{file_presenter.total_earned}
+                %td #{file_presenter.total_expenditures}
+                %td
+        .col-6
+          .row
+            .col-6
+              %h5.text-center
+                = icon('fas', 'chart-pie')
+                Facturado
+              %hr
+              .w-100.px-4
+                = render_report 'costing_earned_vs_expenses', actions: [], context_params: { id: @file.id }
+            .col-6
+              %h5.text-center
+                = icon('fas', 'chart-pie')
+                Ordenado
+              %hr
+              .w-100.px-4
+                = render_report 'costing_earned_vs_expenses_orders', actions: [], context_params: { id: @file.id }
+
+= modal "Detalle de productos", "products_modal", "products_modal_body" do
+  .modal-body
+    = render 'costing_detail', collection: @file.all_products
+= modal "Detalle de servicios", "services_modal", "services_modal_body" do
+  .modal-body
+    = render 'costing_detail', collection: @file.all_services

@@ -1,0 +1,17 @@
+.form-group.col-md-12
+  %h5.text_muted
+    Asignar turnos de trabajo
+%table.table-hover#table_turns
+  %thead
+    %th
+      Turno
+    %th
+  %tbody
+    = f.simple_fields_for :attendance_category_users, wrapper: false do |da|
+      %tr.fields
+        %td
+          = da.input :attendance_category_id, as: :select, label: false, collection: AttendanceCategory.all
+        %td
+          = da.link_to_remove "#{icon('fas','trash')}".html_safe, class: 'btn btn-danger'
+.form-group.col-md-3.col-md-offset-9
+  = f.link_to_add "#{icon('fas', 'plus')}".html_safe, :attendance_category_users, class: 'btn btn-primary', data: {target: '#table_turns'}

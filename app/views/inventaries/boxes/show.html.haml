@@ -1,0 +1,48 @@
+- params[:view] ||= 'general'
+- present box do |product_presenter|
+	.container-fluid.bg-secondary.w-100.text-white
+		.row
+			.col-md-2.col-12.p-4.justify-content-center
+				.card.bg-secondary.border-0
+					%center.row
+						- box.images.each do |photo|
+							.col
+								= image_tag photo.source, class: 'card-img-top rounded-circle border bg-white contact-avatar'
+						.card-body
+							%h5 #{box.name}
+			.col-md-5.col-12.p-4
+				.card.bg-secondary.border-0.ml-4
+					%span
+						%i.small
+							Clasificación:
+						= box.clasification
+					%span.mt-1
+						%i.small
+							Categoría:
+						= product_presenter.category
+					%span.mt-1
+						%i.small
+							Stock disponible:
+						= product_presenter.available_stock
+					%span.mt-1
+						%i.small
+							Stock mínimo:
+						= product_presenter.minimum_stock
+					%span.mt-1
+						%i.small
+							Stock recomendado:
+						= product_presenter.recommended_stock
+	.container-fluid.w-100.row
+		%ul.nav.justify-content-center.bg-light.border-bottom.border-top
+			%li.nav-item.border-animated
+				= show_links('General', 'general', params[:view], box_path(box.id, view: 'general'))
+			%li.nav-item.border-animated
+				=# show_links('Últimos movimientos', 'movements', params[:view], box_path(box.id, view: 'movements'))
+			%li.nav-item.border-animated
+				=# show_links('Ubicación', 'location', params[:view], box_path(box.id, view: 'location'))
+			%li.nav-item.border-animated
+				=# show_links('Estadísticas', 'charts', params[:view], box_path(box.id, view: 'charts'))
+			%li.nav-item.border-animated
+				= show_links('Sub-ítems', 'boxes', params[:view], box_path(box.id, view: 'subproducts'))
+		- if ['general', 'movements', 'location', 'charts', 'subproducts'].include?(params[:view])
+			= render "/inventaries/boxes/see/#{params[:view]}"

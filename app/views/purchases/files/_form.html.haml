@@ -1,0 +1,21 @@
+= simple_nested_form_for file, html: {class: 'horizontal-form'}, wrapper: :horizontal_form do |f|
+	.row
+		.col-8.offset-2
+			= error_notification(f)
+			%hr.dotted
+			= f.input :title, label: "Título"
+			%hr.dotted
+			= f.input :initial_department, as: :select, label: "Departamento actual", collection: current_company.departments.map{|d| [d.name, d.id]}, include_blank: false
+			%hr.dotted
+			= f.input :init_date, as: :date_picker, label: "Fecha de inicio"
+			%hr.dotted
+			= f.input :finish_date, as: :date_picker, label: "Fecha limite de finalización"
+			%hr.dotted
+			=f.input :open, collection: [[true, "Si"], [false, "No"]], as: :radio_buttons, wrapper_class: 'form-check form-check-inline row', label: "¿Expediente abierto?", label_method: :last, value_method: :first, checked: file.open
+			%hr.dotted
+			= f.input :state, label: "Estado", collection: Purchases::File::STATES, include_blank: false
+			%hr.dotted
+			= f.input :user_id, label: "Responsable", collection: current_company.users.map{|u| [u.name, u.id]}
+	.actions.text-center.w-100
+		- unless f.object.disabled?
+			= save_button

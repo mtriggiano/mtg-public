@@ -1,0 +1,20 @@
+= index_table(mform: true, icon: 'bell', text: "Actividades vinculadas", path: new_alert_purchases_file_path(file.id), jpath: purchases_file_path(view: 'alerts', format: :json), collection: file.alerts(current_user), mtarget: "#new_alert_purchase_file_modal")
+
+
+= modal("#{icon('fas', 'plus')} Añadir alerta", "edit_alert_modal", "edit_alert_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'eye')} Ver alerta", "show_alert_modal", "show_alert_body", "big") do
+	.modal-body
+		= yield
+	.modal-footer
+		= close_button
+
+= modal("#{icon('fas', 'plus')} Añadir alerta", "new_alert_purchase_file_modal", "new_alert_purchase_file_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'cogs')} Configurar campos", "config_modal", "config_modal_body", "big") do
+	.modal-body
+		= yield

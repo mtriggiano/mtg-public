@@ -1,0 +1,41 @@
+.container{:style => "height: 600px"}
+  %p.text-bold.mb-1 Comprobantes a rendir
+  %table.width_100.border
+    %tr
+      %th.description_header
+        Fecha
+      %th.description_header
+        Comprobante
+      %th.description_header{:style => "width: 15% !important"}
+        Proveedor
+      %th.description_header
+        Descripción
+      %th.description_header
+        OC/NV
+      %th.description_header{:style => "width: 10% !important"}
+        Importe
+    %tbody.text-small
+      - expenses.each do |expense|
+        %tr
+          %td.text_center
+            = expense.fecha
+          %td.text_center
+            = expense.codigo_comprobante
+          %td.text_center
+            = expense.supplier_name
+          %td.text_center
+            = expense.descripcion
+          %td.text_center
+            = expense.order.try(:name)
+          %td.text_right
+            = number_to_ars expense.total
+
+%table.width_100.mt-5
+  %tr.text_center
+    %td.width_50
+    %td.width_50
+      %div.signature-border.mb-1
+      - if cash_solicitude.user
+        = cash_solicitude.user.name
+      - else
+        = cash_solicitude.nombre_solicitante

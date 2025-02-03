@@ -1,0 +1,9 @@
+= simple_form_for(work_station, html: { class: 'horizontal-form' }, wrapper: :horizontal_form) do |f|
+	.row
+		.col-12
+			= error_notification(f)
+			= f.input :name, label: "Nombre del puesto", input_html: {placeholder: "Gerente de compras"}
+			%hr.dotted
+				= f.input :responsable_id, label: "Encargado", collection: current_company.users.map{|u| [u.name, u.id]}
+			%hr.dotted
+				= f.input :description, as: :text, input_html: {rows: 5, style: 'resize: none;'}

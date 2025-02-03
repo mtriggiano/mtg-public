@@ -1,0 +1,29 @@
+= simple_form_builder external_shipment, defaults: {disabled: external_shipment.disabled?} do |f|
+	.card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+		.card-body
+			= file_header(f, true)
+			.header-detail
+				= error_notification(f)
+				.row
+					.col-sm-6.col-12
+						= number_input(f, true)
+						= client_input(f)
+						= store_input(f)
+					.col-sm-6.col-12
+						= date_input(f, :date)
+						= state_input(f, with_button: false)
+						= f.input :shipment_type, as: :select, collection: external_shipment.class::TYPES
+				%hr
+				%p
+					- if external_shipment.external_arrival
+						%span Entrada asociada: 
+						= link_to external_shipment.external_arrival.number, [:edit, external_shipment.external_arrival]
+					= link_to "Registrar entrada", new_stock_external_arrivals_path(shipment_id: external_shipment.id) if external_shipment.puedo_registrar_entrada?
+				.justify-content-center.d-flex
+					- if external_shipment.persisted? && !external_shipment.canceled? && !external_shipment.confirmed?
+						= button_tag "#{icon('fas', 'tasks')} Verificar stock".html_safe, class: 'btn btn-info mx-2 file_state_submit',name: "verify_stock", value: true
+					= switch_shipment_state_button(external_shipment)
+					
+	= document_table(f, "surgeries") do
+		= observation_input(f)
+		= render '/purchases/shared_attachment', f:f

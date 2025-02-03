@@ -1,0 +1,31 @@
+.border
+  %table.width_100
+    %tr{style: "line-height: 10px !important;"}
+      %th.text_size_20.text_left.header_word_break{style:"text-align: center; width: 200px; line-height: 10px;"}
+        %p
+          = wicked_pdf_image_tag imprest_clearing.general_cash_account.company.pdf_logo, width: "50px"
+      %th.header_word_break{style:"width: 300px; text-align: left; padding-left: 50px;"}
+        %p{style: 'font-size: 15px;'}
+          = imprest_clearing.regular_cash_account.company.name
+      %th.header_word_break.border{style:"width: 250px;"}
+        %p.text_size_20
+          RENDICIÓN CAJA CHICA
+        %p.text_size_25
+          Nº
+          = imprest_clearing.id
+        %p
+          = imprest_clearing.fecha
+  %table.width_100.border
+    %tr
+      %td
+        %b
+          Origen:
+        = imprest_clearing.regular_cash_account.nombre
+      %td
+        %b
+          Fondo fijo:
+        = number_to_ars imprest_clearing.fondo_fijo
+      %td
+        %b
+          Saldo de inicio:
+        = number_to_ars imprest_clearing.saldo_inicio

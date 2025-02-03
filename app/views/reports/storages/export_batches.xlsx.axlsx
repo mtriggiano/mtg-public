@@ -1,0 +1,22 @@
+wb = xlsx_package.workbook
+title = wb.styles.add_style(:bg_color => "80CBC4", :fg_color=>"#FF000000", :sz=>14,  :border=> {:style => :thin, :color => "80CBC4"})
+wb.add_worksheet(name: "Lotes") do |sheet|
+    sheet.add_row(["", "", "", "", "", "REPORTE DE LOTES", "", "", "", "", "", "", "","",""], :style=> title)
+    sheet.add_row(["", "", "", "", "", "", "", "", "", "", "", "", "","",""])
+    sheet.add_row(["", "", "", "", "", "", "", "", "", "", "", "", "","",""])
+    sheet.add_row(["Categoria", "Sub categoria", "Producto", "Codigo", "Marca", "Lote Codigo", "Lote serie", "Cantidad", "Vto"], :style=> title)
+    @batches.each do |batch|
+      product = batch.product
+      sheet.add_row([
+        product.try(:product_category).try(:name),
+        product.family,
+        product.try(:name),
+        product.try(:code),
+        product.try(:branch),
+        batch.code,
+        batch.serial,
+        batch.quantity.to_f,
+        batch.due_date
+      ])
+    end
+end

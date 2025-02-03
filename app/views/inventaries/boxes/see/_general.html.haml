@@ -1,0 +1,20 @@
+- present box do |product_presenter|
+	.pr-2.pl-2.w-100.shadow.bg-white.p-3.w-100
+		.text-muted
+			= icon('fas', 'list-alt')
+			Información básica
+		%hr
+			%dl
+				= see_contact_dl("Nombre", box.name)
+				%hr.dotted
+				= see_contact_dl("Categoría", product_presenter.category)
+				%hr.dotted
+				= see_contact_dl("Código interno", product_presenter.code)
+				%hr.dotted
+				= see_contact_dl("Medidas", product_presenter.measurements)
+				%hr.dotted
+				= see_contact_dl("Stock mínimo", product_presenter.minimum_stock)
+				%hr.dotted
+				= see_contact_dl("Stock disponible", product_presenter.available_stock)
+				%hr.dotted
+				= see_contact_dl("Stock recomendado", product_presenter.recommended_stock)

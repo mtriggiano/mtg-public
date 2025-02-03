@@ -1,0 +1,34 @@
+.row.footer_bottom
+  .container.border{style: 'font-size: 11px;'}
+    %table.width_100
+      %tr
+        %td.text_right
+          %b Subtotal:
+        %td.text_right
+          = number_to_ars(@order.subtotal_pdf)
+      %tr
+        %td.text_right
+          %b Bonificaciones:
+        %td.text_right
+          = number_to_ars(@order.discount_pdf)
+      %tr
+        %td.text_right
+          %b I.V.A.:
+        %td.text_right
+          = number_to_ars(@order.iva_amount_pdf)
+      %tr
+        %td.text_right
+          %b Importe Total:
+        %td.text_right
+          %b
+            = number_to_ars(@order.total_pdf)
+      %tr
+        %td{style: "padding-left: 40px;"}
+          %b
+            Son:
+          = number_to_words(@order.currency_label, @order.total_pdf)
+
+%br
+.text_center
+  Página
+  = "#{page_number} de #{total_pages}"

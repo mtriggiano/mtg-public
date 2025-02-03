@@ -1,0 +1,19 @@
+= new_helper("Evaluación de solicitud") do
+  = simple_form_for(cash_solicitude, :url => evaluate_cash_solicitude_path, :method => :patch) do |f|
+    = error_notification(f)
+    %p.text-muted.mb-1 Información de la solicitud
+    .border.rounded.p-2.mb-4
+      = render 'show', cash_solicitude: cash_solicitude
+
+    .row
+      .col-2
+        = f.label :evaluacion, "Evaluación"
+        = evaluation_toggle f, :evaluacion, "Aprobar", "Rechazar"
+      .col-3.approved_amount.hidden
+        = f.input :monto_aprobado
+      .col-7.reject_reason
+        = f.input :rechazo, as: :text, label: "Motivo del rechazo"
+
+    .actions
+      %hr
+      = save_button

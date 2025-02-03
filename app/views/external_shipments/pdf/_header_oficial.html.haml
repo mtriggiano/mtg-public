@@ -1,0 +1,23 @@
+%div{style: 'background-color: white; height: 200px;'}
+.border
+  %table.width_100{style: 'font-size: 11px;'}
+    %tr
+      %td
+        %b
+          Institución:
+        = sale_shipment.client.name
+      
+    %tr
+      %td
+        %b
+          Cliente Razón Social:
+        = sale_shipment.client.name
+      %td
+        %b
+          Expediente:
+        = "S/A"
+    %tr
+      %td
+        %b
+          Fecha de salida:
+        = I18n.l(sale_shipment.date, format: :default)

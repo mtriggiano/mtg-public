@@ -1,0 +1,147 @@
+.index
+  .index-title
+    .principal
+      = "Valores de Stock"
+  .card.card-body.bg-light
+    %p
+      %strong 
+        Filtros
+    = form_tag('', class: 'form', method: :get, id: 'filtro-form', "data-type" => 'json', remote: true) do
+      .row
+        .col-md-8
+          .row
+            - #.col-md-4
+            - #  = label_tag :product_id, 'Producto', class: "control-label"
+            - #  = collection_select(:filtros, :product_id, products, :id, :name, { :include_blank => "Todos"}, class: 'form-control')
+            - #.col-md-4
+            - #label_tag :activos, 'Activos', class: "control-label"
+            - #collection_select(:filtros, :activos, ["Activos", "No activos"], :to_s, :to_s, { :include_blank => "Todos"}, class: 'form-control')
+            - #.col-md-4
+            - #  = label_tag :codigo, 'Codigo', class: "control-label"
+            - #  = collection_select(:filtros, :codigo, products.pluck(:code).uniq.sort, :to_s, :to_s, { :include_blank => "Todos"}, class: 'form-control')
+            .col-md-4
+              = label_tag :branches, 'Marca', class: "control-label"
+              = collection_select(:filtros, :branches, products.pluck(:branch).uniq, :to_s, :to_s, { :include_blank => "Todos"}, multiple: :true, class: 'form-control')
+            .col-md-4
+              = label_tag :product_category_id, 'Categoria', class: "control-label"
+              = collection_select(:filtros, :product_category_id, ProductCategory.where(id: products.pluck(:product_category_id).uniq).order(:name), :id, :to_s, { :include_blank => "Todos"}, class: 'form-control')
+            .col-md-4
+              = label_tag :supplier_id, 'Proveedor', class: "control-label"
+              = collection_select(:filtros, :supplier_id, Supplier.where(id: products.pluck(:supplier_id).uniq).order(:name), :id, :to_s, { :include_blank => "Todos"}, class: 'form-control')
+            .col-md-4
+              = label_tag :store_id, 'Deposito', class: "control-label"
+              = collection_select(:filtros, :store_id, current_company.stores.order(:name), :id, :name, { :include_blank => "Todos"}, class: 'form-control')
+            .col-md-4
+              = label_tag :family, 'Sub-Categoria', class: "control-label"
+              = collection_select(:filtros, :family, products.pluck(:family).uniq.sort, :to_s, :to_s, { :include_blank => "Todos"}, class: 'form-control')
+            .col-md-3.col-sm-4
+              %br
+              = button_tag(type: "submit", class: "btn btn-success") do
+                %span.glyphicon.glyphicon-search
+                Buscar
+              %button#btn-totalizar.btn.btn-primary(type="button") Totalizar
+        .col-md-4
+          .row
+            .col-md-12.text-center
+              .card
+                %p Totales
+                .row
+                  .card.m-1
+                    .card-body
+                      %p
+                        %strong Stock
+                      %h4#total-stock
+                  .card.m-1
+                    .card-body
+                      %p
+                        %strong Valor total
+                      %h4#total-valor-compra
+                  .card.m-1
+                    .card-body
+                      %p
+                        %strong Valor total USD
+                      %h4#total-valor-venta
+                  
+
+  #bmenu.mx-4.d-flex.justify-content-between.align-items-center
+  .index-body.table-responsive
+    %table#paginated_table.table{ data: { title: "Salida de stock interna", source: valores_stock_products_path(format: :json) } }
+      %thead.thead-light
+        %th{ scope: 'col' } ID
+        %th{ scope: 'col' } Marca
+        %th{ scope: 'col' } Proveedor
+        %th{ scope: 'col' } Codigo
+        %th{ scope: 'col' } Nombre
+        %th{ scope: 'col' } Categoria
+        %th{ scope: 'col' } Sub-Categoria
+        %th{ scope: 'col' } Stock
+        %th{ scope: 'col' } Fecha compra
+        %th{ scope: 'col' } Orden compra
+        %th{ scope: 'col' } Precio compra
+        %th{ scope: 'col' } Precio compra USD
+        %th{ scope: 'col' } Precio Venta
+        %th{ scope: 'col' } Precio Venta USD
+        %th{ scope: 'col' } Valor total
+        %th{ scope: 'col' } Valor total USD
+      %tbody.table-bordered
+
+= table_script(DatatableConstants::ProductValorStock.merge("actions" => ""))
+
+:javascript
+  var formData = null;
+  $(document).ready(function() {
+    var data_filters = {
+      tabla: null,
+      url_base: "#{valores_stock_products_path(format: :json)}?",
+      filtro_form: $("#filtro-form"),
+      on_submit_filter_form: function(event){
+        var url = data_filters.url_base + $(event.target).serialize();
+        if (!data_filters.tabla){
+          data_filters.tabla = $("#paginated_table").DataTable();
+        } else {
+          data_filters.tabla.ajax.url(url);
+          data_filters.tabla.ajax.reload();
+        }
+        return false;
+      }
+    }
+    data_filters.tabla = null;
+    data_filters.filtro_form.submit(data_filters.on_submit_filter_form);
+    
+    $(data_filters.filtro_form).change(function() {
+      formData = $(this).serialize();
+    });
+
+    function peditTotales(){
+      var url = "#{valores_stock_totales_products_path(format: :json)}?";
+      var url = url + "&" + $(data_filters.filtro_form).serialize();
+      $.ajax({
+        url: url,
+        type: 'GET',
+        success: function(data) {
+          actualizarTotales(data);
+        },
+        error: function(xhr, status, error) {
+          console.error(error); // Mostrar errores en la consola
+        }
+      });
+    }
+
+    function actualizarTotales(totales) {
+      var total_stock = totales.stock;
+      var total_productos = totales.total_productos;
+      var total_valor_compra = totales.valor_total;
+      var total_valor_venta = totales.valor_total_usd;
+      $("#total-stock").html(total_stock.toLocaleString());
+      $("#total-productos").html(total_productos.toLocaleString());
+      $("#total-valor-compra").html(total_valor_compra.toLocaleString());
+      $("#total-valor-venta").html(total_valor_venta.toLocaleString());
+    }
+
+    $("#btn-totalizar").click(function() {
+      peditTotales();
+    });
+
+  });
+
+  

@@ -1,0 +1,38 @@
+.row.border{style: "padding-top: 5px;"}
+  .container{style: "height: 750px; font-size: 9px;"}
+    %table.width_100
+      %tr
+        %th.description_header
+          Cant.
+        %th.description_header
+          Producto/Servicio
+        %th.description_header
+          Marca
+        %th.description_header
+          Codigo
+        %th.description_header
+          P.M.
+        %th.description_header
+          Lote
+        %th.description_header
+          Nº Serie
+        %th.description_header
+          Vencimiento
+      - details.compact.each do |det|
+        %tr{style: "height: 25px !important; font-size: 14px !important"}
+          %td.text_center
+            = det['quantity']
+          %td
+            = det['product_name']
+          %td
+            = det['branch']          
+          %td.text_center
+            = det['product_code']
+          %td
+            = det['pm']
+          %td
+            = det['code']
+          %td
+            = det['serial']
+          %td
+            = det['due_date']

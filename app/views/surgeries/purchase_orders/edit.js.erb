@@ -1,0 +1,11 @@
+<% simple_nested_form_for purchase_order do |f| %>
+	<% @builder = f %>
+<% end %>
+$("tbody").html("<%= j render '/surgeries/shared_details_form', {f: @builder, colspan: 8} %>");
+<% unless purchase_order.entity_id.nil? %>
+	$("#purchase_order_entity_id").val("<%= purchase_order.entity_id %>").trigger("change")
+<% end %>
+
+
+setSelect2();
+toogleBody();

@@ -1,0 +1,32 @@
+#location.card.shadow.mx-4.mb-4.collapse{data: {parent: "#document-accordion"}}
+	.card-header.bg-white
+		%h5.w-100.pt-2 
+			= icon('fas', 'map-marker-alt')
+			Destino
+	.card-body
+		.location-fields
+			= f.simple_fields_for :location, f.object.location || f.object.build_location do |d|
+				.row.fields
+					.col-8
+						%h5 
+							= icon('fas', 'map-marker-alt')
+							Ubique el destino
+						%hr
+						#map
+						= d.input :map, as: :hidden
+					.col-4
+						%h5 
+							Especifique
+							= icon('fas', 'list-alt')
+						%hr
+						= d.input :address, label: "Dirección"
+						%hr.dotted
+						= d.input :contact, label: "Contacto"
+						%hr.dotted
+						= d.input :phone, label: "Teléfono"
+						%hr.dotted
+						.w-100.text-center
+							= button_tag "Remover marcadores", type: :button, onclick: "clearMarkers()", class: 'btn btn-outline-danger'
+				%center
+					%hr
+						= save_button

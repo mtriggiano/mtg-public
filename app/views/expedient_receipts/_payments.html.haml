@@ -1,0 +1,38 @@
+%h5 Formas de cobro
+.card.mb-4
+  .card-body
+    .table-responsive.m-0
+      %table.table#table-payments
+        %thead
+          %th Tipo
+          %th{:style => "width: 15% !important"} Número
+          %th{:style => "width: 15% !important"} Fecha
+          %th{:style => "width: 15% !important"} Vencimiento
+          %th{:style => "width: 20% !important"} Banco
+          %th{:style => "width: 15% !important"} Importe
+          %th{:style => "width: 10px !important"}
+        %tbody
+          = f.simple_fields_for :payments, wrapper: false do |d|
+            %tr.fields
+              %td
+                = d.association :payment_type, collection: current_user.permitted_payment_types.sort_by{|a| a.name}.map{ |pt| [pt.name.upcase, pt.id, { 'data-collect-type' => pt.collect_type }] }, label: false, include_blank: true, required: true, input_html: { class: 'payment_type'}
+              %td
+                = d.input :number, label: false, disabled: true, input_html: { class: "numero-referencia chequera", data: {unwrapp: true} }
+              %td
+                = d.input :real_date, label: false, as: :date_picker, disabled: true, input_html: { class: "real-date", data: { unwrapp: true } }
+              %td
+                = d.input :due_date, label: false, as: :date_picker, disabled: true, input_html: { class: "vencimiento-pago", data: { unwrapp: true } }
+              %td
+                = d.input :bank_account_id, label: false, collection: current_company.bank_accounts.map { |cb| [ cb.alias_tag.upcase, cb.id] }, disabled: true, input_html: { class: "cuenta-bancaria", data: { unwrapp: true } }
+              %td
+                = d.input :total, placeholder: "Importe ($)", label: false, required: true, input_html: { class: "suma-pagos text-right" }
+              %td
+                = d.link_to_remove icon('fas', 'times'), class: 'text-danger' unless f.object.disabled?
+        %tfooter
+          %td.text-right{:colspan => "4"}
+            %h5.m-0 TOTAL PAGOS
+          %td
+            = text_field_tag :total_pagos, "", id: "total_pagos", class: 'form-control form-control form-control-sm text-right m-0', disabled: true
+          %td
+    .text-center
+      = f.link_to_add "#{icon('fas', 'plus')} Cobro".html_safe, :payments, class: 'btn btn-outline-success', data: {target: "#table-payments"} unless f.object.disabled?

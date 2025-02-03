@@ -1,0 +1,5 @@
+= index_table(icon: 'file-import', collection: collection, text: "Entradas de stock", can_new_path: false, jpath: external_arrivals_path(file_id: file.id, format: :json))
+
+= modal("#{icon('fas', 'cogs')} Configurar campos", "config_modal", "config_modal_body", "big") do
+	.modal-body
+		= yield

@@ -1,0 +1,38 @@
+= simple_form_builder purchase_request, defaults: {disabled: purchase_request.disabled?} do |f|
+	= shared_nav(f)
+	.card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+		.card-body
+			= file_header(f) do
+				- if purchase_request.generated_by_system
+					- if purchase_request.external_file
+						%small.text-muted
+							= icon('fas', 'exclamation-circle')
+							= "Solicitud generada automáticamente por el sistema por solicitud de stock en el expediente N°#{link_to purchase_request.external_file.number, purchase_request.external_file}".html_safe
+					- else
+						%small.text-muted
+							= icon('fas', 'exclamation-circle')
+							- if purchase_request.sale_orders.any?
+								= t('purchases.purchase_requests.automatic_request_description', document_number: purchase_request.sale_orders.map(&:number).join(", "))
+							-else
+								= t('purchases.purchase_requests.automatic_request_description', document_number: purchase_request.tender_orders.map(&:number).join(", "))
+			.header-detail
+				= error_notification(f)
+				.row
+					.col-sm-4.col-12
+						= number_input(f)
+						= user_input(f)
+					.col-sm-4.col-12
+						= f.input :request_type, collection: ExpedientRequest::TYPES, include_blank: false
+						.row
+							.col
+								= date_input(f, :init_date)
+							.col
+								= date_input(f, :final_date)
+					.col-sm-4.col-12
+						= f.input :urgency, collection: [["Baja", 1], ["Media", 5], ["Alta", 10]]
+						= state_input(f)
+				= state_manager(f)
+	= document_table(f) do
+		= render '/file_attributes_configs/shared_extra_attributes', f:f, object: purchase_request
+		= observation_input(f)
+		= render '/purchases/shared_attachment', f:f

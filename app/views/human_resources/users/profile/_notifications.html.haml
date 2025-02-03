@@ -1,0 +1,13 @@
+- current_user.notifications.each do |notification|
+  = link_to notification.link, class: 'bg-transparent notification_link' do
+    %h6{class: "mt-0 text-truncate"}
+      %div{class: "float-left mr-2 state-point-#{notification.color}"}
+      = notification.title
+    %p.text-container.text-wrap.text-muted.mb-0.pl-2
+      = notification.body
+    %p.text-wrap.text-right.bottom-0.mb-0.text-muted
+      %small
+        = icon('fas', 'clock')
+        Hace 
+        = distance_of_time_in_words(Time.now ,notification.updated_at.to_time)
+  %hr

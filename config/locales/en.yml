@@ -1,0 +1,1127 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   'true': 'foo'
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+es:
+  users:
+    registrations:
+      title: "Panel de Control de Usuario"
+  helpers:
+    placeholder:
+      sales:
+        sale_request:
+          init_date: "Desde"
+          final_date: "Hasta"
+          observation: "Ej.: productos solicitados con urgencia alta. "
+  finances:
+    imprest_systems:
+      title: "Fondos fijos"
+    emitted_checks:
+      title: "Cheques emitidos"
+  expedient_receipts:
+    form:
+      title: "Recibos"
+      associated_document_span: "Primero debe seleccionar el expediente"
+      associated_document: "Asociar orden"
+    title: "Recibos"
+    create:
+      success: "El recibo fue creado exitosamente"
+    update:
+      success: "El recibo fue actualizado exitosamente"
+    destroy:
+      success: "El recibo fue eliminado correctamente"
+  human_resources:
+    user_roles:
+      title: "Roles del usuario"
+    attendance_resumes:
+      title: "Resumen mensual de asistencias"
+    attendance_categories:
+      title: "Turnos de trabajo"
+      form:
+        title: "Turno de trabajo"
+    attendances:
+      title: "Asistencias"
+    day_attendances:
+      title: "Asistencias del Día"
+    user_vacations:
+      title: "Asignaciones de Vacaciones"
+      form:
+        fields:
+          year: "Año"
+    permissions:
+      title: "Justificaciones y Suspensiones"
+    users:
+      title: "Personal"
+    non_present_users:
+      title: "Empleados ausentes"
+  inventaries:
+    batches:
+      index:
+        title: "Lotes"
+    product_categories:
+      title: "Categorias de producto"
+    products:
+      title: "Producto"
+      index:
+        title: "Productos"
+    boxes:
+      title: "Caja de cirugía"
+      index:
+        title: "Cajas de cirugía"
+      create:
+        success: "La caja fue creada exitosamente"
+      update:
+        success: "La caja fue actualizada exitosamente"
+      destroy:
+        success: "La caja fue eliminada correctamente"
+    stores:
+      title: 'Depósito'
+      index:
+        title: "Depósitos"
+      create:
+        success: "El deposito fue creado correctamente"
+      update:
+        success: "El depósito fue actualizado correctamente"
+      destroy:
+        success: "El deposito fue eliminado correctamente"
+  entities:
+    suppliers:
+      suppliers:
+        title: "Proveedores"
+      supplier_contacts:
+        title: "Contactos de proveedor"
+    clients:
+      clients:
+        title: "Clientes"
+      client_account_movements:
+          title: "Movimientos de cuenta"
+      client_contacts:
+        title: "Contactos del cliente"
+      client_contact_records:
+        title: "Registros"
+    supplier_account_movements:
+      title: "Movimientos de cuenta de Proveedor"
+    supplier_contact_records:
+      title:
+        "Registros de contacto"
+  checkbooks:
+    index:
+      title: "Talonarios de cheques"
+  activities:
+    title: "Actividades"
+  alerts:
+    title: "Alertas"
+  external_arrivals:
+    title: "Entradas"
+    form:
+      title: "Entrada"
+      associated_document_span: "Primero debe seleccionar el expediente"
+      associated_document: "Asociar solicitud"
+      secondary_document_span: "Primero debe seleccionar el expediente"
+      secondary_document: "Asociar orden"
+    create:
+      success: "El remito de entrada fue creado exitosamente"
+    update:
+      success: "El remito de entrada fue actualizado exitosamente"
+    destroy:
+      success: "El remito de entrada fue eliminado correctamente"
+    new_stock:
+      title: "Entrada de stock"
+  external_shipments:
+    title: "Salidas"
+    form:
+      title: "Salida"
+      associated_document_span: "Primero debe seleccionar el expediente"
+      associated_document: "Asociar arribo"
+      secondary_document_span: "Primero debe seleccionar el expediente"
+    create:
+      success: "El remito de entrada fue creado exitosamente"
+    update:
+      success: "El remito de entrada fue actualizado exitosamente"
+    new_stock:
+      title: "Salida de stock"
+    destroy:
+      success: "El remito de entrada fue eliminado correctamente"
+  external_bills:
+    title: "Compras"
+    form:
+      title:  "Factura"
+      associated_document_span: "Primero debe seleccionar el expediente"
+      associated_document: "Asociar orden"
+      filter_document: "Asociar remito"
+    create:
+      success: "La factura fue creada exitosamente"
+    update:
+      success: "La factura fue actualizada exitosamente"
+    destroy:
+      success: "La factura fue eliminada correctamente"
+  tenders:
+    files:
+      see:
+        alerts:
+          title: "Actividades"
+      form:
+        title: "Expediente de licitación"
+      title: "Expedientes de licitación"
+    sale_requests:
+      form:
+        title: "Pliego"
+      index:
+        title: "Pliegos"
+      create:
+        success: "El pliego fue creado exitosamente"
+      update:
+        success: "El pliego fue actualizado exitosamente"
+      destroy:
+        success: "El pliego fue eliminado correctamente"
+    budgets:
+      form:
+        title: "Presupuesto de licitación"
+      title: "Presupuestos de licitación"
+      create:
+        success: "El presupuesto fue creado exitosamente"
+      update:
+        success: "El presupuesto fue actualizado exitosamente"
+      destroy:
+        success: "El presupuesto fue eliminado correctamente"
+    supplier_budgets:
+      form:
+        title: "Oferta"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar pliego"
+      title: "Ofertas"
+      create:
+        success: "La oferta fue creado exitosamente"
+      update:
+        success: "La oferta fue actualizado exitosamente"
+      destroy:
+        success: "La oferta fue eliminado correctamente"
+    orders:
+      form:
+        title: "Orden de licitación"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar presupuesto"
+      title: "Ordenes de licitación"
+      create:
+        success: "La orden fue creada exitosamente"
+      update:
+        success: "La orden fue actualizada exitosamente"
+      destroy:
+        success: "La orden fue eliminada correctamente"
+    bills:
+      form:
+        title: "Comprobante de licitación"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar orden"
+        filter_document: "Asociar remito"
+      title: "Comprobantes de licitación"
+      create:
+        success: "El comprobante fue creado exitosamente"
+      update:
+        success: "El comprobante fue actualizado exitosamente"
+      destroy:
+        success: "El comprobante fue eliminado correctamente"
+    shipments:
+      form:
+        title: "Remito"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar orden"
+      title: "Remitos"
+      create:
+        success: "El remito fue creado exitosamente"
+      update:
+        success: "El remito fue actualizado exitosamente"
+      destroy:
+        success: "El remito fue eliminado correctamente"
+    receipts:
+      form:
+        title: "Recibos"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar orden"
+      title: "Recibos"
+      create:
+        success: "El recibo fue creado exitosamente"
+      update:
+        success: "El recibo fue actualizado exitosamente"
+      destroy:
+        success: "El recibo fue eliminado correctamente"
+    resumes:
+      title: "Resumen de ingresos del mes"
+      see:
+        bills:
+          title: "Facturas asociadas"
+        receipts:
+          title: "Recibos asociados"
+  sales:
+    files:
+      see:
+        alerts:
+          title: "Actividades"
+      form:
+        title: "Expediente de venta"
+      title: "Expedientes de venta"
+    sale_requests:
+      form:
+        title: "Solicitud de venta"
+      index:
+        title: "Solicitudes de venta"
+      create:
+        success: "La solicitud fue creada exitosamente"
+      update:
+        success: "La solicitud fue actualizada exitosamente"
+      destroy:
+        success: "La solicitud fue eliminada correctamente"
+    budgets:
+      form:
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar solicitud"
+        title: "Presupuesto de venta"
+      title: "Presupuestos de venta"
+      create:
+        success: "El presupuesto fue creado exitosamente"
+      update:
+        success: "El presupuesto fue actualizado exitosamente"
+      destroy:
+        success: "El presupuesto fue eliminado correctamente"
+    orders:
+      form:
+        title: "Orden de venta"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar presupuesto"
+      title: "Ordenes de venta"
+      create:
+        success: "La orden fue creada exitosamente"
+      update:
+        success: "La orden fue actualizada exitosamente"
+      destroy:
+        success: "La orden fue eliminada correctamente"
+    bills:
+      form:
+        title: "Comprobante de venta"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar orden"
+        filter_document: "Asociar remito"
+      title: "Comprobantes de venta"
+      create:
+        success: "El comprobante fue creado exitosamente"
+      update:
+        success: "El comprobante fue actualizado exitosamente"
+      destroy:
+        success: "El comprobante fue eliminado correctamente"
+    shipments:
+      form:
+        title: "Remito"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar orden"
+        secondary_document: "Asociar factura"
+      title: "Remitos"
+      create:
+        success: "El remito fue creado exitosamente"
+      update:
+        success: "El remito fue actualizado exitosamente"
+      destroy:
+        success: "El remito fue eliminado correctamente"
+    receipts:
+      form:
+        title: "Recibos"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar orden"
+      title: "Recibos"
+      create:
+        success: "El recibo fue creado exitosamente"
+      update:
+        success: "El recibo fue actualizado exitosamente"
+      destroy:
+        success: "El recibo fue eliminado correctamente"
+    resumes:
+      title: "Resumen de ingresos del mes"
+      see:
+        bills:
+          title: "Facturas asociadas"
+        receipts:
+          title: "Recibos asociados"
+  purchases:
+    payment_orders:
+      title: "Órdenes de pago"
+      form:
+        title: "Orden de pago"
+      create:
+        success: "La orden de pago fue creada exitosamente"
+      update:
+        success: "La orden de pago fue actualizada exitosamente"
+    purchase_requests:
+      automatic_request_description: "Solicitud generada automáticamente por el sistema por bajo stock en la orden de compra n° %{document_number}"
+      title: "Solicitudes de compras"
+      form:
+        title:  "Solicitud de compra"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar orden de venta"
+      create:
+        success: "La solicitud fue creada exitosamente"
+      update:
+        success: "La solicitud fue actualizada exitosamente"
+      destroy:
+        success: "La solicitud fue eliminada correctamente"
+    files:
+      title: "Expedientes de compra"
+      see:
+        alerts:
+          title: "Actividades"
+    budgets:
+      title: "Presupuestos de Compra"
+      form:
+        title: "Presupuesto de compra"
+        associated_document: "Asociar solicitud de compra"
+        associated_document_span: "Primero debe seleccionar una solicitud de compra"
+      create:
+        success: "El presupuesto fue creado correctamente"
+      update:
+        success: "El presupuesto fue actualizado correctamente"
+      destroy:
+        success: "El presupuesto fue eliminado correctamente"
+    bills:
+      title: "Comprobantes de Compra"
+      form:
+        title: "Comprobantes de compra"
+        associated_document: "Asociar order de compra"
+        associated_document_span: "Primero debe seleccionar una order de compra"
+        filter_document: "Asociar remito"
+      create:
+        success: "El comprobante fue creado correctamente"
+      update:
+        success: "El comprobante fue actualizado correctamente"
+      destroy:
+        success: "El comprobante fue eliminado correctamente"
+    orders:
+      title: "Ordenes de compra"
+      create:
+        success: "La orden fue creada correctamente"
+      update:
+        success: "La orden fue actualizada correctamente"
+      destroy:
+        success: "La order fue eliminada correctamente"
+      form:
+        title: "Orden de compra"
+        associated_document: "Asociar presupuesto de compra"
+        associated_document_span: "Primero debe seleccionar un presupuesto de compra"
+    arrivals:
+      title: "Remitos de compra"
+      create:
+        success: "El remito fue creada correctamente"
+      update:
+        success: "El remito fue actualizada correctamente"
+      destroy:
+        success: "El remito fue eliminada correctamente"
+      form:
+        title: "Remito de compra"
+        associated_document: "Asociar orden de compra"
+        associated_document_span: "Primero debe seleccionar un orden de compra"
+    devolutions:
+      title: "Devolución de compra"
+      create:
+        success: "La devolución fue creada correctamente"
+      update:
+        success: "La devolución fue actualizada correctamente"
+      destroy:
+        success: "La devolución fue eliminada correctamente"
+      form:
+        title: "Devolución de compra"
+        associated_document: "Asociar remito"
+        associated_document_span: "Primero debe seleccionar un remito"
+  agreement_surgeries:
+    sale_orders:
+      title: "Ordenes de venta"
+      form:
+        title: "Ordenes de venta"
+        associated_document: "Asociar expediente"
+        associated_document_span: "Primero debe seleccionar el expediente"
+      see:
+        alerts:
+          title: "Actividades"
+    shipments:
+      form:
+        title: "Salida"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar orden"
+  surgeries:
+    files:
+      title: "Expedientes de cirugía"
+      see:
+        alerts:
+          title: "Actividades"
+    prescriptions:
+      title: "Recetas"
+      form:
+        title: "Receta"
+      create:
+        success: "La receta fue creada exitosamente"
+      update:
+        success: "La receta fue actualizada exitosamente"
+      destroy:
+        success: "La receta fue eliminada correctamente"
+    devolutions:
+      title: "Devoluciones"
+      form:
+        title: "Devolución"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar salida"
+        filter_document: "Asociar consumo"
+        secondary_document: "Asociar entrada"
+      create:
+        success: "La devolución fue creada correctamente"
+      update:
+        success: "La devolución fue actualizada correctamente"
+      destroy:
+        success: "La devolución fue eliminada correctamente"
+
+    budgets:
+      title: "Cotizaciones"
+      form:
+        title: "Cotización"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar receta"
+      create:
+        success: "La cotización fue creada exitosamente"
+      update:
+        success: "La cotización fue actualizada exitosamente"
+      destroy:
+        success: "La cotización fue eliminada correctamente"
+    sale_orders:
+      title: "Ventas"
+      form:
+        title: "Orden de venta"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar cotización"
+      create:
+        success: "La orden de venta fue creada exitosamente"
+      update:
+        success: "La orden de venta fue actualizada exitosamente"
+      destroy:
+        success: "La orden de venta fue eliminada correctamente"
+    purchase_requests:
+      title: "Solicitudes"
+      form:
+        title: "Solicitudes de compra"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar salida"
+      create:
+        success: "La solicitud de compra fue creado exitosamente"
+      update:
+        success: "La solicitud de compra fue actualizado exitosamente"
+      destroy:
+        success: "La solicitud de compra fue eliminado correctamente"
+    supplier_requests:
+      title: "Pedidos"
+      form:
+        title: "Pedidos de cirugía"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar solicitud"
+      create:
+        success: "El pedido de cirugía fue creado exitosamente"
+      update:
+        success: "El pedido de cirugía fue actualizado exitosamente"
+      destroy:
+        success: "El pedido de cirugía fue eliminado correctamente"
+    arrivals:
+      title: "Entradas"
+      form:
+        title: "Entrada"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar solicitud"
+      create:
+        success: "El remito de entrada fue creado exitosamente"
+      update:
+        success: "El remito de entrada fue actualizado exitosamente"
+      destroy:
+        success: "El remito de entrada fue eliminado correctamente"
+    shipments:
+      form:
+        title: "Salida"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar orden"
+      title: "Salidas"
+      create:
+        success: "El remito fue creado exitosamente"
+      update:
+        success: "El remito fue actualizado exitosamente"
+      destroy:
+        success: "El remito fue eliminado correctamente"
+    consumptions:
+      form:
+        title: "Consumo"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar salida"
+      title: "Consumos"
+      create:
+        success: "El consumo fue creado exitosamente"
+      update:
+        success: "El consumo fue actualizado exitosamente"
+      destroy:
+        success: "El consumo fue eliminado correctamente"
+    purchase_orders:
+      form:
+        title: "Compra"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar consumo"
+      title: "Consumos"
+      create:
+        success: "La compra fue creada exitosamente"
+      update:
+        success: "La compra fue actualizada exitosamente"
+      destroy:
+        success: "La compra fue eliminada correctamente"
+    supplier_bills:
+      title: "Compras"
+      form:
+        title:  "Factura"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar orden"
+        filter_document: "Asociar remito"
+      create:
+        success: "La factura fue creada exitosamente"
+      update:
+        success: "La factura fue actualizada exitosamente"
+      destroy:
+        success: "La factura fue eliminada correctamente"
+    receipts:
+      form:
+        title: "Recibos"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar orden"
+      title: "Recibos"
+      create:
+        success: "El recibo fue creado exitosamente"
+      update:
+        success: "El recibo fue actualizado exitosamente"
+      destroy:
+        success: "El recibo fue eliminado correctamente"
+    client_bills:
+      form:
+        title: "Factura"
+        associated_document_span: "Primero debe seleccionar el expediente"
+        associated_document: "Asociar orden"
+        filter_document: "Asociar remito"
+      title: "Facturas"
+      create:
+        success: "El comprobante fue creado exitosamente"
+      update:
+        success: "El comprobante fue actualizado exitosamente"
+      destroy:
+        success: "El comprobante fue eliminado correctamente"
+  users:
+    registrations:
+      title: "Perfil"
+  activerecord:
+    attributes:
+      permission:
+        init_date: "Fecha inicial"
+        days: "Dias"
+        reason: "Razón"
+        observation: "Observaciones"
+      expedient:
+        title: Título
+        place: Lugar de entrega
+        doctor: Médico
+        external_number: Nº externa
+        external_shipment_number: Remito externo
+        external_purchase_order_number: O.C externa
+        entity_id: Entidad
+        detail: Tipo
+        pacient: Paciente
+        province: Provincia
+        pacient_number: Nº afiliado
+        finish_date: Fecha de cirugía
+        open: Estado
+        substate: Subestado
+        iva_aliquot: I.V.A.
+        user_id: Responsable
+        initial_department: Departamento
+        delivery_hour: Fecha de entrega
+        number: Número
+        id: ID
+        company_id: Compañía
+        init_date: Fecha de inicio
+        created_at: Creado
+        custom_attributes: Detalle
+        type: Tipo de expediente
+        implant_state: "Estado de certificado de implante"
+        surgical_sheet_state: "Estado de Foja Quirúrgica "
+        implant_original_filename: "Archivo de implante"
+        implant_certificate: "Certificado de implante"
+        surgical_sheet: "Foja Quirúrgica"
+        surgical_sheet_original_filename: "Archivo de Foja Quirúrgica"
+        need_surgical_sheet: "¿Necesita foja quirurgica?"
+        need_implant: "¿Necesita implante?"
+        surgery_end_date: "Fecha de cirugia"
+        delivery_date: "Fecha de entrega"
+        technical: "Técnico"
+      users:
+        start_of_activity: "Inicio de actividades"
+      permissions:
+        init_date: "Fecha"
+        reason: "Razón"
+        observation: "Observación"
+      expedient_arrival:
+        number: "Número"
+        supplier: "Proveedor"
+        store: "Depósito"
+        date: "Fecha"
+        state: "Estado"
+      sale_file:
+        client: "Cliente"
+        iva_aliquot: "I.V.A. (%)"
+        initial_department: "Departamento inicial"
+        title: "Título"
+        sale_type: "Tipo"
+        init_date: "Fecha de inicio"
+        finish_date: "Fecha de finalización"
+        open: "¿Abierto?"
+        state: "Estado"
+        user: "Responsable"
+      expedient_request:
+        sale_file: "Expediente"
+        number: "Número"
+        client: "Cliente"
+        request_type: "Tipo"
+        init_date: "Fecha de inicio"
+        final_date: "Fecha de vencimiento"
+        urgency: "Urgencia"
+        state: "Estado"
+        observation: "Observación"
+        supplier: "Proveedor"
+        user: "Generado por"
+      expedient_receipt:
+        number: "Número"
+        client: "Cliente"
+        state: "Estado"
+        date: "Fecha"
+      sale_budget:
+        sale_file: "Expediente"
+        budget_state: "Adjudicación"
+        number: "Número"
+        client: "Cliente"
+        client_contact: "Contacto"
+        delivery_date: "Fecha de entrega de material"
+        delivery_address: "Dirección de entrega de material"
+        init_date: "Fecha de inicio"
+        final_date: "Vencimiento"
+        discount: "Descuento total ($)"
+        total: "Total ($)"
+        state: "Estado"
+        observation: "Observación"
+      expedient_bill_order:
+        sale_file: Expediente
+        number: "Número"
+        client: "Cliente"
+        user: "Generado por"
+        expected_delivery_date: "Fecha de entrega"
+        state: "Estado"
+        order_type: "Tipo"
+        subtotal: "Subtotal ($)"
+        discount: "Descuento ($)"
+        total: "Total ($)"
+      expedient_bill:
+        sale_file: "Expediente"
+        client: "Cliente"
+        cbte_tipo: "Tipo"
+        number: "Número"
+        concept: "Concepto"
+        user: "Generado por"
+        total_pay: "Pagado($)"
+        total_left: "Faltante ($)"
+        total: "Total ($)"
+        gross_amount: "Bruto ($)"
+        sale_point: "Pto. de venta"
+        parent: "Comp. asociado"
+        state: "Estado"
+        iva_amount: "I.V.A. ($)"
+        reception_date: "Fecha de recepción"
+        receptor_name: "Recibida por"
+        estimated_days_to_pay: "Plazo estimado de pago (días)"
+        supplier: "Proveedor"
+        due_date: "Fecha de vencimiento"
+        cbte_fch: "Fecha del comprobante"
+        fch_ser_desde: "Desde"
+        fech_ser_hasta: "Hasta"
+        fch_vto_pago: "Fecha vencimiento"
+        due_days: "Vencimiento en:"
+        registration_date: "Fecha de registro"
+        total_usd: "Bruto (USD)"
+        usd_price: "Cotización USD"
+      expedient_shipment:
+        sale_file: "Expediente"
+        number: "Número"
+        client: "Cliente"
+        store: "Depósito"
+        date: "Fecha"
+        state: "Estado"
+        shipment_type: "Tipo"
+      purchase_bill:
+        registration_date: "Fecha de registro"
+      purchase_request:
+        purchase_file: "Expediente"
+        number: "Número"
+        user: "Generada por"
+        request_type: "Tipo"
+        date: "Fecha de inicio"
+        due_date: "Fecha de vencimiento"
+        urgency_level: "Urgencia"
+        state: "Estado"
+        deliver_to_hospital: "Entregar a quirófano"
+      purchase_budget:
+        purchase_file: "Expediente"
+        number: "Número"
+        supplier: "Proveedor"
+        supplier_contact: "Contacto"
+        delivery_date: "Fecha de entrega"
+        delivery_address: "Dirección de entrega"
+        date: "Fecha"
+        due_date: "Vencimiento"
+        discount: "Descuento (%)"
+        total: "Total(%)"
+        state: "Estado"
+      external_bill:
+        number: "Número"
+        cbte_num: "Número"
+        cbte_tipo: "Tipo"
+        gross_amount: "Total bruto ($)"
+        iva_amount: "I.V.A. ($)"
+        total: "Total ($)"
+        supplier: "Proveedor"
+        date: "Fecha"
+        due_date: "Vencimiento"
+        state: "Estado"
+        usd_price: "Cotización USD"
+        registration_date: "Fecha de registración"
+        concept: "Concepto"
+        cbte_fch: "Fecha del comprobante"
+      purchase_payment_order:
+        number: "Número"
+        user: "Responsable"
+        date: "Fecha"
+        supplier: "Proveedor"
+        state: "Estado"
+      expedient_order:
+        client: "Cliente"
+        purchase_file: "Expediente"
+        number: "Número"
+        supplier: "Proveedor"
+        user: "Generado por"
+        subtotal: "Subtotal ($)"
+        discount: "Descuento ($)"
+        total: "Total ($)"
+        expected_delivery_date: "Fecha de cirugía"
+        shipping_included: "Envío"
+        state: "Estado"
+        order_type: "Tipo"
+        total_usd: "Bruto (USD)"
+        usd_price: "Cotización USD"
+      purchase_arrival:
+        purchase_file: "Expediente"
+        number: "Número"
+        supplier: "Proveedor"
+        store: "Depósito"
+        date: "Fecha de llegada"
+        punctuation: "Puntuacion al proveedor"
+        state: "Estado"
+      devolution:
+        purchase_file: "Expediente"
+        number: "Número"
+        user: "Generado por"
+        date: "Fecha"
+        supplier: "Proveedor"
+        state: "Estado"
+        shipping_price: "Costo de envío"
+      expedient_devolution:
+        state: "Estado"
+        number: "Número"
+        user: "Generado por"
+        date: "Fecha"
+        supplier: "Proveedor"
+        shipping_price: "Costo de envío"
+      purchase_invoice:
+        purchase_file: "Expediente"
+        cbte_num: "Número"
+        cbte_tipo: "Tipo"
+        gross_amount: "Total bruto ($)"
+        iva_amount: "I.V.A. ($)"
+        total: "Total ($)"
+        supplier: "Proveedor"
+        date: "Fecha"
+        due_date: "Vencimiento"
+        state: "Estado"
+      surgery_prescription:
+        surgery_file: "Expediente"
+        client: "Obra social"
+      expedient_budget:
+        number: "Número"
+        client: "Cliente"
+        client_contact: "Contacto"
+        delivery_date: "Fecha de entrega de material"
+        delivery_address: "Lugar de entrega de material"
+        init_date: "Fecha inicio"
+        final_date: "Fecha fin"
+        discount: "Descuento"
+        supplier: "Proveedor"
+        supplier_contact: "Contacto"
+        state: "Estado"
+        total_usd: "Bruto (USD)"
+        usd_price: "Cotización USD"
+        budget_state: "Adjudicación"
+      expedient_consumption:
+        number: "Número"
+        client: "Cliente"
+        store: "Depósito"
+        date: "Fecha"
+        state: "Estado"
+        shipment_type: "Tipo"
+      purchases/payment_order:
+        number: "Número"
+      surgeries/supplier_request:
+        deliver_to_hospital: "Entregar a quirófano"
+    errors:
+      messages:
+        record_invalid: 'La validación falló: %{errors}'
+        restrict_dependent_destroy:
+          has_one: No se puede eliminar el registro porque existe un %{record} dependiente
+          has_many: No se puede eliminar el registro porque existen %{record} dependientes
+  date:
+    abbr_day_names:
+    - dom
+    - lun
+    - mar
+    - mié
+    - jue
+    - vie
+    - sáb
+    abbr_month_names:
+    -
+    - ene
+    - feb
+    - mar
+    - abr
+    - may
+    - jun
+    - jul
+    - ago
+    - sep
+    - oct
+    - nov
+    - dic
+    day_names:
+    - domingo
+    - lunes
+    - martes
+    - miércoles
+    - jueves
+    - viernes
+    - sábado
+    formats:
+      default: "%-d/%-m/%Y"
+      long: "%-d de %B de %Y"
+      short: "%-d de %b"
+      formal: "EL %d DE %B DE %Y"
+    month_names:
+    -
+    - enero
+    - febrero
+    - marzo
+    - abril
+    - mayo
+    - junio
+    - julio
+    - agosto
+    - septiembre
+    - octubre
+    - noviembre
+    - diciembre
+    order:
+    - :day
+    - :month
+    - :year
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: alrededor de 1 hora
+        other: alrededor de %{count} horas
+      about_x_months:
+        one: alrededor de 1 mes
+        other: alrededor de %{count} meses
+      about_x_years:
+        one: alrededor de 1 año
+        other: alrededor de %{count} años
+      almost_x_years:
+        one: casi 1 año
+        other: casi %{count} años
+      half_a_minute: medio minuto
+      less_than_x_seconds:
+        one: menos de 1 segundo
+        other: menos de %{count} segundos
+      less_than_x_minutes:
+        one: menos de 1 minuto
+        other: menos de %{count} minutos
+      over_x_years:
+        one: más de 1 año
+        other: más de %{count} años
+      x_seconds:
+        one: 1 segundo
+        other: "%{count} segundos"
+      x_minutes:
+        one: 1 minuto
+        other: "%{count} minutos"
+      x_days:
+        one: 1 día
+        other: "%{count} días"
+      x_months:
+        one: 1 mes
+        other: "%{count} meses"
+      x_years:
+        one: 1 año
+        other: "%{count} años"
+    prompts:
+      second: Segundos
+      minute: Minutos
+      hour: Hora
+      day: Día
+      month: Mes
+      year: Año
+  errors:
+    format: "%{message}"
+    messages:
+      accepted: debe ser aceptado
+      blank: no puede estar en blanco
+      confirmation: no coincide
+      empty: no puede estar vacío
+      equal_to: debe ser igual a %{count}
+      even: debe ser par
+      exclusion: está reservado
+      greater_than: debe ser mayor que %{count}
+      greater_than_or_equal_to: debe ser mayor que o igual a %{count}
+      inclusion: no está incluido en la lista
+      invalid: no es válido
+      less_than: debe ser menor que %{count}
+      less_than_or_equal_to: debe ser menor que o igual a %{count}
+      model_invalid: 'La validación falló: %{errors}'
+      not_a_number: no es un número
+      not_an_integer: debe ser un entero
+      odd: debe ser impar
+      other_than: debe ser distinto de %{count}
+      present: debe estar en blanco
+      required: debe existir
+      taken: ya está en uso
+      too_long:
+        one: es demasiado largo (1 carácter máximo)
+        other: es demasiado largo (%{count} caracteres máximo)
+      too_short:
+        one: es demasiado corto (1 carácter mínimo)
+        other: es demasiado corto (%{count} caracteres mínimo)
+      wrong_length:
+        one: no tiene la longitud correcta (1 carácter exactos)
+        other: no tiene la longitud correcta (%{count} caracteres exactos)
+    template:
+      body: 'Se encontraron problemas con los siguientes campos:'
+      header:
+        one: No se pudo guardar este/a %{model} porque se encontró 1 error
+        other: No se pudo guardar este/a %{model} porque se encontraron %{count} errores
+  helpers:
+    select:
+      prompt: Por favor seleccione
+    submit:
+      create: Crear %{model}
+      submit: Guardar %{model}
+      update: Actualizar %{model}
+  number:
+    currency:
+      format:
+        delimiter: "."
+        format: "%n %u"
+        precision: 2
+        separator: ","
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "€"
+    format:
+      delimiter: "."
+      precision: 3
+      separator: ","
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: mil millones
+          million:
+            one: millón
+            other: millones
+          quadrillion: mil billones
+          thousand: mil
+          trillion:
+            one: billón
+            other: billones
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 1
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          eb: EB
+          gb: GB
+          kb: KB
+          mb: MB
+          pb: PB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n %"
+    precision:
+      format:
+        delimiter: ''
+  support:
+    array:
+      last_word_connector: " y "
+      two_words_connector: " y "
+      words_connector: ", "
+  time:
+    am: am
+    formats:
+      default: "%A, %-d de %B de %Y %H:%M:%S %z"
+      long: "%-d de %B de %Y %H:%M"
+      short: "%-d de %b %H:%M"
+      date: "%-d/%-m/%Y"
+      full_afip_date: "%Y-%m-%d"
+      time: "%H:%M"
+    pm: pm

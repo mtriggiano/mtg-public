@@ -1,0 +1,12 @@
+= simple_nested_form_for payment_order, defaults: { disabled: payment_order.disabled? } do |f|
+	= render 'form_header', f: f
+
+	.row.mb-5
+		.col-lg-6
+			= render 'details_form', f: f, document_disabled: f.object.disabled?
+		.col-lg-6
+			= render 'payments', f: f, document_disabled: f.object.disabled?
+			= render 'taxes', f: f, document_disabled: f.object.disabled?
+
+	.text-center
+		= save_button unless payment_order.disabled?

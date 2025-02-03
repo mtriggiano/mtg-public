@@ -1,0 +1,51 @@
+- company_presenter ||= CompanyPresenter.new(payment_order.company, self)
+.border
+  %table.width_100
+    %tr{style: "line-height: 10px !important;"}
+      %th.text_size_20.text_left.header_word_break{style:"text-align: center; width: 200px; line-height: 10px;"}
+        %p
+          = wicked_pdf_image_tag payment_order.company.pdf_logo, width: "200px"
+      %th.header_word_break{style:"width: 300px; text-align: left; padding-left: 50px;"}
+        %p{style: 'font-size: 12px;'}
+          = payment_order.company.try(:address)
+        %p{style: 'font-size: 12px;'}
+          = payment_order.company.postal_code + " " + payment_order.company.try(:locality).try(:province).try(:name) + " - " + payment_order.company.try(:locality).try(:province).try(:country).try(:name)
+        %p{style: 'font-size: 12px;'}
+          = "#{payment_order.company.try(:contact_number)}".html_safe
+        %p{style: 'font-size: 12px;'}
+          = "#{payment_order.company.try(:email)}".html_safe
+        %p{style: 'font-size: 12px;'}
+          = "C.U.I.T.: #{payment_order.company.try(:cuit)}".html_safe
+        %p{style: 'font-size: 12px;'}
+          www.magnus.com.ar
+      %th.header_word_break.border{style:"width: 250px;"}
+        %p.text_size_20
+          ORDEN DE PAGO
+        %p.text_size_25
+          Nº
+          = payment_order.number
+        %p
+          Fecha:
+          = I18n.l(payment_order.date, format: :default)
+        %p.text_size_25{:style => "color: red"}
+          = "ANULADO" if payment_order.canceled?
+.border
+  %table.width_100
+    %tr{style: 'font-size: 15px;'}
+      %td
+        %b
+          Proveedor razón social:
+        = payment_order.supplier.name
+      %td
+        %b
+          Gln:
+        = payment_order.supplier.try(:gln)
+    %tr{style: 'font-size: 15px;'}
+      %td
+        %b
+          C.U.I.T.:
+        = payment_order.supplier.try(:document_number)
+      %td
+        %b
+          Condición I.V.A:
+        = payment_order.supplier.try(:iva_cond)

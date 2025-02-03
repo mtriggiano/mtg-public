@@ -1,0 +1,47 @@
+%center
+	.row
+		.col-4.p-4.border.text-center.piechart
+			%h6 Total presupuestado por vendedor
+			%hr
+			= render_report 'total_budgeted', actions: [] do |report|
+				= report.form do |f|
+					.row.d-flex.justify-content-end.w-100
+						.col-12.d-flex
+							.px-1
+								= f.multi_autocomplete :seller, placeholder: 'Vendedores...'
+							.px-1
+								= f.date_range :init_date
+							.download-links.ml-auto
+								= report.export_xls_button class: 'btn btn-small btn-primary' do
+									= icon('fas', 'file-excel')
+									Exportar
+		.col-4.p-4.border.text-center
+			%h6 Total presupuestado por mes
+			%hr
+			= render_report 'total_budgeted_per_month', actions: [] do |report|
+				= report.form do |f|
+					.row.d-flex.justify-content-end.w-100
+						.col-12.d-flex
+							.px-1
+								= f.multi_autocomplete :seller, placeholder: 'Vendedores...'
+							.px-1
+								= f.date_range :init_date
+							.download-links.ml-auto
+								= report.export_xls_button class: 'btn btn-small btn-primary' do
+									= icon('fas', 'file-excel')
+									Exportar
+		.col-4.p-4.border.text-center.piechart
+			%h6 Total presupuestado por cliente
+			%hr
+			= render_report 'total_budgeted_per_client', actions: [] do |report|
+				= report.form do |f|
+					.row.d-flex.justify-content-end.w-100
+						.col-12.d-flex
+							.px-1
+								= f.multi_autocomplete :entity, placeholder: 'Clientes...'
+							.px-1
+								= f.date_range :init_date
+							.download-links.ml-auto
+								= report.export_xls_button class: 'btn btn-small btn-primary' do
+									= icon('fas', 'file-excel')
+									Exportar

@@ -1,0 +1,20 @@
+= simple_form_for(company, html: {class: 'horizontal-form'}, wrapper: :horizontal_form) do |f|
+	.row
+		.col-8.offset-2
+			= error_notification(f)
+			= f.hidden_field :view, value: params[:view]
+			= f.input :activity_init_date, as: :string, input_html: {class: 'bootstrap-datepicker'}, label: "Inicio de actividad"
+			%hr.dotted
+			= f.input :currency, as: :select, collection: all_currencies, label: "Moneda", prompt: "Seleccione..."
+			%hr.dotted
+			= f.input :cbu, label: "C.B.U.", placeholder: "22 digitos"
+			%hr.dotted
+			= f.input :gross_income, label: "Ingresos brutos"
+			%hr.dotted
+			= f.input :cuit, label: "C.U.I.T.", placeholder: "Formato númerico, sin guiones ni espacios"
+			%hr.dotted
+			= f.input :iva_cond, label: "Condición ante I.V.A.", as: :select, collection: Company::IVA_COND, prompt: "Seleccione..."
+			%hr.dotted
+			= f.input :coefficient_for_net_amount, label: "Coheficiente de correción de importe neto (para comisiones)", input_html: {step: '0.01', min: 0}
+	%hr
+		= save_button

@@ -1,0 +1,34 @@
+= simple_nested_form_for(company) do |f|
+	= error_notification(f)
+	= f.hidden_field :view, value: params[:view]
+	.table-responsive
+		%table.table#card_table
+			%thead.thead-light
+				%th{scope: 'col'} Nombre
+				%th{scope: 'col'} Tipo
+				%th{scope: 'col'} Acreditación en 1 pago
+				%th{scope: 'col'} Acreditación en cuotas
+				%th{scope: 'col'} Tipo
+				%th{scope: 'col'} Deposita en
+				%th{scope: 'col'} Acciones
+			%tbody
+				= f.simple_fields_for :cards, :wrapper => false do |b|
+					%tr.fields
+						%td
+							= b.input :name, label: false, placeholder: "Ej: Visa, Mastercard, etc"
+						%td
+							= b.input :card_type, as: :select, label:false, collection: Card::TYPES, include_blank: false
+						%td
+							= b.input :one_payment_delay, label: false, placeholder: "Demora de acreditación"
+						%td
+							= b.input :installments_delay, label: false, placeholder: "Demora de acreditación"
+						%td
+							= b.input :delay_type, as: :select, label: false, collection: Card::DELAY_TYPES, include_blank: false
+						%td
+							= b.association :bank, as: :select, label: false, include_blank: false, collection: current_company.banks.map{|a| [a.name, a.id]}
+						%td
+							= b.link_to_remove icon('fas', 'trash'), class: 'btn btn-danger ml-3'
+	%center
+		= f.link_to_add "#{icon('fas', 'plus')} Añadir tarjeta".html_safe, :cards, class: 'btn btn-secondary ml-2 mb-4', data: {target: '#card_table'}
+	%hr
+	= save_button

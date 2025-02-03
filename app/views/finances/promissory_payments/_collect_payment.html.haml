@@ -1,0 +1,34 @@
+.modal.fade{:id => "confirmCollect"}
+  .modal-dialog.modal-lg{:role => "document"}
+    .modal-content
+      = simple_form_for(promissory_payment, url: polymorphic_path([:collect, promissory_payment]), wrapper: false) do |f|
+        .modal-header
+          %h5.modal-title Registro de depósito
+          %button.close{:"data-dismiss" => "modal"}
+            %span &times;
+        .modal-body
+          %p Al registrar el depósito de un cheque/pagaré en cartera se generan los siguientes movimientos de caja:
+          %ul.mb-4
+            %li Movimiento de ingreso a caja por el importe del cheque.
+            %li Movimiento de egreso de caja por el importe del cheque.
+          %p.alert.alert-info.text-center
+            Al confirmar el depósito este cheque/pagaré saldrá de la cartera y los movimientos de caja serán registrados.
+            %b ¿Desea continuar?
+          .row
+            - if promissory_payment.class == BankCheckPayment
+              .col-md-12.my-3
+                = f.input :bank_account_id, label: "Cuenta bancaria destino", collection: current_company.bank_accounts.map { |bank_account| [bank_account.alias_tag.upcase, bank_account.id] }, prompt: "Seleccione...", required: true, input_html: { prompt: "Seleccione...", required: true }
+            .col-lg-4.col-md-12.mb-3
+              %p.mb-1.text-center Número
+              %h4.text-center
+                = promissory_payment.numero_cheque
+            .col-lg-4.col-md-12.mb-3
+              %p.mb-1.text-center Cliente
+              %h4.text-center
+                = promissory_payment.client.name
+            .col-lg-4.col-md-12.mb-3
+              %p.mb-1.text-center Importe
+              %h4.text-center
+                = number_to_ars promissory_payment.importe
+        .modal-footer.text-center
+          = button_tag "#{icon('fas', 'check')} Confirmar depósito".html_safe, type: :submit, class: 'btn btn-outline-success mb-4'

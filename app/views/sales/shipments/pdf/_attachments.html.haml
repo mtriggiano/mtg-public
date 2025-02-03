@@ -1,0 +1,11 @@
+.border
+  %table.width_100{style: "font-size: 14px !important"}
+    %tr
+      %th.text_size_25.text_left.header_word_break.border{style:"text-align: center; width: 250px; line-height: 10px;"}
+        %p
+          Adjuntos:
+          %br
+          - @sale_shipment.attachments.each do |attach|
+            %center
+              = wicked_pdf_image_tag attach.file, height: "300px"
+            %br

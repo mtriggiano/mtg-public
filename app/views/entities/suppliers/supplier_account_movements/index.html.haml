@@ -1,0 +1,13 @@
+.index
+	.index-title
+		.principal
+			= icon('fas', 'briefcase')
+			Cuenta corriente
+		%span.float-right
+			= link_to "#{icon('fas', 'plus')} Factura".html_safe, new_external_bill_path(entity_id: supplier.id), class: 'btn btn-danger mr-2 ml-3'
+		%span.float-right
+			= link_to "#{icon('fas', 'plus')} Orden de pago".html_safe, new_purchases_payment_order_path(entity_id: supplier.id), class: 'btn btn-success'
+= index_table(mform: true, text: "Cuenta corriente de #{supplier.name}",can_new_path: false, title: "false", icon: 'briefcase', collection: collection, jpath: supplier_supplier_account_movements_path(supplier.id, format: :json))
+
+= modal("#{icon('fas', 'plus')} Añadir recibo", "new_sale_receipt_modal", "new_sale_receipt_body", "big") do
+	.modal-body

@@ -1,0 +1,45 @@
+.row.border{style: 'padding-top: 5px;'}
+  .container{style: "height: 550px; font-size: 9px;"}
+    %table.width_100
+      %tr
+        %th.description_header
+          R
+        %th.description_header
+          Cant.
+        %th.description_header
+          Producto/Servicio
+        %th.description_header
+          Marca
+        %th.description_header
+          Origen
+        %th.description_header
+          Precio
+        %th.description_header
+          Bonificación
+        %th.description_header
+          I.V.A (%)
+        %th.description_header
+          Subtotal
+
+      - details.compact.each_with_index do |det, index|
+        %tr{style: "height: 28px !important;", class: det[:type]}
+          %td.text_center
+            =# index + 1 + ( 11 * (page_number -1))
+            = index + 1 + (15 * (page_number - 1))
+          %td.text_center
+            = det["quantity"]
+          %td
+            = det["product_name"]
+          %td.text_center
+            = det["branch"]
+          %td.text_center
+            = det["source"]
+          - unless det['tipo'] == 'child'
+            %td.text_right
+              = det["price"]
+            %td.text_right
+              = det["bonus_amount"]
+            %td.text_right
+              = Afip::ALIC_IVA.to_h[det['iva_aliquot']].to_f * 100
+            %td.text_right
+              = det["total"]

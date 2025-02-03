@@ -1,0 +1,42 @@
+.card.justify-flex-content.p-4
+  .card-body.pt-0
+    .row
+      .col-8.offset-2
+        %h5.card-title.text-center.border-bottom.pb-3
+          = icon('fas', 'list')
+          Datos básicos
+        = simple_nested_form_for user, html: { class: 'horizontal-form directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }, wrapper: :horizontal_form do |f|
+          = error_notification(f)
+          = hidden_field_tag :view, params[:view]
+          .text-center
+            = f.input :avatar, as: :file, input_html: { hidden: true, class: 'file_input' }, label: false
+            .text-center
+              .caption.captionload{style: "left: 50%; transform: translateX(-50%)"}
+                = image_tag "/images/load.gif", class: 'img-fluid'
+              = image_tag user.avatar, width: '75px', alt: 'Añadir imagen', class: 'border image'
+          %hr.dotted
+          = f.input :first_name, label: "Nombre"
+          %hr.dotted
+          = f.input :last_name, label: "Apellido"
+          %hr.dotted
+          = f.input :email, label: "Email de acceso"
+          %hr.dotted
+          = f.input :document_type, as: :string, required: false, label: "Documento", wrapper: :input_group, label_html: {class: 'text-right'} do
+            %span.input-group-addon
+              = f.input_field :document_type, collection: Afip::DOCUMENTOS, class: "form-control", prompt: "Seleccione..."
+            = f.input_field :document_number, class: 'form-control', as: :numeric, placeholder: "Sin guiones ni puntos, solo números"
+          %hr.dotted
+          = f.input :birthday, as: :string, input_html: {class: 'bootstrap-datepicker'}, label: "Nacimiento"
+          %hr.dotted
+          = f.input :address, label: "Dirección"
+          %hr.dotted
+          = f.input :postal_code, label: "Código postal"
+          %hr.dotted
+          = f.input :phone, label: "Teléfono"
+          %hr.dotted
+          = f.input :mobile_phone, label: "Celular"
+          %hr.dotted
+          = f.input :social_work, label: "Obra Social"
+          %hr
+          .actions.text-center
+            = save_button

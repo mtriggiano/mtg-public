@@ -1,0 +1,41 @@
+%p.mb-1
+  Rendiciones de dinero en caja general
+  %span.float-right
+    = link_to "#{icon('fas', 'plus')} Rendición".html_safe, new_regular_cash_account_imprest_clearing_path(current_company.regular_cash_accounts.first)
+%table.contable-table
+  %thead
+    %th
+      Número
+    %th
+      Fecha
+    %th
+      Caja origen
+    %th
+      Responsable
+    %th
+      Fondo fijo
+    %th
+      Saldo de inicio
+    %th
+      A rendir
+    %th
+      Saldo en caja
+  %tbody
+    - imprest_clearings.each do |imprest_clearing|
+      %tr
+        %td
+          = link_to imprest_clearing.id.to_s.rjust(8, '0'), edit_regular_cash_account_imprest_clearing_path(imprest_clearing.regular_cash_account, imprest_clearing)
+        %td
+          = imprest_clearing.fecha
+        %td
+          = imprest_clearing.regular_cash_account.nombre
+        %td
+          = imprest_clearing.user.name
+        %td
+          = number_to_ars imprest_clearing.fondo_fijo
+        %td
+          = number_to_ars imprest_clearing.saldo_inicio
+        %td
+          = number_to_ars imprest_clearing.a_rendir
+        %td
+          = number_to_ars imprest_clearing.saldo_en_caja

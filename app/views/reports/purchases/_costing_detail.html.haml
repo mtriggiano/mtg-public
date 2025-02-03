@@ -1,0 +1,15 @@
+.table-responsive
+  %table.table-striped
+    %thead
+      %th Detalle
+      %th Ganancia
+      %th Costo
+    %tbody
+      - collection.each do |object|
+        %tr
+          %td
+            = object[:name]
+          %td
+            = object[:earned]
+          %td
+            = object[:expended]

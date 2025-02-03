@@ -1,0 +1,5 @@
+= index_table(collection: collection, icon: 'hand-paper', text: "Pliegos")
+
+= modal("#{icon('fas', 'cogs')} Configurar campos", "config_modal", "config_modal_body", "big") do
+	.modal-body
+		= yield

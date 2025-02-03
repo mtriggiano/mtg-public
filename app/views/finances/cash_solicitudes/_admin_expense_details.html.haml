@@ -1,0 +1,47 @@
+- expedient_orders = current_company.expedient_orders.order(created_at: :desc).limit(1000).select(:number, :id).map{ |order| [order.name, order.id] }
+- suppliers = current_company.suppliers.map{ |supplier| ["#{supplier.name} - CUIT: #{supplier.document_number}", supplier.id] }
+= f.simple_fields_for :expense_details do |i|
+  .fields.text-left
+    .card.mb-4
+      .card-body
+        = error_notification(i)
+        = i.link_to_remove icon('fas', 'times'), class: "text-danger float-right"
+
+        %p.text-muted.mb-1 Información del comprobante
+        .border.rounded.pt-2.px-2.mb-4
+          .row
+            .col-md-3
+              = i.input :fecha, label: "Fecha Emisión", as: :date_picker, input_html: { class: 'text-center' }
+            .col-md-2
+              = i.input :letra, label: "Tipo", collection: ExpenseDetail::COMP_TYPES, input_html: { class: 'text-center', size: "1", maxlength: "1" }
+            .col-md-3
+              = i.input :punto_venta, label: "PtoVta", input_html: { class: 'text-center', size: "5", maxlength: "5", required: false }, required: false
+            .col-md-4
+              = i.input :num_comprobante, label: "Comprobante", input_html: { class: 'text-center', size: "8", maxlength: "8", required: false }, required: false
+            .col-md-3
+              = i.input :fecha_pago, label: "Fecha de pago", as: :date_picker, input_html: {class: 'text-center'}
+            .col-md-3
+              = i.input :supplier_name, label: "Nombre proveedor", input_html: { required: false }, required: false
+            .col-md-3
+              = i.input :entity_id, collection: suppliers, label: "Proveedor"
+            .col-md-3
+              = i.input :order_id, label: "OC o NV asociado", as: :select, collection: expedient_orders, input_html: { required: false }
+            .col-md-12
+              = i.input :descripcion, label: "Descripción", as: :text
+
+        %p.text-muted.mb-1 Información contable
+        .border.rounded.pt-2.px-2.mb-4
+          .row
+            .col-md-4.col-lg-2
+              = i.input :fecha_registro, label: "Fecha Registro", as: :date_picker, input_html: { class: 'text-center' }
+            .col-md-4.col-lg-2
+              = i.input :sum_iva, label: "IVA", input_html: { class: 'text-right', required: true }, required: true
+            .col-md-4.col-lg-2
+              = i.input :percep_iva, label: "Percep. IVA", input_html: { class: 'text-right', required: true }, required: true
+            .col-md-4.col-lg-2
+              = i.input :percep_iibb, label: "IIBB", input_html: { class: 'text-right', required: true }, required: true
+            .col-md-4.col-lg-2
+              = i.input :no_gravados, label: "NO GRAV.", input_html: { class: 'text-right', required: true }, required: true
+            .col-md-4.col-lg-2
+              = i.input :total, label: "TOTAL ($)", input_html: { class: 'text-right expense-bill-total', onkeyup: 'calculateRefundTotal()', required: true }, required: true
+            = i.input :archived, as: :hidden, input_html: {value: false}

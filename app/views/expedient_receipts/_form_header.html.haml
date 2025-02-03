@@ -1,0 +1,29 @@
+.accordion#document-accordion
+  %ul.nav.nav-tabs.justify-content-end.document-options
+    %li.nav-item
+      = button_tag "Principal".html_safe, type: :button, aria: {selected: true, controls: 'header'}, data: { toggle: 'tab', target: '#header', target: '#header' }, class: 'nav-link bg-white active'
+    %li.nav-item
+      = button_tag "Observaciones".html_safe, type: :button, aria: {selected: false, controls: 'observation'}, data: {toggle: 'tab', target: '#observation'}, class: 'nav-link bg-white collapsed'
+    %li.nav-item
+      = pdf_button(f.object)
+
+  .card.shadow.mb-4.collapse.active.show.rounded-lg#header{class: "border-left-#{record.state_color}", :"data-parent" => "document-accordion"}
+    .card-body
+      = error_explanation(f.object)
+      .row
+        .col-lg-3.col-xs-12
+          = number_input(f)
+        .col-lg-3.col-xs-12
+          = f.input :entity_id, as: :select, label: "Cliente", selected: params[:entity_id] || expedient_receipt.entity_id, collection: current_company.clients, required: true
+          = hidden_field_tag :client_current_balance, f.object.client.try(:current_debt) || 0
+        .col-lg-3.col-xs-12
+          = f.input :client_payment_order, label: "Orden de Pago"
+          = f.input :state, label: false, disabled: true, input_html: { id: "current_state", class: "d-none" }
+        .col-lg-3.col-xs-12
+          = f.input :date, label: "Fecha", as: :date_picker, disabled: expedient_receipt.disabled?, input_html: { required: true }, required: true
+        .col-lg-12.col-xs-12
+          = f.input :concept, as: :text, placeholder: "[En concepto de:] facturas adeudadas...", label: "En concepto de...", disabled: expedient_receipt.disabled?, input_html: { rows: 2 }, wrapper: false
+        = state_manager(f)
+
+  -# = render '/file_attributes_configs/shared_extra_attributes', f:f, object: expedient_receipt
+  = render 'observations', f: f

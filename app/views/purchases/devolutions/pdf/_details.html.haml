@@ -1,0 +1,44 @@
+.row.border{style: "padding-top: 5px;"}
+  .container{style: "height: 750px; font-size: 9px !important"}
+    %table.width_100
+      %tr
+        %th.description_header
+          R
+        %th.description_header
+          Cant.
+        %th.description_header
+          Producto/Servicio
+        %th.description_header
+          Marca
+        %th.description_header
+          Origen
+        %th.description_header
+          Lote.
+        %th.description_header
+          Nº Serie.
+        %th.description_header
+          Vencimiento.
+        %th.description_header
+          Motivo
+
+
+      - details.select{|d| d['quantity'] > 0 }.compact.each_with_index do |det, index|
+        %tr{style: "height: 25px !important;"}
+          %td.text_center
+            = index + 1
+          %td.text_center
+            = det["quantity"]
+          %td
+            = det["product_name"]
+          %td
+            = det["branch"]
+          %td
+            = det["source"]
+          %td
+            = det["code"]
+          %td
+            = det["serial"]
+          %td
+            = det["due_date"]
+          %td
+            = det["return_reason"]

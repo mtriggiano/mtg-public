@@ -1,0 +1,22 @@
+.table-responsive
+	%table{class: "table gtin-table-#{d.index}"}
+		%thead
+			%th ID Transacción
+			%th Serial
+			%th Lote
+			%th Vencimiento
+			%th Acción
+		%tbody
+			= d.simple_fields_for :batches, wrapper: false do |g|
+				%tr
+					%td
+						= g.input :transaction_id, label: false
+					%td
+						= g.input :serial, label: false
+					%td
+						= g.input :code, label: false, class: 'gtin-input'
+					%td
+						= g.input :due_date, label: false, as: :date_picker
+					%td
+						= g.link_to_remove icon('fas', 'trash'), class: 'btn btn-sm btn-danger'
+= d.link_to_add "Añadir", :batches, class: 'btn btn-success', data: {target: "table.gtin-table-#{d.index}"}

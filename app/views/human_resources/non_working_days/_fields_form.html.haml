@@ -1,0 +1,5 @@
+.row
+  .col-6
+    = d.input :user_id, as: :select, label: "Empleado", collection: current_company.users
+  .col-6
+    = d.link_to_remove icon('fas', 'trash'), class: "btn btn-danger btn-sm"

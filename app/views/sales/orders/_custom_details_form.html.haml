@@ -1,0 +1,48 @@
+= simple_nested_form_for [:deliver, order] do |f|
+	%p.text-muted
+		= icon('fas', 'exclamation-circle')
+		Configure los detalles de la orden de venta. Los datos especifique abajo seran los que se mostraran en el PDF que se enviará al cliente.
+		.form-group.form-inline.border-bottom.pb-3
+			= label_tag :email, "Enviar a:", class: 'control-label col-3'
+			.col-9
+				= email_field_tag :email, params[:email] || order.client.emails, class: 'form-control', placeholder: "Emails separados por coma...", required: true
+	.table-responsive
+		%table.table.custom-details
+			%thead
+				%th Tipo
+				%th Código
+				%th Descripción
+				%th Precio ($)
+				%th Cantidad
+				%th Descuento
+				%th U. Medida
+				%th I.V.A. (%)
+				%th Subtotal ($)
+			%tbody.custom-details
+				= f.simple_fields_for :custom_details, f.object.custom_details_builder, wrapper: false do |cd|
+					%tr.fields
+						%td
+							= cd.input :tipo, label: false, collection: [["Item", "parent"], ["Subitem", "child"]]
+						%td
+							= cd.input :product_code, label: false
+						%td
+							= cd.input :product_name, label: false
+						%td
+							= cd.input :price, label: false
+						%td
+							= cd.input :quantity, label: false
+						%td
+							= cd.input :discount, label: false
+						%td
+							= cd.input :product_measurement, label: false
+						%td
+							= cd.input :iva_aliquot, label: false
+						%td
+							= cd.input :total, label: false, input_html: {data: {reversible: false}}
+						%td
+							= cd.link_to_remove icon('fas', 'trash'), class: 'btn btn-icon btn-sm btn-light btn-outline-danger'
+	%hr
+	.text-center
+		= f.link_to_add "#{icon('fas', 'plus')} Agregar".html_safe, :custom_details, class: 'btn btn-success', data:{target: 'table.custom-details'}
+	%hr
+	= save_button

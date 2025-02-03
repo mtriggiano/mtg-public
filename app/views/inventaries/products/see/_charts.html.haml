@@ -1,0 +1,9 @@
+.row
+	= chart_container "4", "chart-pie", "Actividad por cliente" do
+		= pie_chart Product.joins(shipment_details: [shipment: :client]).where(id: product.id).group("entities.name").sum("shipment_details.quantity").first(5)
+
+	= chart_container "4", "chart-pie", "Actividad por proveedor" do
+		= pie_chart Product.joins(arrival_details: [arrival: :entity]).where(id: product.id).group("entities.name").sum("arrival_details.quantity").first(5)
+
+	= chart_container "4", "chart-pie", "Actividad por mes" do
+		= column_chart Product.joins(arrival_details: :arrival).where(id: product.id).group_by_month("arrivals.date").sum("arrival_details.quantity")

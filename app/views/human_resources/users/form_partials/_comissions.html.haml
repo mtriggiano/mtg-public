@@ -1,0 +1,44 @@
+.card.justify-flex-content.p-4
+  .card-body.pt-0
+    .row
+      .col-8.offset-2
+        %h5.card-title.text-center.border-bottom.pb-3
+          = icon('fas', 'briefcase')
+          Configurar comisiones y objetivos
+        = simple_nested_form_for user,html: { class: 'horizontal-form'}, wrapper: :horizontal_form do |f|
+          = error_notification(f)
+          = hidden_field_tag :view, params[:view]
+          .row
+            %table.table-hover#comission_table
+              %thead
+                %th
+                  Objetivo
+              %tbody
+                = f.simple_fields_for :user_comission_limit, (user.user_comission_limit.blank? || user.new_record?) ? user.build_user_comission_limit : user.user_comission_limit, wrapper: false do |da|
+                  %tr.fields
+                    %td
+                      = da.input :amount, label: "Monto", input_html: {placeholder: "Monto $"}
+                    %td
+                      = da.input :period, as: :select, label: "Período", collection: UserComissionLimit::PERIODS
+
+            .col-md-6
+              %h5.text_muted
+                Configurar premios
+            %table.table-hover#comission_reward_table
+              %thead
+                %th
+                  Premio
+              %tbody
+                = f.simple_fields_for :user_comission_rewards, (user.user_comission_rewards.blank? || user.new_record?) ? user.user_comission_rewards.build : user.user_comission_rewards, wrapper: false do |da|
+                  %tr.fields
+                    %td
+                      = da.input :reward_percentage, label: false, input_html: {placeholder: "Monto %", min: 0, max: 100}
+                    %td
+                      = da.input :percentage, as: :select, label: false, collection: UserComissionReward::PERCENTAGES.map{|a, b| [a,b]}
+                    %td
+                      = da.link_to_remove "#{icon('fas','trash')}".html_safe, class: 'btn btn-danger'
+          .form-group.text-center
+            = f.link_to_add "#{icon('fas', 'plus')}".html_safe, :user_comission_rewards, class: 'btn btn-primary', data: {target: '#comission_reward_table'}
+          %hr
+          .actions.text-center
+            = save_button

@@ -1,0 +1,20 @@
+= simple_form_for([client, client_contact], html: { class: 'horizontal-form' }, wrapper: :horizontal_form) do |f|
+
+	.row
+		.col-8.offset-2
+			= error_notification(f)
+			=f.input :client_id, as: :fake, label: "Trabaja en", input_html: {value: client.name, disabled: true}
+			%hr.dotted
+			=f.input :name, label: "Nombre", input_html: { placeholder: "Juan Perez"}
+			%hr.dotted
+			=f.input :position, label: "Cargo", input_html: { placeholder: "Gerente"}
+			%hr.dotted
+			=f.input :email, label: "Email", input_html: { placeholder: "juan_perez@proveedor.com"}
+			%hr.dotted
+			=f.input :phone, label: "Teléfono", input_html: { placeholder: "Teléfono fijo"}
+			%hr.dotted
+			=f.input :mobile_phone, label: "Celular", input_html: { placeholder: "Teléfono móvil"}
+			%hr.dotted
+			=f.input :titular, collection: [[true, "Si"], [false, "No"]], as: :radio_buttons, wrapper_class: 'form-check form-check-inline', label: "¿Es el contacto principal?", label_method: :last, value_method: :first, checked: true
+	.actions
+		=save_button

@@ -1,0 +1,94 @@
+%h2 Rendición de caja chica
+
+= simple_form_for [regular_cash_account, imprest_clearing], wrapper: false, url: confirm_regular_cash_account_imprest_clearing_path([regular_cash_account, imprest_clearing]), method: :patch do |f|
+  .card.mb-4
+    .card-body
+      = error_notification(f)
+      .row
+        .col-lg-12
+          %h2.text-center.my-3
+            = regular_cash_account.nombre.upcase
+        .col-lg-3
+          = label_tag :fecha, "Fecha"
+          %h3.text-center.mb-0
+            = f.object.fecha
+        .col-lg-3
+          = label_tag :confirmacion, "Confirmación"
+          = text_field_tag :confirmacion, f.object.tiempo_de_confirmacion || "Sin confirmar", class: 'form-control', disabled: true
+        .col-lg-3
+          = f.input :fondo_fijo, label: "Fondo fijo ($)", required: true, min: 0, disabled: imprest_clearing.confirmado?
+        .col-lg-3
+          = f.input :saldo_inicio, label: "Saldo de inicio", required: true, min: 0, disabled: imprest_clearing.confirmado?
+        .col-lg-12
+          = f.input :observaciones, label: "Observaciones", disabled: imprest_clearing.confirmado?
+
+  %p.mb-1.h5.text-muted Movimientos registrados
+  .card.mb-4
+    .card-body
+      .row
+        .col-lg-12
+          = render 'transactions', transactions: @transactions
+
+  .row
+    .col-lg-6.col-md-12
+      %p.mb-1.h5.text-muted A rendir
+      .card.mb-4
+        .card-body
+          %table.condensed-table.table.table-hover
+            %thead
+              %th Denominación
+              %th
+              %th{:style => "width: 30% !important"} Cantidad
+              %th Subtotal
+            %tbody.text-right
+              - ImprestClearing::DENOMINACIONES.each do |denominacion|
+                %tr.fields
+                  %td
+                    = number_to_ars denominacion
+                  %td x
+                  %td
+                    = text_field_tag :"cuenta_monedas_a_rendir[#{denominacion}]", f.object.cuenta_monedas_a_rendir? ? f.object.cuenta_monedas_a_rendir[denominacion] : 0, class: 'form-control form-control-sm text-right monedas-a-rendir solo-numeros', data: { value: denominacion }, required: true, autocomplete: :off, disabled: imprest_clearing.confirmado?
+                  %td
+                    $
+                    %span.subtotal 0
+                    ,00
+
+          .row
+            .col-6
+              = f.label :a_rendir, "TOTAL"
+            .col-6
+              = f.input :a_rendir, label: false, required: true, min: 0, max: @total_efectivo, input_html: { class: 'text-right corder-subtotal', autocomplete: :off, readonly: true }
+
+    .col-lg-6.col-md-12
+      %p.mb-1.h5.text-muted Fondo fijo
+      .card.mb-4
+        .card-body
+          %table.condensed-table.table.table-hover
+            %thead
+              %th Denominación
+              %th
+              %th{:style => "width: 30% !important"} Cantidad
+              %th Subtotal
+            %tbody.text-right
+              - ImprestClearing::DENOMINACIONES.each do |denominacion|
+                %tr.fields
+                  %td
+                    = number_to_ars denominacion
+                  %td x
+                  %td
+                    = text_field_tag :"cuenta_monedas_saldo_en_caja[#{denominacion}]", f.object.cuenta_monedas_saldo_en_caja? ? f.object.cuenta_monedas_saldo_en_caja[denominacion] : 0, class: 'form-control form-control-sm text-right monedas-en-caja solo-numeros', data: { value: denominacion }, required: true, autocomplete: :off, disabled: imprest_clearing.confirmado?
+                  %td
+                    $
+                    %span.subtotal 0
+                    ,00
+
+          .row
+            .col-6
+              = f.label :saldo_en_caja, "SALDO EN CAJA"
+            .col-6
+              = f.input :saldo_en_caja, label: false, required: true, min: 0, max: @total_efectivo, input_html: { class: 'text-right', autocomplete: :off, readonly: true }
+
+
+
+  .actions.text-center.my-4
+    = button_tag "#{icon('fas', 'check')} Confirmar".html_safe, type: :submit, class: 'btn btn-success', data: { confirm: "¿Está seguro de confirmar la rendición? Al confirmar se registrarán los movimientos de caja correspondientes."} unless imprest_clearing.confirmado?

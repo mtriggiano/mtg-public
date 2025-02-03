@@ -1,0 +1,14 @@
+%p
+    %center
+        Stock del producto por depositos
+%table
+    %thead 
+        %tr
+            %th= "Depósito"
+            %th= "Stock Disponible"
+    %tbody
+        - product.articles.where("stocks.available > 0").where(active: true).each do |article|
+            %tr
+                %td= link_to article.store.name, article.store rescue ""
+                %td= article.available
+        %tr 

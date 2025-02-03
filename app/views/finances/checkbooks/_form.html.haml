@@ -1,0 +1,16 @@
+= simple_form_for(checkbook) do |f|
+	= error_notification(f)
+	.row
+		.col-6
+			= f.input :number, label: "Número de talonario", input_html:{autofocus: true, autocomplete: :off}, required: true
+		.col-6
+			= f.input :bank_account_id, label: "Cuenta bancaria", collection: current_company.bank_accounts, label_method: :alias_tag, prompt: "Seleccione...", selected: f.object.bank_account_id || params[:bank_account_id], required: true
+		.col-4
+			= f.input :init_number, label: "Numeración inicial", required: true, min: 0
+		.col-4
+			= f.input :final_number, label: "Numeración final", required: true
+		.col-4
+			= f.input :serie, label: "Serie", required: true
+	.actions
+		%hr
+		= save_button

@@ -1,0 +1,16 @@
+= simple_form_for bank_check_payment, wrapper: false do |f|
+  = error_notification(f)
+  .row.mb-3
+    .col-8
+      = f.input :numero_cheque, label: "Número de cheque", required: true
+    .col-4
+      = f.input :vencimiento, as: :date, label: "Vencimiento", required: true
+    .col-8
+      = f.input :entity_id, label: "Cliente", collection: current_company.clients, required: true, input_html: { required: true }
+    .col-4
+      = f.input :importe, label: "Importe", required: true
+    .col-12
+      = f.input :concepto, label: "Concepto", required: true
+
+  .modal-footer
+    = save_button

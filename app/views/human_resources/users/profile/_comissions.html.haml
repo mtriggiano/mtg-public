@@ -1,0 +1,58 @@
+- present user do |user_presenter|
+  .pr-2.pl-2.w-100.shadow.bg-white.p-3.w-100
+    .text-muted
+      = icon('fas', 'list-alt')
+      Objetivos
+    %hr
+      %dl
+        = see_contact_dl("Objetivos", user.user_comission_limit.nil? ? "Sin definir" : user.user_comission_limit.period_label)
+      %dl
+        = see_contact_dl("Llegó a objetivo?", "#{user.check_if_comission_objective}")
+  %br
+  .pr-2.pl-2.w-100.p-3.w-100
+    .card.shadow
+      .card-header.text-muted.bg-white
+        = icon('fas', 'search')
+        Filtrar
+      .card-body.text-center
+        = form_tag profile_user_path(user), method: :get, class: "navbar-form navbar-left search-form", id: 'vendor_chart_form' do
+          = hidden_field_tag(:view, "comissions")
+          .row
+            .col-md-4
+              = text_field_tag(:init_date, params[:init_date] || Date.today.at_beginning_of_year, placeholder: "Inicio", class: "form-control", data: { behaviour: 'datepicker' })
+            .col-md-4
+              = text_field_tag(:final_date, params[:final_date] || Date.today.at_end_of_year, placeholder: "Fin", class: "form-control", data: { behaviour: 'datepicker'})
+            .col-md-4
+              = button_tag("#{icon('fas', 'search')} Buscar".html_safe, class: 'btn btn-primary', type: 'submit')
+        %hr
+        .row
+          .col-6.col-md-6.col-sm-6
+            .card{style: "border: none;"}
+              .card-header.text-muted.bg-white
+                = icon('fas', 'chart-line')
+                Total facturado por mes
+              .card-body
+                = pie_chart month_comissions_user_path(user, init_date: params[:init_date] || Date.today.at_beginning_of_year, final_date: params[:final_date] || Date.today.at_end_of_year), prefix: "$", messages: {empty: "Sin datos"}, colors: ["#b00", "#666"]
+          .col-6.col-md-6.col-sm-6
+            .card{style: "border: none;"}
+              .card-header.text-muted.bg-white
+                = icon('fas', 'chart-line')
+                Total facturado por cliente
+              .card-body
+                = pie_chart client_comissions_user_path(user, init_date: params[:init_date] || Date.today.at_beginning_of_year, final_date: params[:final_date] || Date.today.at_end_of_year), prefix: "$", donut: true, messages: {empty: "Sin datos"}
+        %hr.dotted
+        .row
+          .col-6.col-md-6.col-sm-6
+            .card{style: "border: none;"}
+              .card-header.text-muted.bg-white
+                = icon('fas', 'chart-line')
+                Cantidad de facturas mensual
+              .card-body.text-center
+                = column_chart month_comissions_quantity_user_path(user, init_date: params[:init_date] || Date.today.at_beginning_of_year, final_date: params[:final_date] || Date.today.at_end_of_year), messages: {empty: "Sin datos"}
+          .col-6.col-md-6.col-sm-6
+            .card{style: "border: none;"}
+              .card-header.text-muted.bg-white
+                = icon('fas', 'chart-line')
+                Cantidad de facturas mensual
+              .card-body.text-center
+                = column_chart client_comissions_quantity_user_path(user, init_date: params[:init_date] || Date.today.at_beginning_of_year, final_date: params[:final_date] || Date.today.at_end_of_year), messages: {empty: "Sin datos"}

@@ -1,0 +1,7 @@
+= index_table(mform: true, icon: 'plane', text: "Contactos de #{supplier.name}", collection: collection, path: new_supplier_supplier_contact_path(supplier.id), jpath: supplier_supplier_contacts_path(supplier.id, format: :json), mtarget: "#new_contact_modal", config: false)
+
+= modal("#{icon('fas', 'plus')} Añadir contacto", "new_contact_modal", "new_contact_body", "big") do
+	.modal-body
+
+= modal("#{icon('fas', 'plus')} Editar contacto", "edit_contact_modal", "edit_contact_body", "big") do
+	.modal-body

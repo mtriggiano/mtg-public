@@ -1,0 +1,34 @@
+.row.footer_bottom
+  .container.border
+    %table.width_100
+      %tr
+        %td.text_right
+          %b Subtotal:
+        %td.text_right
+          = number_to_ars(@order.subtotal)
+      %tr
+        %td.text_right
+          %b Bonificaciones:
+        %td.text_right
+          = number_to_ars(@order.discount)
+      %tr
+        %td.text_right
+          %b I.V.A.:
+        %td.text_right
+          $
+      %tr
+        %td.text_right
+          %b Importe Total:
+        %td.text_right
+          %b
+            $ #{sprintf('%.2f', @order.total)}
+      %tr
+        %td{style: "padding-left: 40px;"}
+          %b
+            Son:
+          = number_to_words(@order.total)
+
+%br
+.text_center
+  Página
+  = "#{page_number} de #{total_pages}"

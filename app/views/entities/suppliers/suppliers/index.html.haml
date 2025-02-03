@@ -1,0 +1,20 @@
+= index_table(icon: 'plane', mtarget: "#new_supplier_modal", mform: true, config: false) do
+	= button_tag "#{icon('fas', 'file-import')} Importar".html_safe, type: 'button', data: {target: "#import_modal", toggle: "modal"}, class: 'btn btn-info'
+
+= modal("#{icon('fas', 'plus')} Añadir proveedor", "new_supplier_modal", "new_supplier_body", "big") do
+	.modal-body
+= modal("#{icon('fas', 'plus')} Editar proveedor", "edit_supplier_modal", "new_supplier_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'file-import')} Importar excel", "import_modal", "import_modal_body") do
+	= form_tag import_suppliers_path(), {multipart: true, method: :post} do
+		.modal-body
+			.format.w-100.text-center
+				.text-muted
+					Seleccione el archivo del cual importara los proveedores
+			.form-group
+				= file_field_tag :file , :class => 'btn ', accept: ".csv, .xls, .xlsx"
+		.modal-footer
+			= submit_tag "Importar", type: :submit
+			= close_button

@@ -1,0 +1,14 @@
+- present notification do |notification_presenter|
+	.row
+		.col-12
+			.pr-2.pl-2.bg-white.p-3
+				%dl
+					= see_contact_dl("ID", notification.id)
+					%hr.dotted
+					= see_contact_dl("Título", notification_presenter.title)
+					%hr.dotted
+					= see_contact_dl("Fecha", notification_presenter.date)
+					%hr.dotted
+					= see_contact_dl("Cuerpo", notification.body)
+					%hr.dotted
+					= see_contact_dl("Estado", notification_presenter.seen)

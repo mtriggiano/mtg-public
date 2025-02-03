@@ -1,0 +1,42 @@
+= new_helper("Apertura de caja") do
+  = simple_form_for([cash_account, initial_balance], url: cash_account_initial_balances_path) do |f|
+    = error_notification(f)
+    .row
+      .col-6
+        = label_tag :caja, "Caja de arqueo"
+        %h4
+          = cash_account.nombre
+      .col-6
+        = label_tag :fecha, "Fecha"
+        = text_field_tag :fecha, Date.today, disabled: true, class: 'form-control'
+      .col-12.my-5
+        %p.mb-3.h4.text-muted Billetes y monedas en caja
+
+        .border.rounded-lg.p-2.mb-3
+          %table.condensed-table.table.table-hover
+            %thead
+              %th Denominación
+              %th
+              %th{:style => "width: 30% !important"} Cantidad
+              %th Subtotal
+            %tbody.text-right
+              - DailyCashBalance::DENOMINACIONES.each do |denominacion|
+                %tr.fields
+                  %td
+                    = number_to_ars denominacion
+                  %td x
+                  %td
+                    = text_field_tag :"cuenta_monedas[#{denominacion}]", f.object.cuenta_monedas? ? f.object.cuenta_monedas[denominacion] : 0, class: 'form-control form-control-sm text-right monedas-a-rendir solo-numeros', data: { value: denominacion }, required: true, autocomplete: :off
+                  %td
+                    $
+                    %span.subtotal 0
+                    ,00
+        .row
+          .col-6
+            = f.label :importe, "Cantidad inicial en caja:", class: "h4"
+          .col-6
+            = f.input :importe, label: false, input_html: { readonly: true, class: 'corder-subtotal text-right' }, required: true
+
+    .actions
+      %hr
+        = save_button

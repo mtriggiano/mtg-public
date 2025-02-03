@@ -1,0 +1,11 @@
+#notification-container
+	-# .border-top-arrow
+	.card
+		.card-header
+			= icon('fas', 'bell')
+			Notificaciones
+		.card-body.p-0
+			#notifications-preload
+			%ul#notifications.text-left.px-0
+		.card-footer.text-center
+			= link_to "Ver todas", home_path(view: 'notifications'), class: 'btn-outline-secondary'

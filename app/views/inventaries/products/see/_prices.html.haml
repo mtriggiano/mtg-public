@@ -1,0 +1,32 @@
+%p
+    %center
+        Los precios detallados son guardados en el momento de una creacion de Presupuestos de Compra y Presupuestos de Venta
+%table
+    %thead 
+        %tr
+            %th= "Tipo"
+            %th= "Entidad"
+            %th= "Fecha"
+            %th= "Precio ARS"
+            %th= "Precio USD"
+            %th= "USD"
+    %tbody
+        - product.price_histories.order(created_at: :desc).each do |price_history|
+            - usd_price = Dolar::Bna::Exchange.new(price_history.created_at).perform_bna_billete 
+            - buy_usd_price = usd_price[:compra]
+            - sale_usd_price = usd_price[:venta]
+            - product_usd_price = price_history.price / buy_usd_price
+            %tr
+                %td= price_history.type
+                %td= "#{price_history.entity.type} - #{link_to price_history.entity.try(:name), price_history.entity}".html_safe if price_history.entity
+                %td= price_history.created_at
+                %td= number_to_currency(price_history.price, unit: "$", format: "%u %n", seperator: ',')
+                %td= number_to_currency(product_usd_price, unit: "U$S", format: "%u %n")
+                %td
+                    %span.text-success
+                        = number_to_currency(buy_usd_price, unit: "$", format: "%u %n")
+                    |
+                    %span.text-danger
+                        = number_to_currency(sale_usd_price, unit: "$", format: "%u %n")
+
+        %tr 

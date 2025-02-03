@@ -1,0 +1,12 @@
+%center
+	= yield(:extra_links)
+
+	= button_tag "#{icon('fas', 'eye')} Mostrar adjuntos".html_safe, onclick: 'hideAttachments()', type: 'button', class: 'btn btn-secondary btn-sm align-self-start hide_button'
+
+	= link_to "#{icon('fas', 'ellipsis-v')} Campos adicionales".html_safe, "#custom_attributes", role: 'button', aria: {expanded: false, controls: 'custom_attributes'}, data: {toggle: 'collapse'}, class: 'btn btn-info btn-sm' if f.object.has_custom_attributes?
+
+	= link_to "#{icon('fas', 'comment')} Observación".html_safe, "#observation", role: 'button', aria: {expanded: false, controls: 'observation'}, data: {toggle: 'collapse'}, class: 'btn btn-light btn-sm border'
+
+	- if f.object.disabled? && !["DeliveryNote", "ExternalBill"].include?(f.object.class.name)
+		= link_to "#{icon('fas', 'backspace')} Solicitar reapertura".html_safe, [:open, f.object], role: 'button', class: 'btn btn-danger btn-sm border'
+	= pdf_button(f.object)

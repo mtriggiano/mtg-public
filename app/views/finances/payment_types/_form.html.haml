@@ -1,0 +1,14 @@
+= simple_form_for payment_type, wrapper: false do |f|
+	= error_notification(f)
+	.row
+		.col-12
+			= f.input :name, label: "Nombre"
+		.col-4
+			= f.label :imputed_in_cash, "¿Imputa en caja?"
+			= evaluation_toggle f, :imputed_in_cash, "Si", "No"
+		.col-4
+			= f.input :collect_type, label: "Tipo", collection: PaymentType::COLLECT_TYPES, required: true, input_html: { required: true }
+		.col-4
+			= f.input :cash_account_id, label: "Caja vinculada", collection: current_company.cash_accounts.map{|pt| [pt.nombre, pt.id]}
+	.actions
+		= save_button

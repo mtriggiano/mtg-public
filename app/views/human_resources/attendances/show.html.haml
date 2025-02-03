@@ -1,0 +1,21 @@
+- present attendance do |attendance_presenter|
+  .row
+    .col-12
+      .pr-2.pl-2.bg-white.p-3
+        .text-muted
+        = icon('fas', 'list-alt')
+        Información del registro de asistencia
+        = attendance_presenter.present_icon
+      %hr
+        %dl
+          = see_contact_dl("ID", attendance.id)
+          %hr.dotted
+          = see_contact_dl("Empleado", attendance_presenter.user_name)
+          %hr.dotted
+          = see_contact_dl("Fecha", attendance_presenter.date)
+          %hr.dotted
+          = see_contact_dl("Ingreso", attendance_presenter.check_in)
+          %hr.dotted
+          = see_contact_dl("Salida", attendance_presenter.check_out)
+          %hr.dotted
+          = see_contact_dl("Justificacion?", attendance.justification_label)

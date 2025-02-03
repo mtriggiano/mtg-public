@@ -1,0 +1,22 @@
+= link_to icon('fas', 'chevron-left'), :back, class: 'btn btn-sm text-dark'
+- if document.persisted?
+	%ul.nav.nav-tabs.mx-4.border-bottom-0.justify-content-center
+		%li.nav-item
+			= link_to "Expediente", agreement_surgeries_file_path(document.file.id), class: 'nav-link'
+		%li.nav-item
+			= link_to "Solicitud", agreement_surgeries_surgery_request_path(document.file.surgery_request), class: 'nav-link' if document.file.surgery_request
+		%li.nav-item.dropdown
+			= link_to "O.V.", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name.demodulize == 'SaleOrder'}"
+			.dropdown-menu
+				- document.file.sale_orders.each do |order|
+					= link_to "Nº #{order.number}", edit_surgeries_sale_order_path(order.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Generar orden".html_safe, new_surgeries_sale_order_path(file_id: document.file.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Salidas", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name.demodulize == 'Shipment'}"
+			.dropdown-menu
+				- document.file.shipments.each do |shipment|
+					= link_to "Nº #{shipment.number}", edit_agreement_surgeries_shipment_path(shipment.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Registrar salida".html_safe, new_agreement_surgeries_shipment_path(file_id: document.file.id), class: 'dropdown-item'
+		

@@ -1,0 +1,17 @@
+<% simple_nested_form_for client_bill do |f| %>
+	<% @builder = f %>
+<% end %>
+$(".parent-table tbody").html("<%= j render '/surgeries/shared_details_form', {f: @builder} %>");
+$("#client_bill_client_id").val("<%= client_bill.entity_id %>")
+$("#client_bill_concept").val("<%= client_bill.concept %>")
+setSelect2();
+calculateHeader();
+toogleBody();
+
+$(".dynamic-bill-info").html("<%= j render 'dynamic_attributes', f: @builder %>")
+
+//$.each($("[id$=_price]"), function(i){
+//	$(this).closest("tr").find("[id$=_total]").removeAttr("force-reverse")
+//	$(this).trigger("change")
+//	$(this).closest("tr").find("[id$=_total]").attr("force-reverse", "true")
+//})

@@ -1,0 +1,34 @@
+%h2 ¿Está seguro de que desea limpiar el stock de este lote?
+
+%br
+.center-content
+  %p
+    %strong  
+      Producto
+    %span 
+      = link_to product.name, product
+  %p
+    %strong 
+      Lote
+    %span 
+      = batch.code
+  %p
+    %strong 
+      Serie
+    %span 
+      = batch.serial
+  %p
+    %strong 
+      Cantidad
+    %span 
+      = batch.quantity
+
+%br 
+  = simple_form_for product, url: clean_stock_product_batch_path(product, batch), method: :post, html: { class: 'form-inline' } do |f|
+    = csrf_meta_tags
+    .form-group
+      
+      %label{for: 'password'} Contraseña:
+      %input{type: 'password', name: 'password', class: 'form-control', style: 'width: 50%;'} 
+
+    %button.btn.btn-primary{type: 'submit'} Confirmar

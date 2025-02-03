@@ -1,0 +1,25 @@
+= simple_nested_form_for role, wrapper: :horizontal_form do |f|
+	
+	.row
+		= error_notification(f)
+		.col-3
+			= f.input :friendly_name, label: "Nombre", placeholder: "Nombre del producto"
+		.col-6
+			= f.simple_fields_for :role_ability do |r|
+				.fields.col-3
+					= r.input :description
+					= r.input :action_name, as: :hidden
+
+		.col-3
+			%table
+				%tbody
+					- Ability::DEFAULTS.each do |name, abilities|
+						%tr
+							%th 
+								= name
+							- abilities.each do |ability|
+								%td{data: {"class-name" => "#{ability[:class_name]}", "action_name" => "#{ability[:action_name]}"}}
+									= ability[:description]
+
+		.actions
+			= save_button

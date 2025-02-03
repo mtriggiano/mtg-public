@@ -1,0 +1,15 @@
+= index_table(mform: true, icon: 'suitcase', text: "Puestos de trabajo", jpath: work_stations_path(format: :json) , path: new_work_station_path, mtarget: "#new_work_station_modal", collection: current_company.work_stations)
+
+= modal("#{icon('fas', 'plus')} Editar puesto", "edit_work_station_modal", "edit_work_station_body") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'eye')} Ver puesto", "show_work_station_modal", "show_work_station_body") do
+	.modal-body
+		= yield
+	.modal-footer
+		= close_button
+
+= modal("#{icon('fas', 'plus')} Añadir puesto", "new_work_station_modal", "new_work_station_body") do
+	.modal-body
+		= yield

@@ -1,0 +1,23 @@
+- params[:view] ||= 'general'
+= link_to icon('fas', 'chevron-left'), :back, class: 'btn btn-sm text-dark'
+.container-fluid.d-inline-block
+	%ul.nav.bg-white.border-bottom.border-top.p-2.mb-4.mt-4
+		%li.nav-item.border-animated
+			= show_links('General', 'general', params[:view], agreement_surgeries_surgery_request_path(surgery_request.id, view: 'general'))
+		%li.nav-item.border-animated
+			= show_links('Archivos', 'archivos', params[:view], agreement_surgeries_surgery_request_path(surgery_request.id, view: 'archivos'))
+		%li.nav-item.border-animated
+			= show_links('Estados', 'estados', params[:view], agreement_surgeries_surgery_request_path(surgery_request.id, view: 'estados'))
+		%li.nav-item.ml-auto.float-right
+			= link_to("#{icon('fas', 'print')} PDF".html_safe, agreement_surgeries_surgery_request_path(surgery_request, format: :pdf), target: :_blank, class: 'nav-link text-dark', data: { "skip-pjax": true })
+		%li.nav-item.float-right
+			= link_to "#{icon('fas', 'edit')} Editar".html_safe, edit_agreement_surgeries_surgery_request_path(surgery_request), class: 'nav-link text-dark'
+		%li.nav-item.float-right
+			= link_to "#{icon('fas', 'edit')} Crear Expediente".html_safe, crear_expediente_agreement_surgeries_surgery_request_path(surgery_request), method: :put, class: 'nav-link text-dark' if surgery_request.aprobada?
+			
+		%lin.nav-item
+			.nav-link.text-dark.border-left.p-1
+				= (present surgery_request).state_as_dropdown
+	#see-body
+		- if ['general', 'archivos', 'estados'].include?(params[:view])
+			= render "/agreement_surgeries/surgery_requests/views/#{params[:view]}"

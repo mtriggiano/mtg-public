@@ -1,0 +1,13 @@
+#vacations_form
+	= simple_nested_form_for(user_vacation, html: { class: 'horizontal-form' }, wrapper: :horizontal_form) do |f|
+		.row
+			.col-12
+				= error_notification(f)
+				= f.input :user_id, label: "Empleado", collection: current_company.users.map{|u| [u.name, u.id]}
+				= hidden_field_tag :query_user_id
+				%hr.dotted
+				.row
+					.col-6
+						= f.input :init_date, label: "Fecha", as: :date_picker, input_html: {required: true}
+					.col-6
+						= f.input :days, label: "Días", input_html: {readonly: false, class: 'total_days'}

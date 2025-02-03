@@ -1,0 +1,22 @@
+- present supplier_contact do |contact_presenter|
+	.pr-2.pl-2.w-100.shadow.bg-white.p-3.w-100
+		.text-muted
+			= icon('fas', 'list-alt')
+			Información básica
+		%hr
+			%dl
+				= see_contact_dl("Pertenece a", supplier_contact.supplier.name)
+				%hr.dotted
+				= see_contact_dl("Nombre", contact_presenter.name)
+				%hr.dotted
+				= see_contact_dl("Cargo", supplier_contact.position)
+				%hr.dotted
+				= see_contact_dl("Email", contact_presenter.email)
+				%hr.dotted
+				= see_contact_dl("Teléfono", contact_presenter.phone)
+				%hr.dotted
+				= see_contact_dl("Celular", contact_presenter.mobile_phone)
+				%hr.dotted
+				= see_contact_dl("Registrado en", contact_presenter.created_at)
+				%hr.dotted
+				= see_contact_dl("Rango", contact_presenter.titular)

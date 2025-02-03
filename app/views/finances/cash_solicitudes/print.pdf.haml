@@ -1,0 +1,3 @@
+.alwaysbreak
+	= render '/finances/cash_solicitudes/pdf/header.html.haml', cash_solicitude: cash_solicitude
+	= render '/finances/cash_solicitudes/pdf/details.html.haml', expenses: cash_solicitude.expense_details

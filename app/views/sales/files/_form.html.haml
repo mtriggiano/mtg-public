@@ -1,0 +1,64 @@
+= simple_nested_form_for file, data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host }, html: {class: 'horizontal-form directUpload'}, wrapper: :horizontal_form, defaults: {disabled: file.disabled? } do |f|
+	= error_notification(f)
+	.row
+		= error_notification(f)
+		.col-6
+			= f.association :client, as: :select, label: "Cliente", collection: current_company.clients.order(:denomination).map{|c| [c.denomination, c.id]}
+			%hr.dotted
+			= f.input :initial_department, as: :select, label: "Departamento", collection: current_company.departments.map{|d| [d.name, d.id]}, prompt: "Seleccione..."
+			%hr.dotted
+			= f.input :title, label: "Título"
+			%hr.dotted
+			= f.input :external_number, label: "Nº externa"
+			%hr.dotted
+			= f.input :external_purchase_order_number, label: "O.C. Obra social"
+			%hr.dotted
+			= f.input :external_shipment_number, label: "Rto. Obra social"
+			%hr.dotted
+			= f.input :pacient,label: "Afiliado"
+			%hr.dotted
+			= f.input :pacient_number,label: "Nº afiliado"
+			%hr.dotted
+			= f.input :technical, label: "Técnico"
+		.col-6
+			= f.input :province, label: "Provincia"
+			%hr.dotted
+			.row
+				.col-md-4.col-lg-3.col-form-label.col-form-label-sm
+					= f.label "Entrega"
+				.col-md-8.col-lg-9.d-flex.justify-content-between
+					= f.input :place, placeholder: "Lugar", label: false, wrapper_html: { class: "mb-0"}
+					= f.input :delivery_date, input_html: {placeholder: "Fecha"}, as: :date_picker, label: false, wrapper_html: { class: "mb-0"}
+					= f.input :delivery_hour, input_html: {placeholder: "Hora"}, as: :time_picker, label: false, wrapper_html: { class: "mb-0"}
+			%hr.dotted
+			= f.input :doctor, label: "Médico"
+			%hr.dotted
+			= f.input :sale_type, collection: Sales::File::TYPES, label: "Tipo de venta"
+			%hr.dotted
+			= f.input :init_date, as: :date_picker, label: "Inicio"
+			%hr.dotted
+			= f.input :finish_date, as: :date_picker, label: "Finalización"
+			%hr.dotted
+			= f.input :substate, label: "Estado", collection: Sales::File::STATES, include_blank: false, input_html: {value: f.object&.substate}
+			%hr.dotted
+			= f.association :user, as: :select, label: "Responsable", collection: current_company.users.map{|u| [u.name, u.id]}
+			%hr.dotted
+			.row.form-group
+				= f.label :open, "Abierto?", class: "col-md-4 col-lg-3 col-form-label col-form-label-sm select optional"
+				.col-md-8.col-lg-9
+					= f.input :open, label: false, input_html: { data: { toggle: 'toggle', onstyle: 'success', offstyle: 'danger', on: "Si", off: "No" } }, wrapper_html: { class: 'flex-grow-1', style: 'margin-left: -1.25rem; padding-right: 1.25rem;' }
+	.row.dotted.pt-4
+		.col-12
+			%hr.dotted
+			.row.mx-3
+				.col-3
+					= f.input :need_note, label: "Nota"
+				.col-3
+					= f.input :need_surgical_sheet, label: "Foja Quirúrgica"
+				.col-3
+					= f.input :need_implant, label: "Crt. Implante"
+				.col-3
+					= f.input :need_sticker, label: "Stickers"
+	.actions.text-center.w-100
+		- unless f.object.disabled?
+			= save_button

@@ -1,0 +1,15 @@
+= simple_nested_form_for(company) do |f|
+	= error_notification(f)
+	= f.hidden_field :view, value: params[:view]
+	%fieldset
+		.form-inline
+			= f.simple_fields_for :sale_points, :wrapper => false do |s|
+				.fields
+					.input-group.mb-4.ml-4
+						= s.input :number, label: "Número", label_html: {class: 'mr-3'}
+						.input-group-append
+							= s.link_to_remove icon('fas', 'trash'), class: 'btn btn-danger'
+	%center
+		= f.link_to_add "#{icon('fas', 'plus')} Añadir punto de venta".html_safe, :sale_points, class: 'btn btn-secondary ml-2 mb-4', data: {target: '.form-inline'}
+	%hr
+	= save_button

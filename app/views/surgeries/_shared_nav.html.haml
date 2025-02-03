@@ -1,0 +1,90 @@
+= link_to icon('fas', 'chevron-left'), :back, class: 'btn btn-sm text-dark'
+- if document.persisted?
+	%ul.nav.nav-tabs.mx-4.border-bottom-0.justify-content-center
+		%li.nav-item
+			= link_to "Expediente", surgeries_file_path(document.file.id), class: 'nav-link'
+		%li.nav-item.dropdown
+			= link_to "Recetas", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name.demodulize == 'Prescription'}"
+			.dropdown-menu
+				- document.file.prescriptions.each do |prescription|
+					= link_to "Nº #{prescription.number}", edit_surgeries_prescription_path(prescription.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Generar receta".html_safe, new_surgeries_prescription_path(file_id: document.file.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Cotizaciones", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name.demodulize == 'Budget'}"
+			.dropdown-menu
+				- document.file.budgets.each do |budget|
+					= link_to "Nº #{budget.number}", edit_surgeries_budget_path(budget.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Generar presupuesto".html_safe, new_surgeries_budget_path(file_id: document.file.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "O.V.", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name.demodulize == 'SaleOrder'}"
+			.dropdown-menu
+				- document.file.sale_orders.each do |order|
+					= link_to "Nº #{order.number}", edit_surgeries_sale_order_path(order.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Generar orden".html_safe, new_surgeries_sale_order_path(file_id: document.file.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Salidas", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name.demodulize == 'Shipment'}"
+			.dropdown-menu
+				- document.file.shipments.each do |shipment|
+					= link_to "Nº #{shipment.number}", edit_surgeries_shipment_path(shipment.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Registrar salida".html_safe, new_surgeries_shipment_path(file_id: document.file.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Solicitud", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name.demodulize == 'PurchaseRequest'}"
+			.dropdown-menu
+				- document.file.purchase_requests.each do |request|
+					= link_to "Nº #{request.number}", edit_surgeries_purchase_request_path(request.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Generar solicitud".html_safe, new_surgeries_purchase_request_path(file_id: document.file.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Pedidos", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name.demodulize == 'SupplierRequest'}"
+			.dropdown-menu
+				- document.file.supplier_requests.each do |request|
+					= link_to "Nº #{request.number}", edit_surgeries_supplier_request_path(request.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Generar pedido".html_safe, new_surgeries_supplier_request_path(file_id: document.file.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Entradas", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name.demodulize == 'Arrival'}"
+			.dropdown-menu
+				- document.file.arrivals.each do |arrival|
+					= link_to "Nº #{arrival.number}", edit_external_arrival_path(arrival.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Registrar entrada".html_safe, new_external_arrival_path(file_id: document.file.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Consumos", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name.demodulize == 'Consumption'}"
+			.dropdown-menu
+				- document.file.consumptions.each do |consumption|
+					= link_to "Nº #{consumption.number}", edit_surgeries_consumption_path(consumption.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Registrar consumo".html_safe, new_surgeries_consumption_path(file_id: document.file.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Devoluciones", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name.demodulize == 'Devolution'}"
+			.dropdown-menu
+				- document.file.devolutions.each do |devolution|
+					= link_to "Nº #{devolution.number}", edit_surgeries_devolution_path(devolution.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Registrar devolución".html_safe, new_surgeries_devolution_path(file_id: document.file.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "O.C.", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name.demodulize == 'PurchaseOrder'}"
+			.dropdown-menu
+				- document.file.purchase_orders.each do |order|
+					= link_to "Nº #{order.number}", edit_surgeries_purchase_order_path(order.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Generar compra".html_safe, new_surgeries_purchase_order_path(file_id: document.file.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "F.C.", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name == 'SaleBill'}"
+			.dropdown-menu
+				- document.file.supplier_bills.each do |supplier_bill|
+					= link_to supplier_bill.name(:short), edit_external_bill_path(supplier_bill.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Registrar factura".html_safe, new_external_bill_path, class: 'dropdown-item'
+
+		%li.nav-item.dropdown
+			= link_to "F.V.", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name == 'SaleBill'}"
+			.dropdown-menu
+				- document.file.client_bills.each do |client_bill|
+					= link_to client_bill.name(:short), edit_surgeries_client_bill_path(client_bill.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Generar factura".html_safe, new_surgeries_client_bill_path(file_id: document.file.id), class: 'dropdown-item'

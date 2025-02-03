@@ -1,0 +1,36 @@
+.accordion#document-accordion
+  %ul.nav.nav-tabs.justify-content-end.document-options
+    %li.nav-item
+      = button_tag "Principal".html_safe, type: :button, aria: {selected: true, controls: 'header'}, data: { toggle: 'tab', target: '#header', target: '#header' }, class: 'nav-link bg-white active'
+    %li.nav-item
+      = pdf_button(f.object)
+
+  .card.shadow.mb-4.collapse.active.show.rounded-lg#header{class: "border-left-#{f.object.state_color}", :"data-parent" => "document-accordion"}
+    .card-body
+      .header-detail
+        = error_explanation(f.object)
+      .row
+        .col-sm-4.col-12
+          = f.input :number, label: "Número", placeholder: "Generado automáticamente", input_html: { disabled: true }
+        .col-sm-4.col-12
+          = f.input :user_id, label: "Responsable", selected: current_user.id, collection: [[current_user.name, current_user.id]]
+        .col-sm-4.col-12
+          = f.input :date, label: "Fecha", as: :date_picker, disabled: f.object.disabled?
+        .col-sm-4.col-12
+          - if f.object.disabled?
+            %label Proveedor
+            %h4
+              = link_to f.object.supplier.name, f.object.supplier
+          - else
+            = f.input :entity_id, label: "Proveedor", collection: current_company.suppliers, label_method: :name, prompt: "Seleccione...", selected: f.object.entity_id || params[:entity_id], input_html: {data: { type: 'supplier' }}, required: true
+        .col-sm-4.col-12
+          = f.input :state, label: "Estado", disabled: true, input_html: { id: "current_state" }
+        .col-sm-2.col-12
+          = f.input :total, label: "TOTAL A PAGAR", input_html: { id: 'parent_total', disabled: true, value: f.object.total || "0", class: 'text-right' }
+        .col-sm-2.col-12
+          = label_tag :total_pagos, "PAGOS Y RETENCIONES"
+          = text_field_tag :total_pagos, "", class: 'form-control text-right', disabled: true
+        .col-12
+          = f.input :observations, label: "Observaciones"
+
+      = state_manager(f)

@@ -1,0 +1,21 @@
+- unless shipment.new_record?
+  = simple_form_builder shipment, url: polymorphic_path([:conform, shipment]), defaults: {disabled: false} do |f|
+    #conformed.card.shadow.mx-4.mb-4.collapse{data: {parent: "#document-accordion"}}
+      .card-header.bg-white
+        %h5.w-100.pt-2
+          = icon('fas', 'file-signature')
+          Conformado
+      .card-body
+        .row.d-flex.justify-content-center.flex-column
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid'
+          .text-center.img_wrp
+            = image_tag f.object.conformed_file, width: '90px', height: '75px', alt: 'Añadir documento', class: "border img-fuild image"
+            %br
+            - if f.object.conformed_file != "/images/attachment.png"
+              = link_to "Ver conformado", f.object.conformed_file
+          = f.input :conformed_file, as: :file, input_html: { hidden: true, class: "file_input" }, label: false
+          = f.input :conformed, label: "¿Conformado?", wrapper_html: {class: 'text-center'}
+        %center
+          %hr
+            = save_button(nil, "file_state_submit")

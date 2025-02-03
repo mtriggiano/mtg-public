@@ -1,0 +1,24 @@
+%table.table.table-responsive
+  %thead.text-center
+    %th Paciente
+    %th Material
+    %th Fecha
+    %th Lugar
+    %th Transporte
+    %th Env Quirof.
+    %th Horario
+    %th Buscar Quirof
+    %th Estado
+    %th Tipo CX
+    %th Vendedor
+    %th Tecnico
+    %th Medico
+    %th OBS
+  %tbody.table-bordered
+  - surgeries_excel_surgeries.each do |excel_surgery|
+    = simple_form_for excel_surgery, data: {remote: true} do |f|
+      %tr
+        = render 'row', f: f
+  = simple_form_for Surgeries::ExcelSurgery.new() do |f|
+    %tr
+      = render 'row', f: f

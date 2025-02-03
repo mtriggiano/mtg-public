@@ -1,0 +1,5 @@
+%tr.fields
+  %td
+    = da.input :user_debt_vacation_id, as: :select, label: false, collection: debt_vacations, input_html: {class: 'debt_years', id: 'user_vacation_days_asignations_attributes_new_days_asignations_user_debt_vacation_id', name: 'user_vacation[days_asignations_attributes][new_days_asignations][user_debt_vacation_id]'}
+  %td
+    = da.input :days, label: false, input_html: {class: "days_calc days_#{da.index}", onkeyup: "calcTotalVacationDay()", min: 0, id: 'user_vacation_days_asignations_attributes_new_days_asignations_days', name: 'user_vacation[days_asignations_attributes][new_days_asignations][days]'}

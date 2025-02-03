@@ -1,0 +1,49 @@
+- if check.cheque_reemplazado?
+  %p.mb-1.h2 Historial de cheques anteriores (reemplazados)
+  = render 'old_bank_checks', bank_check: check.old_bank_check
+
+%h2
+  = "#{promissory_payment.payment_type}"
+.card.mb-4.rounded-lg{class: "border-left-#{promissory_payment_color_state(check)}"}
+  .card-body
+    .row
+      .col-6.form-group
+        %p.mb-1 Número de cheque/pagaré
+        %h4
+          = check.numero_cheque
+      .col-3.form-group
+        %p.mb-1 Fecha de registro
+        %h4
+          = check.created_at
+      .col-3.form-group
+        %p.mb-1 Fecha de vencimiento
+        %h4
+          = check.vencimiento
+      .col-6.form-group
+        %p.mb-1 Emitido por
+        %h4
+          = link_to check.client.name, client_path(check.client)
+      .col-3.form-group
+        %p.mb-1 Estado
+        %h4
+          %span.badge.badge-pill{:class => "badge-#{promissory_payment_color_state(check)}"}
+            = check.estado
+      .col-3.form-group
+        %p.mb-1 Recibo
+        %h4
+          = link_to check.receipt.name, expedient_receipt_path(check.receipt) if check.receipt
+      .col-12
+        - if check.cheque_reemplazado?
+          %p.mb-1 Este cheque reemplaza un anterior. Motivo:
+          %h4
+            = check.concepto
+        %hr
+      .col-3.offset-6.form-group
+        - if check.cobrado?
+          %p.mb-1 Fecha de depósito
+          %h4
+            = check.fecha_deposito
+      .col-3.form-group
+        %p.mb-1 Importe
+        %h4
+          = number_to_ars check.importe

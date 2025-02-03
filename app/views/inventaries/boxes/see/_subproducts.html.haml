@@ -1,0 +1,14 @@
+.pr-2.pl-2.w-100.shadow.bg-white.p-3.w-100
+	.text-muted
+		= icon('fas', 'boxes')
+		Sub-ítems
+	%hr
+	.d-flex.flex-wrap
+		- box_products.each do |subitem|
+			.card.m-2{style: "width: 10rem;"}
+				= image_tag(subitem.default_image, class: 'card-img-top')
+				.card-body
+					%h6.card-title.text-truncate{title: "#{subitem.name}", data: {toggle: 'tooltip'}}
+						= subitem.name
+	%hr
+	= paginate(box_products)

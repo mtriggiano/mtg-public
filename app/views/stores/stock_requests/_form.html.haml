@@ -1,0 +1,73 @@
+= simple_nested_form_for stock_request, url: polymorphic_path([:stores, stock_request], external_id: external_store.id) do |f|
+	.card.shadow.m-4
+		.card-header.bg-white.title
+			.row
+				.col-12.col-sm-8
+					%h5.w-100.my-4
+						= button_tag icon('fas', 'eye-slash'), onclick: 'toggleHeader()', type: 'button', class: 'btn btn-light btn-sm'
+						Solicitud
+		.card-body
+			= error_notification(f)
+			.row
+				.col-sm-4.col-12.border-right
+					= f.input :number, label: "Número", label_html: {class: 'h6'}, placeholder: "Se genera automáticamente al guardar", input_html: {disabled: true}
+					= f.association :user, as: :select, label: "Generada por", label_html: {class: 'h6'}, selected: current_user.id, input_html: {readonly: true}
+				.col-sm-4.col-12.border-right
+					.row
+						.col-6
+							= f.input :reason, collection: StockRequest::TYPES, label: "Motivo", label_html: {class: 'h6'}
+						.col-6
+							= f.association :store_line, collection: external_store.lines.map{|line| [line.name, line.id]}, label: "Linea", label_html: {class: 'h6'}
+					.row
+						.col-6
+							= f.input :date, as: :string, label: "Fecha de inicio", input_html: { class: 'bootstrap-datepicker'}, label_html: {class: 'h6'}, placeholder: "Desde"
+						.col-6
+							= f.input :due_date, as: :string, label: "Fecha de vencimiento", input_html: { class: 'bootstrap-datepicker'}, label_html: {class: 'h6'}, placeholder: "Hasta"
+				.col-sm-4.col-12
+					= f.input :urgency, label: "Urgencia", label_html: {class: 'h6'}, collection: 1..10
+					= f.input :state, as: :select, label: "Estado", label_html: {class: 'h6'}, collection: StockRequest::STATES, input_html:{disabled: true}
+			%hr
+			.text-center
+				= state_buttons(stock_request)
+			%hr
+			= f.input :observation, label: "Observacion", placeholder: "Ej.: productos solicitados para uso interno de la empresa. ", label_html: {class: 'h6'}
+	.card.shadow.m-4.d-flex
+		.card-header.bg-white.d-flex
+			%h5.w-100.pt-2
+				Detalle
+		.card-body
+			%table.table
+				%thead
+					%th{scope: 'col'}
+						Estado
+					%th{scope: 'col'}
+						Producto
+					%th{scope: 'col'}
+						Cantidad solicitada
+					%th{scope: 'col'}
+						Unidad de medida
+					%th{scope: 'col'}
+						Descripción
+					%th{scope: 'col'}
+						Accion
+				%tbody
+					= f.simple_fields_for :details, wrapper: false do |d|
+						%tr.fields
+							%td
+								= d.input :state, collection: StockRequestDetail::STATES, label: false, input_html: {disabled: true}
+							%td
+								= d.input :product_id, collection: current_company.products.map{|p| [p.name, p.id]}, label: false, prompt: "Seleccione...", input_html: {class: 'chosen-select form-control'}
+								= d.hidden_field :product_name
+							%td
+								= d.input :quantity, label: false
+							%td
+								= d.input :measurement_unit, label: false, placeholder: "Especificar medida"
+							%td
+								= d.input :observation, label: false, placeholder: "Descripcion del item"
+							%td
+								= d.link_to_remove icon('fas', 'trash'), class: 'btn btn-danger ml-3'
+			%center
+				= f.link_to_add "#{icon('fas', 'plus')} Añadir detalle".html_safe, :details, class: 'btn btn-success', data: {target: "table"}
+			%hr
+			= save_button
+

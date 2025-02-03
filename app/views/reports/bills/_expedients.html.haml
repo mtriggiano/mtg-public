@@ -1,0 +1,20 @@
+.index-body.table-responsive
+	%table#paginated_table.table{data: {title: "Reporte EXPEDIENTES VENTAS/CIRUGIAS", source: reports_bills_path(view: 'expedients', format: :json)}}
+		%thead.thead-light
+			%th.actions{scope: 'col'} Numero
+			%th.actions{scope: 'col'} Vendedor/es
+			%th.actions{scope: 'col'} Estado
+			%th.actions{scope: 'col'} Paciente
+			%th.actions{scope: 'col'} Nº Afiliado
+			%th.actions{scope: 'col'} Nº Exp. externo
+			%th.actions{scope: 'col'} Cliente
+			%th.actions{scope: 'col'} O.V. sin facturar
+			%th.actions{scope: 'col'} Material (salidas)
+			%th.actions{scope: 'col'} Médico
+			%th.actions{scope: 'col'} Rto. Interno
+			%th.actions{scope: 'col'} Institución
+			%th.actions{scope: 'col'} Fch. Rto.
+			%th.actions{scope: 'col'} Tiempo sin F.V.
+		%tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::Expedient.merge("actions" => ""))

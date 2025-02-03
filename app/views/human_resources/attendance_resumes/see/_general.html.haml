@@ -1,0 +1,14 @@
+- present attendance_resume do |attresu_presenter|
+	.pr-2.pl-2.w-100.shadow.bg-white.p-3.w-100
+		.text-muted
+			= icon('fas', 'list-alt')
+			Información básica
+		%hr
+			%dl
+				= see_contact_dl("Resumen N°", attendance_resume.id)
+				%hr.dotted
+				= see_contact_dl("Empleado", attresu_presenter.user_name)
+				%hr.dotted
+				= see_contact_dl("Inicio", attendance_resume.initial_date)
+				%hr.dotted
+				= see_contact_dl("Final", attendance_resume.final_date)

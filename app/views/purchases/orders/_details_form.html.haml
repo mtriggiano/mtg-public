@@ -1,0 +1,22 @@
+- child ||= d.object.is_a_child?
+- index = @index || d.index
+= document_detail(d, index, child) do
+	%td
+		= product_td(d)
+	%td
+		= quantity_td(d)
+		= measurement_td(d)
+	%td
+		= product_code_td(d)
+	%td
+		= branch_td(d)
+	%td
+		= price_td(d, false) unless child
+	%td
+		= discount_td(d) unless child
+	%td
+		= iva_td(d) unless child
+	%td.fixed-col
+		= total_td(d, false) unless child
+	%td.fixed-col
+		= document_detail_actions(d, index, child)

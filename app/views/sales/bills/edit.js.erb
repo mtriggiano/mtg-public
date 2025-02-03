@@ -1,0 +1,5 @@
+<% simple_nested_form_for bill do |f| %>
+	<% @builder = f %>
+<% end %>
+$(".parent-table tbody").html("<%= j render '/sales/shared_details_form', {f: @builder} %>");
+setSelect2();

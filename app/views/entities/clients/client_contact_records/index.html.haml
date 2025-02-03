@@ -1,0 +1,20 @@
+- parent 		= controller_name.singularize
+- grandparent 	= controller_name.gsub("_contact", "").singularize
+- text 			= "Registros de " + eval("#{grandparent}.name")
+- path 			= polymorphic_path([:new, client, client_contact, :client_contact_record])
+- jpath 		= polymorphic_path([client, client_contact, :client_contact_records], format: :json)
+
+= index_table(mform: true, icon: 'archive', text: text, path: path, jpath: jpath, mtarget: "#new_contact_record_modal", collection: client_contact.records, config: false)
+
+
+= modal("#{icon('fas', 'edit')} Editar registro", "edit_contact_record_modal", "edit_record_body") do
+	.modal-body
+
+= modal("#{icon('fas', 'plus')} Nuevo registro", "new_contact_record_modal", "new_record_body") do
+	.modal-body
+
+= modal("#{icon('fas', 'eye')} Ver registro", "see_contact_record_modal", "show_record_body") do
+	.modal-body
+		= yield
+	.modal-footer
+		= close_button

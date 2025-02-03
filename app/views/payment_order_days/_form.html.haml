@@ -1,0 +1,17 @@
+#payment_days_fields.card.shadow.mx-4.mb-4.collapse{data: {parent: "#document-accordion"}}
+	.card-header.bg-white
+		%h5.w-100.pt-2 Formas de pago
+	.card-body
+		.d-flex
+			.flex-shrink-1
+				= f.link_to_add "#{icon('fas', 'plus')} Agregar".html_safe, :order_payment_days, class: "btn btn-sm btn-primary align-self-start #{'disabled' if f.object.disabled?}", data: {target: '#payment_days_details'}
+			.w-100.d-flex.flex-wrap#payment_days_details
+				= f.simple_fields_for :order_payment_days, wrapper: false do |i|
+					.fields
+						.px-2.d-flex
+							.flex-grow-1
+								= i.input :payment_type_id, collection: current_company.payment_types, wrapper_html: {class: 'sm-select'}, label_method: :name, label: false
+							.w-50
+								= i.input :observation, label: false, input_html: {class: 'form-control-sm'}, placeholder: "Modalidad"
+							.remove
+								= i.link_to_remove icon('fas', 'trash'), class: 'btn btn-danger btn-sm right-btn'

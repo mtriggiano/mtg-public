@@ -1,0 +1,2 @@
+class CostCategory < ApplicationRecord
+end

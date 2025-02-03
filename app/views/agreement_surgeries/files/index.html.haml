@@ -1,0 +1,4 @@
+= index_table(mform: true, icon: 'ticket-alt', mtarget: "#new_surgery_request_modal", collection: files, text: "Expedientes", path: new_agreement_surgeries_file_path, jpath: agreement_surgeries_files_path(format: :json), config: false)
+
+= modal("#{icon('fas', 'plus')} Añadir Expediente", "new_surgery_request_modal", "new_surgery_request_body", "extra-big") do
+	.modal-body

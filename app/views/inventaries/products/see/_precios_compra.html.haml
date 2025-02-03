@@ -1,0 +1,32 @@
+%hr
+%p.text-center
+%strong Aclaracion:
+Solo se muestran las ultimas 20 actualizaciones.
+.table-responsive
+- product_presenter ||= ProductPresenter.new(product_presenter, self)
+%table.table.table-striped.table-sm.table-bordered.table-hover
+  %thead
+    %tr
+      %th Usuario
+      %th Fecha
+      %th Cambios
+
+  %tbody
+    - product.versions.where("object_changes like ?", "%price%").last(20).reverse_each do |version|
+      %tr
+        %td= User.find(version.whodunnit).try(:email) rescue ""
+        %td= version.created_at
+        - cambios = YAML.load(version.object_changes)
+        %td
+          - cambios.each do |campo, cambio|
+            %p.m-0
+              - if cambio.is_a? Array
+                = "Precio"
+                | : 
+                = product_presenter.price_for_audits(cambio[0])
+                |  => 
+                = product_presenter.price_for_audits(cambio[1])
+              - else
+                = campo
+                | : 
+                = cambio

@@ -1,0 +1,18 @@
+.row.border{style: "padding-top: 5px;"}
+  .container{style: "height: 650px;"}
+    %table.width_100
+      %tr
+        %th.description_header
+          Cant.
+        %th.description_header
+          Producto/Servicio
+        %th.description_header
+          Marca
+      - details.compact.each do |det|
+        %tr{style: "line-height: 0.5cm !important; font-size: 14px !important"}
+          %td.text_center
+            = det['quantity']
+          %td
+            = det['product_name']
+          %td
+            = det['branch']

@@ -1,0 +1,14 @@
+= simple_form_for(company, html: {class: 'horizontal-form'}, wrapper: :horizontal_form) do |f|
+	.row
+		.col-8.offset-2
+			= error_notification(f)
+			= f.hidden_field :view, value: params[:view]
+			= f.input :anmat_type, collection: Anmat::EVENTOS.keys, label: "Tipo"
+			%hr.dotted
+			= f.input :gln, label: "G.L.N."
+			%hr.dotted
+			= f.input :anmat_user, label: "Usuario"
+			%hr.dotted
+			= f.input :anmat_password, as: :password, label: "Contraseña"
+	%hr
+		= save_button

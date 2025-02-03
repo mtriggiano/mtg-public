@@ -1,0 +1,20 @@
+%tr#data
+	%td.innerpadding.borderbottom
+		%table{cellspacing: "0", border: "0", width: "100%"}
+			%tbody
+				%tr
+					%td
+						%h3
+							¡Bienvenido #{@resource.email}!
+				%tr
+					%td.bodycopy
+						%p
+							Fuiste invitado a participar del sistema de gestion de 
+							= @resource.company.name
+
+						%p
+							Para aceptar la invitación hace click en el siguiente boton:
+						%center
+							= link_to "Aceptar invitación", accept_invitation_url(@resource, :invitation_token => @token), class: 'button btn'
+						%p
+							Saludos coordiales.

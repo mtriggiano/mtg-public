@@ -1,0 +1,22 @@
+= simple_form_builder @external_arrival, url: create_stock_external_arrivals_path(shipment_id: params[:shipment_id]), defaults: {disabled: @external_arrival.disabled?} do |f|
+	.card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+		.card-body
+			= file_header(f, true)
+			.header-detail
+				= error_explanation(f.object)
+				.row
+					.col-sm-4.col-12
+						= number_input(f, true)
+						= supplier_input(f)
+					.col-sm-4.col-12
+						= store_input(f)
+						= date_input(f, :date)
+					.col-sm-4.col-12
+						= state_input(f, with_button: false)
+					.col-sm-4.col-12
+						%p
+							= "Movimiento de stock interno" if @external_arrival.traslado_stock_interno 
+				= state_manager(f)
+	= document_table(f, "surgeries") do
+		= observation_input(f)		
+		= render '/purchases/shared_attachment', f:f

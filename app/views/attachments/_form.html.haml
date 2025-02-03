@@ -1,0 +1,18 @@
+= simple_form_for(attachment, html: { class: 'horizontal-form' }, wrapper: :horizontal_form) do |f|
+
+  = error_notification(f)
+  .row.d-block.with-title.w-100
+    .mx-2.1.justify-content-center.w-100
+      .caption.captionload
+        = image_tag "/images/load.gif", class: 'img-fluid'
+      .img_wrp
+        = image_tag attachment.file, width: '100%', height: 'auto', class: "border img-fuild image", data: {index: 1}
+      .mt-3
+      = f.input :file, as: :file, input_html: { hidden: true, class: "file_input", data: {index: 1} }, label: false
+
+  %hr.dotted
+
+  = f.input :state,as: :radio_buttons, collection: Attachment::STATES.map(&:reverse), label: "Estado", wrapper_html: {class: 'd-flex'}
+
+  .actions
+    = save_button

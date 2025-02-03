@@ -1,0 +1,17 @@
+= error_notification(f)
+= f.input :name, label: "Nombre", input_html:{autofocus: true, autocomplete: :off}
+= yield(:entity_extra_data)
+%hr.dotted
+= f.input :iva_cond, label: "Condicion ante el IVA", collection: Client::IVA_COND, prompt: "Seleccione..."
+%hr.dotted
+= f.input :document_type, as: :string, required: false, label: "Documento", wrapper: :input_group do
+	%span.input-group-addon
+		= f.input_field :document_type, collection: Afip::DOCUMENTOS, class: "form-control", prompt: "Seleccione..."
+	= f.input_field :document_number, class: 'form-control', as: :numeric, placeholder: "Sin guiones ni puntos, solo números"
+%hr.dotted
+= f.input :address, label: "Dirección"
+%hr.dotted
+= f.input :recharge, label: "Recargo (%)", placeholder: "Recargo por defecto en porcentaje"
+.actions
+	%hr
+	= save_button

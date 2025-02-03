@@ -1,0 +1,43 @@
+.pr-2.pl-2.row
+  .col-12.col-md-4.col-sm-6
+    .card.shadow.toggle-card
+      .card-header.text-muted.bg-white
+        = icon('fas', 'chart-line')
+        Ordenes de compra
+      .card-body
+        = column_chart supplier.purchase_orders.group_by_day_of_week(:created_at, format: "%a").count
+  .col-12.col-md-4.col-sm-6
+    .card.shadow.toggle-card
+      .card-header.text-muted.bg-white
+        = icon('fas', 'chart-bar')
+        Devoluciones
+      .card-body
+        = column_chart supplier.purchase_returns.group_by_day_of_week(:created_at, format: "%a").count
+  .col-12.col-md-4.col-sm-6
+    .card.shadow.toggle-card
+      .card-header.text-muted.bg-white
+        = icon('fas', 'chart-pie')
+        Presupuestos concretados
+      .card-body
+        = column_chart supplier.purchase_budgets.where(state: 'Aprobado').group_by_day_of_week(:created_at, format: "%a").count
+  .col-12.col-md-4.col-sm-6
+    .card.shadow.toggle-card
+      .card-header.text-muted.bg-white
+        = icon('fas', 'chart-pie')
+        Facturación por mes
+      .card-body
+        = column_chart supplier.purchase_invoices.group_by_day_of_week(:created_at, format: "%a").count
+  .col-12.col-md-4.col-sm-6
+    .card.shadow.toggle-card
+      .card-header.text-muted.bg-white
+        = icon('fas', 'chart-pie')
+        Depósitos que reciben más productos
+      .card-body
+        = pie_chart supplier.purchase_arrivals.joins(:store).group("stores.name").count
+  .col-12.col-md-4.col-sm-6
+    .card.shadow.toggle-card
+      .card-header.text-muted.bg-white
+        = icon('fas', 'chart-pie')
+        Depositos
+      .card-body
+        = column_chart supplier.purchase_requests.group_by_day_of_week(:created_at, format: "%a").count

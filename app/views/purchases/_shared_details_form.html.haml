@@ -1,0 +1,7 @@
+- details =  f.object.details
+= hidden_field_tag :klass_validator, f.object.class.name
+= f.simple_fields_for :details, details.any? ? details : details.build(), defaults: {disabled: f.object.disabled?, label: false}, wrapper: false do |d|
+	= render 'details_form', {d: d, child: false}
+	- unless ["Purchases::Bill", "Purchases::Receipt", "Purchases::PaymentOrder", "ExternalBill"].include?(f.object.class.name)
+		= d.simple_fields_for :childs, wrapper: false do |c|
+			= render 'details_form', {d: c, child: true, parent_index: d.index}

@@ -1,0 +1,16 @@
+- params[:view] ||= 'general_calendar'
+.index
+  .index-title
+    .principal
+      = icon('fas', 'calendar')
+      Reportes de Almacén
+    .buttons.d-flex.align-items-start
+      = link_to "Calendario tabla", reports_storages_path(view: 'table_calendar'), class: "btn btn-outline-dark #{'active' if params[:view] == 'table_calendar'}", data: {'skip-pjax' => true}
+      = link_to "Calendario", reports_storages_path(view: 'general_calendar'), class: "btn btn-outline-dark #{'active' if params[:view] == 'general_calendar'}", data: {'skip-pjax' => true}
+      = link_to "Tabla", reports_storages_path(view: 'calendar_table'), class: "btn btn-outline-dark #{'active' if params[:view] == 'calendar_table'}", data: {'skip-pjax' => true}
+      = link_to "Salidas", reports_storages_path(view: 'shipments', bills_band: false), class: "btn btn-outline-dark #{'active' if params[:view] == 'shipments'}", data: {'skip-pjax' => true}
+      = link_to "Entradas", reports_storages_path(view: 'arrivals'), class: "btn btn-outline-dark #{'active' if params[:view] == 'arrivals'}", data: {'skip-pjax' => true}
+      = link_to "Consumos", reports_storages_path(view: 'consumptions'), class: "btn btn-outline-dark #{'active' if params[:view] == 'consumptions'}", data: {'skip-pjax' => true}
+      = link_to "Lotes", reports_storages_path(view: 'batches'), class: "btn btn-outline-dark #{'active' if params[:view] == 'consumptions'}", data: {'skip-pjax' => true}
+  - if ['table_calendar', 'general_calendar', 'calendar_table', 'shipments', 'arrivals', 'arrival_products','consumptions', 'batches'].include?(params[:view])
+    = render params[:view]

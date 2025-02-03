@@ -1,0 +1,11 @@
+= simple_form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post} do |f|
+	= error_notification(f)
+	.card
+		.card-body
+			%i.small
+				Al enviar una invitación, al usuario le llegará un email con los datos necesarios para asociarce a tu compañía. Una vez que el mismo complete el proceso de registro, deberas asignarles roles.
+	%hr.dotted
+	- resource.class.invite_key_fields.each do |field| 
+		= f.input field
+.modal-footer
+	= save_button("Enviar invitación")

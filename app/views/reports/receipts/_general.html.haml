@@ -1,0 +1,58 @@
+- paginated_receipts = @receipts.paginate(per_page: 10, page: params[:page])
+%center
+	.d-flex.justify-content-center.w-100
+		= form_tag reports_receipts_path, method: :get do
+			= hidden_field_tag :view, 'general'
+			.row
+				.col.d-flex.align-items-center
+					.d-flex
+						.form-group
+							= label_tag :from, "Desde", class: 'mr-2'
+							= text_field_tag :from, params[:from] || Date.today - 1.months, data: { behaviour: 'datepicker' }, placeholder: "Desde", class: 'form-control mr-2'
+						.form-group
+							= label_tag :to, "Hasta", class: 'mr-2'
+							= text_field_tag :to, params[:to] || Date.today, data: { behaviour: 'datepicker' }, placeholder: "Hasta", class: 'form-control mx-2'
+				.col.align-items-center
+					= label_tag :clients, "Clintes", class: 'mr-2'
+					= select_tag :clients, options_from_collection_for_select(current_company.clients, :id, :name, params[:clients]), { multiple: true, class: 'form-control mr-2'}
+				.col.align-items-center
+					= label_tag :payment_types, "Formas de pago", class: 'mr-2'
+					= select_tag :payment_types, options_from_collection_for_select(current_company.payment_types, :id, :name, params[:payment_types]), { multiple: true, class: 'form-control mr-2'}
+				.col.align-items-center
+					= label_tag :banks, "Bancos", class: 'mr-2'
+					= select_tag :banks, options_from_collection_for_select(current_company.bank_accounts, :id, :alias_tag, params[:banks]), { multiple: true, class: 'form-control mr-2'}
+				.col-2{style: 'margin-top: 28px;'}
+					= submit_tag "Buscar", class: 'btn btn-primary'
+	.row.h-100
+		.col-7
+			%hr
+			.table-responsive
+				%table#table
+					%thead.thead-light
+						%th.actions{scope: 'col'} Número
+						%th.actions{scope: 'col'} Cliente
+						%th.actions{scope: 'col'} Fecha
+						%th.actions{scope: 'col'} Met. Pagos
+						%th.actions{scope: 'col'} Bancos
+						%th.actions{scope: 'col'} Total
+					%tbody.table-bordered
+						- paginated_receipts.each do |receipt|
+							- present receipt, Sales::ReceiptPresenter do |receipt_presenter|
+								%tr
+									%td
+										= receipt_presenter.number
+									%td
+										= receipt_presenter.client
+									%td
+										= receipt_presenter.date
+									%td
+										= receipt_presenter.payment_types
+									%td
+										= receipt_presenter.banks
+									%td
+										= receipt_presenter.total
+			.d-flex.justify-content-center.w-100
+				= will_paginate paginated_receipts
+		.col-5{style: 'height: 100vh;'}
+			%hr
+			= pie_chart @receipts.joins(:client).group("entities.name").sum("ROUND(receipts.total::numeric, 2)"), height: "450px"

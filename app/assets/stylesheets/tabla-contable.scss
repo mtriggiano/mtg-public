@@ -1,0 +1,46 @@
+.contable-table {
+  text-align: center;
+  padding: 0px;
+  box-sizing: border-box;
+
+  th {
+    border: 3px solid #dee2e6;
+  }
+
+  td {
+    border: 1px solid #dee2e6;
+    white-space: nowrap;
+    padding: 0.25rem;
+    font-size: 0.75rem;
+  }
+}
+
+.word-breakeable {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+}
+
+.no-break {
+  white-space: nowrap !important;
+}
+
+.condensed-table {
+  td {
+    padding: 0.4rem !important;
+    vertical-align: middle;
+  }
+}
+
+.details-table {
+  td {
+    padding: 0.35rem;
+
+    .form-group {
+      margin: 0px;
+
+      input {
+        padding: 0.375rem 0.35rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+- params[:view] ||= 'general'
+
+- present product_category do |product_category_presenter|
+	.p-3.row
+		= client_card('3', product_category.name, "-", 'id-card', 'info')
+		= client_card('3', '$430.200', 'Total ingresos en el último mes', 'hand-holding-usd', 'success')
+		= client_card('3', '$100.120', 'Total gastos en el último mes', 'hand-holding-usd', 'danger')
+		= client_card('3', '56', 'Ventas en el último mes', 'briefcase', 'primary')
+	.container-fluid.mt-2
+		#config_fields
+			.pr-2.pl-2.row
+				.col-12.col-md-4.p-2
+					.shadow.bg-white.p-3.h-50vh
+						.text-muted
+							= icon('fas', 'list-alt')
+							Información básica
+						%hr
+							%dl
+								= see_company_dl("Nombre", product_category_presenter.name)
+								%hr.dotted
+								= see_company_dl("I.V.A.", product_category_presenter.default_iva)
+								%hr.dotted
+								= see_company_dl("Cantidad de productos", product_category_presenter.products_count)
+					.shadow.bg-white.p-3.h-50vh.mt-4
+						.text-muted
+							= icon('fas', 'clipboard-list')
+							Más vendidas
+						%hr
+						%h4.text-center
+							¡Todavia no tienes ninguna actividad registrada!
+				.col-12.col-md-4.p-2
+					.shadow.bg-white.p-3.h-50vh
+						.text-muted
+							= icon('fas', 'chart-pie')
+							Productos por categoría
+						%hr
+						= pie_chart current_company.product_categories.group(:name).sum(:products_count)
+					.shadow.bg-white.p-3.h-50vh.mt-4
+						.text-muted
+							= icon('fas', 'chart-pie')
+							Con mayor ganancia
+						%hr
+						= pie_chart ProductCategory.group(:name).count, donut: true
+
+				.col-12.col-md-4.p-2
+					.shadow.bg-white.p-3.h-50vh
+						.text-muted
+							= icon('fas', 'cahrt-bar')
+							Ingresos vs gastos
+						%hr
+						= pie_chart Company.group(:name).count, colors: ["#b00", "#666"], donut: true
+					.shadow.bg-white.p-3.h-50vh.mt-4
+						.text-muted
+							= icon('fas', 'chart-pie')
+							Ventas en el último mes
+						%hr
+						= area_chart ProductCategory.group_by_day(:created_at).maximum(:products_count)

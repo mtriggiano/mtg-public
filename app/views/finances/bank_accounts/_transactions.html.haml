@@ -1,0 +1,34 @@
+%p.mb-1
+  Transacciones bancarias (extractos)
+  %span.float-right
+    - if bank_account.configuration
+      = link_to "#{icon('fas', 'cog')} Configuración".html_safe, edit_bank_account_bank_account_importer_configuration_path(bank_account, bank_account.configuration), data: { toggle: "modal", target: "#importerConfigurationModal", form: "false" }, class: "mr-2", remote: true
+    - else
+      = link_to "#{icon('fas', 'cog')} Configuración".html_safe, new_bank_account_bank_account_importer_configuration_path(bank_account), data: { toggle: "modal", target: "#importerConfigurationModal", form: "false" }, class: "mr-2", remote: true
+    %a{:href => "#", :"data-toggle" => "modal", :"data-target" => "#loadTransactionsModal", :"data-form" => "false"}
+      = icon('fas', 'upload')
+      Importar
+%div#transactions_table
+  = render 'transactions_table'
+
+.modal.fade{:id => "loadTransactionsModal"}
+  .modal-dialog.modal-lg{:role => "document"}
+    .modal-content
+      .modal-header
+        %h5.modal-title Importar extracto bancario
+        %button.close{:"data-dismiss" => "modal"}
+          %span &times;
+      = form_tag load_transactions_bank_account_path(bank_account), { method: :post, multipart: true } do |f|
+        .modal-body
+          .form-group
+            = label_tag :transaction_file, "Selecciona o arrastra el archivo a importar"
+            .py-5.px-2.border.rounded.dashed.border-2
+              = file_field_tag :transaction_file, class: "btn btn-primary w-100", accept: BankAccountsManager::BankAccountTransactionLoader::EXTENSIONES_PERMITIDAS.join(","), required: true
+        .modal-footer.text-center
+          = submit_tag "Importar datos", class: "btn btn-success", data: { confirm: "¿Estás seguro de importar este extracto?" }
+          %button.btn.btn-secondary{:"data-dismiss" => "modal"} Cancelar
+
+
+.modal.fade{:id => "importerConfigurationModal"}
+  .modal-dialog{:role => "document"}
+    .modal-content

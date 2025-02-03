@@ -1,0 +1,29 @@
+.home-nav {
+  .nav-item {
+    display: flex;
+    align-items: center;
+
+    a {
+      font-size: 1rem;
+
+      &.active {
+        font-size: 1.4rem;
+        font-weight: bold;
+      }
+    }
+
+    // &:first-child {
+    //   a {
+    //     padding-left: 0;
+    //   }
+    // }
+  }
+}
+
+.nav-tabs {
+  border: none !important;
+}
+
+.navbar{
+  background-color: #f4f4f4;
+}

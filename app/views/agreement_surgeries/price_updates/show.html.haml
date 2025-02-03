@@ -1,0 +1,17 @@
+= edit_helper("Actualizacion de Precio") do
+  = link_to 'Nomenclador', agreement_surgeries_surgery_materials_path
+  \|
+  = link_to 'Listado', agreement_surgeries_price_updates_path
+
+  = render '/agreement_surgeries/price_updates/form', disabled: true
+
+  %p
+    %strong
+      Creado Por
+    %span
+      = link_to @price_update.created_by.email, @price_update.created_by if @price_update.created_by
+  %p
+    %strong
+      Log
+    %span
+      = @price_update.log

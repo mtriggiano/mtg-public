@@ -1,0 +1,58 @@
+.index
+  .index-title
+    .principal
+      = "Expedientes vencidos"
+  .card.card-body.bg-light
+    %p
+      %strong 
+        Filtros
+    = form_tag('', class: 'form', method: :get, id: 'filtro-form', "data-type" => 'json', remote: true) do
+      .row
+        .col-md-4 
+          = label_tag :estado_notificacion, 'Notificacion', class: "control-label"
+          = select(:filtros, :estado_notificacion, ['Marcados como No Vencidos'], include_blank: "Vencidos", class: 'form-control form-control-sm')
+        .col-md-3.col-sm-4
+          %br
+            = button_tag(type: "submit", class: "btn btn-success") do
+              %span.glyphicon.glyphicon-search
+                Buscar
+  %p Listado de expedientes con Fecha de creacion mayor al año 2024, con Fecha de cirugía menor o igual a  #{@fecha}, con Foja quirurgica y Certificado de Implante vacio.
+  #bmenu.mx-4.d-flex.justify-content-between.align-items-center
+  .index-body.table-responsive
+    %table#paginated_table.table{ data: { title: "Salida de stock interna", source: vencidos_surgeries_files_path(format: :json) } }
+      %thead.thead-light
+        %th{ scope: 'col' } ID
+        %th{ scope: 'col' } Numero
+        %th{ scope: 'col' } Titulo
+        %th{ scope: 'col' } Estado
+        %th{ scope: 'col' } Vendedor
+        %th{ scope: 'col' } Lugar de Entrega
+        %th{ scope: 'col' } Cirugia
+        %th{ scope: 'col' } Foja Quirurgica
+        %th{ scope: 'col' } Crt Implante
+        %th{ scope: 'col' } Vencido
+        %th{ scope: 'col' } Acciones
+      %tbody.table-bordered
+
+= table_script(DatatableConstants::Surgeries::FileVencidos.merge("actions" => ""))
+
+:javascript
+    $(document).ready(function() {
+        var data_filters = {
+            tabla: null,
+            url_base: "#{vencidos_surgeries_files_path(format: :json)}?",
+            filtro_form: $("#filtro-form"),
+            on_submit_filter_form: function(event){
+                var url = data_filters.url_base + $(event.target).serialize();
+                if (!data_filters.tabla){
+                    data_filters.tabla = $("#paginated_table").DataTable();
+                } else {
+                    data_filters.tabla.ajax.url(url);
+                    data_filters.tabla.ajax.reload();
+                }
+                return false;
+            }
+        }
+        data_filters.tabla = null;
+        data_filters.filtro_form.submit(data_filters.on_submit_filter_form);
+    })

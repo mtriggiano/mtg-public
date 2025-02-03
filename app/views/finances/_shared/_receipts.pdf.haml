@@ -1,0 +1,59 @@
+%table.width_100
+  %tr
+    %td
+      = wicked_pdf_image_tag current_company.pdf_logo, height: "50px"
+    %td.text_right
+      = fecha
+      %p.mb-0.h4.mt-0
+        Recibo Nº
+        = numero.to_s.rjust(8, "0")
+      %p.mb-1.mt-0
+        = texto
+
+%table.width_100{:style => "height: 245px;"}
+  %tr
+    %td
+      %p.mb-1.mt-0
+        Recibí de
+        %span.completed-field
+          = recibi_de
+  %tr
+    %td
+      %p.mb-1.mt-0
+        La suma de
+        %span.completed-field.darker-background
+          = number_to_words "pesos", importe
+  - if defined?(recibe) && !recibe.blank?
+    %tr
+      %td
+        %p.mb-1.mt-0
+          Recibió
+          %span.completed-field
+            = recibe
+  - if defined?(representa) && !representa.blank?
+    %tr
+      %td
+        %p.mb-1.mt-0
+          En representación de
+          %span.completed-field
+            = representa
+  %tr
+    %td
+      %p.mb-1.mt-0
+        en concepto de
+        %span.completed-field
+          = concepto
+
+%table.width_100.mt-1
+  %tr.text_center
+    %td.width_50
+      %p.m-0
+        Son
+        %span.completed-field.darker-background
+          = number_to_ars importe
+    %td.width_50
+      %div.signature-border
+  %tr.text_center
+    %td.width_50
+    %td.width_50
+      Firma y aclaración

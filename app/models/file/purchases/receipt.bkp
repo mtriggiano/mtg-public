@@ -1,0 +1,12 @@
+class Purchases::Receipt < ExpedientReceipt
+	belongs_to 	:file, class_name: "Purchases::File", foreign_key: :file_id
+	belongs_to 	:supplier, foreign_key: :entity_id
+	has_many 	:detail
+	s, class_name: "Purchases::ReceiptBill", foreign_key: :receipt_id, inverse_of: :receipt
+
+	accepts_nested_attributes_for :details, reject_if: :all_blank, allow_destroy: true
+
+	def create_account_movement
+  	SupplierAccountMovement.create_from_receipt(self) if is_finished? && saved_change_to_state?
+	end
+end

@@ -1,0 +1,80 @@
+$background-primary-color: #FFF;
+$background-secondary-color: #f9f9f9;
+
+.notification-bell {
+	padding:0px !important;
+	@extend .text-dark;
+	font-size: 30px;
+	line-height: 40px;
+
+	.badgenotifications {
+		font-size: 1rem;
+		padding: 4px;
+		line-height: 1rem;
+		background-color: #17a2b8 !important;
+		border-radius: 50%;
+		width: 24px;
+		text-align: center;
+		display: block;
+		position: relative;
+		bottom: 39px;
+		right: 12px;
+		color: white;
+	}
+}
+
+.notifications {
+	position: relative;
+	min-height: 200px;
+}
+
+#notification-container{
+	position: absolute;
+	top: 50px;
+	right: 3rem;
+	width: 30rem;
+	display: none;
+	max-height: 500px;
+
+	.border-top-arrow {
+		width: 0;
+    position: relative;
+    margin: auto;
+		border-top: 10px solid transparent;
+	  border-left: 10px solid transparent;
+	  border-bottom: 10px solid $background-secondary-color;
+	  border-right: 10px solid transparent;
+	}
+
+	.card {
+		max-height: 500px;
+
+		.card-body {
+			overflow: auto;
+		}
+	}
+}
+
+.hoverable {
+	&:hover {
+		background: $background-secondary-color;
+	}
+}
+
+
+.notification-body{
+	max-height: 100px;
+	max-width: 25rem;
+}
+
+#notification-container > .card > .card-header{
+	text-align: center;
+}
+
+.notification-link {
+	cursor: pointer;
+
+	&:hover {
+		text-decoration: none;
+	}
+}

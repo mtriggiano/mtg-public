@@ -1,0 +1,95 @@
+.row
+  .col-12.mb-3
+    .mb-2.text-center
+      = link_to "#{icon('fas', 'plus')} Solicitud externa".html_safe, new_external_cash_solicitudes_path(), class: 'btn btn-outline-success'
+      = link_to "#{icon('fas', 'search')} Buscador".html_safe, cash_solicitudes_path, class: 'btn btn-outline-info'
+    %p.mb-1
+      Retiros de fondos - Rendiciones pendientes
+    - if cash_solicitudes.rendiciones_pendientes.any?
+      %table.contable-table
+        %thead
+          %th Código
+          %th Solicitud
+          %th Persona
+          %th Motivo
+          %th Retiro
+          %th Importe
+          %th Vuelto
+        %tbody
+          - cash_solicitudes.rendiciones_pendientes.each do |cash_solicitude|
+            %tr
+              %td
+                = link_to cash_solicitude.codigo, cash_solicitude_path(cash_solicitude, format: :pdf), 'data-skip-pjax' => true, target: '_blank'
+              %td
+                = cash_solicitude.fecha
+              %td.word-breakeable
+                = cash_solicitude.user.try(:name) || cash_solicitude.nombre_solicitante
+              %td.word-breakeable
+                = cash_solicitude.motivo
+              %td
+                = cash_solicitude.cash_withdrawal.fecha
+              %td
+                = number_to_ars cash_solicitude.cash_withdrawal.importe
+              %td
+                = link_to "CIERRE", refund_cash_solicitude_path(cash_solicitude)
+
+    - else
+      %p.alert.alert-info.text-center
+        = "#{icon('fas', 'check')} Sin retiros de fondos con rendiciones pendientes.".html_safe
+  .col-6.mb-3
+    %p.mb-1
+      Solicitudes de fondos pendientes
+    - if cash_solicitudes.pendientes.any?
+      %table.contable-table
+        %thead
+          %th Cod.
+          %th Persona
+          %th Motivo
+          %th Fecha
+          %th
+        %tbody
+          - cash_solicitudes.pendientes.each do |cash_solicitude|
+            %tr
+              %td
+                = cash_solicitude.codigo
+              %td.word-breakeable
+                = cash_solicitude.user.try(:name) || cash_solicitude.nombre_solicitante
+              %td.word-breakeable
+                = cash_solicitude.motivo
+              %td
+                = cash_solicitude.fecha
+              %td
+                = link_to "Evaluar", analyze_cash_solicitude_path(cash_solicitude)
+    - else
+      %p.alert.alert-info.text-center
+        = "#{icon('fas', 'check')} Sin solicitudes pendientes.".html_safe
+  .col-6.mb-3
+    %p.mb-1
+      Solicitudes aprobadas
+    - if cash_solicitudes.aprobadas.any?
+      %table.contable-table
+        %thead
+          %th Cod
+          %th Persona
+          %th Motivo
+          %th Fecha
+          %th
+        %tbody
+          - cash_solicitudes.aprobadas.each do |cash_solicitude|
+            %tr
+              %td
+                = cash_solicitude.codigo
+              %td.word-breakeable
+                = cash_solicitude.user.try(:name) || cash_solicitude.nombre_solicitante
+              %td.word-breakeable
+                = cash_solicitude.motivo
+              %td
+                = cash_solicitude.fecha
+              %td
+                = link_to "Retiro", new_cash_solicitude_cash_withdrawal_path(cash_solicitude)
+    - else
+      %p.alert.alert-info.text-center
+        = "#{icon('fas', 'check')} Sin solicitudes aprobadas, pendientes de retiro.".html_safe
+
+  .col-12.mb-3.text-center
+    = link_to "Ver todas", all_cash_solicitudes_path

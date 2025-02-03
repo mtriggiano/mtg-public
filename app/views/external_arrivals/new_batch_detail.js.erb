@@ -1,0 +1,9 @@
+const modalId = '#gtin_' + "<%= @random %>";
+data = $("<%= j render '/inventaries/batches/form', {d: @builder, mode: 'check_in', product_id: params[:product_id]} %>")
+
+$("a#<%= params[:link_id] %>")
+	.closest("td")
+	.html(data)
+	.append(`<button type='button' data-target=${modalId} data-toggle='modal' class='btn btn-sm btn-info gtin_modal'><i class='fas fa-qrcode'></i></button>`)
+
+showBatchModal(modalId)

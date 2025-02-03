@@ -1,0 +1,14 @@
+- params[:view] ||= "calendar"
+%ul.nav.home-nav.justify-content-center.mb-3
+	%li.nav-item.border-animated
+		= link_to "Mis tareas", home_path(view: "calendar"), class: "nav-link text-success #{'active' if params[:view] == 'calendar'}"
+	%li.nav-item.border-animated
+		= link_to "Delegaciones", home_path(view: "responsables"), class: "nav-link text-success #{'active' if params[:view] == 'responsables'}"
+	%li.nav-item.border-animated
+		= link_to "Solicitudes de fondos", home_path(view: "cash_solicitudes"), class: "nav-link text-success #{'active' if params[:view] == 'cash_solicitudes'}"
+	%li.nav-item.border-animated
+		= link_to "Mis notificaciones", home_path(view: "notifications"), class: "nav-link text-success #{'active' if params[:view] == 'notifications'}"
+
+.mb-3
+	- if ["calendar", "responsables", "cash_solicitudes", "notifications"].include? params[:view]
+		= render "/home/see/#{params[:view]}"

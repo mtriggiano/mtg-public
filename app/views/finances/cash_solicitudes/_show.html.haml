@@ -1,0 +1,20 @@
+.row
+  .col-12.form-group
+    %p.mb-1.text-muted Solicitante
+    %h5
+      - if cash_solicitude.user.nil?
+        = cash_solicitude.nombre_solicitante.try(:upcase)
+      - else
+        = link_to cash_solicitude.user.name, profile_user_path(cash_solicitude.user)
+  .col-8.form-group
+    %p.mb-1.text-muted Solicitó efectivo para
+    %h5
+      = cash_solicitude.motivo.upcase
+  .col-4.form-group
+    %p.mb-1.text-muted Para la fecha
+    %h5
+      = cash_solicitude.fecha
+  .col-12.form-group
+    %p.mb-1.text-muted Información adicional de la solicitud
+    %p.h5
+      = cash_solicitude.descripcion.upcase

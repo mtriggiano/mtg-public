@@ -1,0 +1,14 @@
+%table 
+  %thead 
+    %tr 
+      %td Fecha
+      %td Expediente
+      %td Link
+  %tbody
+    - @expedients.each do |expedient|
+      %tr 
+        %td= expedient.created_at
+        %td= expedient.title
+        %td= link_to "Ver", surgeries_file_url(expedient), class: 'nav-link'
+    
+        

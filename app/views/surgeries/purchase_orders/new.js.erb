@@ -1,0 +1,17 @@
+<% simple_nested_form_for purchase_order do |f| %>
+	<% @builder = f %>
+<% end %>
+
+$("tbody").html("<%= j render '/surgeries/shared_details_form', {f: @builder, colspan: 8} %>");
+
+setSelect2();
+calculateHeader();
+toogleBody();
+
+<% unless purchase_order.entity_id.nil? %>
+	$("#purchase_order_entity_id").val("<%= purchase_order.entity_id %>").trigger("change")
+<% end %>
+
+$("table.parent-table > tbody > tr").each(function(_,tr){
+	calculateSubtotalWithIVA($(tr))
+})

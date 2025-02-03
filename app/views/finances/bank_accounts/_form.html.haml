@@ -1,0 +1,10 @@
+= simple_form_for(bank_account) do |f|
+
+	= error_notification(f)
+	= f.input :alias_tag, label: "Nombre", input_html:{ autofocus: true, autocomplete: :off }, required: true
+	= f.input :bank_id, label: "Banco", collection: current_company.banks.all, prompt: "Seleccione...", required: true
+	= f.input :number, label: "Número de cuenta"
+	= f.input :type, label: "Tipo de cuenta", collection: BankAccount::ACCOUNT_TYPES, prompt: "Seleccione...", required: true
+	= f.input :cbu, label: "C.B.U.", input_html:{maxlength: 22}
+	.actions
+		= save_button

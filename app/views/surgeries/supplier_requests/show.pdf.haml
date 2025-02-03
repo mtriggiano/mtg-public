@@ -1,0 +1,7 @@
+- total_page = 0
+- group_details = DetailPdf.new(@supplier_request, with_childs: true).build.in_groups_of(20)
+- group_details.each_with_index do |details_page, index|
+	.alwaysbreak
+		= render template: '/surgeries/supplier_requests/pdf/_header.html.haml', locals: {supplier_request: @supplier_request}
+		= render template: '/surgeries/supplier_requests/pdf/_details.html.haml', :locals => { :page_number => (index + 1), :details => details_page.compact, supplier_request: @supplier_request}
+		= render template: '/surgeries/supplier_requests/pdf/_footer.html.haml', :locals => { :page_number => (index + 1), :total_pages => group_details.count, supplier_request: @supplier_request }

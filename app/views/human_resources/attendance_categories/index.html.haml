@@ -1,0 +1,15 @@
+= index_table(mform: true, icon: 'list-alt', text: "Turnos de trabajo", jpath: attendance_categories_path(format: :json) , path: new_attendance_category_path, mtarget: "#new_attendance_category_modal", collection: current_company.attendance_categories)
+
+= modal("#{icon('fas', 'plus')} Editar turno", "edit_attendance_category_modal", "edit_attendance_category_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'eye')} Ver turno", "show_attendance_category_modal", "show_attendance_category_body") do
+	.modal-body
+		= yield
+	.modal-footer
+		= close_button
+
+= modal("#{icon('fas', 'plus')} Añadir turno", "new_attendance_category_modal", "new_attendance_category_body", "big") do
+	.modal-body
+		= yield

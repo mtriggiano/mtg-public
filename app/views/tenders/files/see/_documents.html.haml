@@ -1,0 +1,15 @@
+- params[:sub_view] ||= 'sale_requests'
+.nav.nav-tabs{ role:'tablist' }
+	= config_links("Pliegos #{badge(file.sale_requests.count)}", 'sale_requests', params[:sub_view], tenders_file_path(file.id, sub_view: 'sale_requests', view: 'documents') )
+	= config_links("Presupuestos #{badge(file.budget_attachments.count)}", 'budget_attachments', params[:sub_view], tenders_file_path(file.id, sub_view: 'budget_attachments' , view: 'documents')) unless file.is_counter_tender?
+	= config_links("Ofertas #{badge(file.supplier_budgets.count)}", 'supplier_budgets', params[:sub_view], tenders_file_path(file.id, sub_view: 'supplier_budgets', view: 'documents'))
+	=# config_links("Facturación #{badge(file.bills.count)}", 'bills', params[:sub_view], tenders_file_path(file.id, sub_view: 'bills', view: 'documents'))
+	=# config_links("Remitos #{badge(file.shipments.count)}" , 'shipments', params[:sub_view], tenders_file_path(file.id, sub_view: 'shipments', view: 'documents'))
+#sub-views
+	- if ["budget_attachments", "supplier_budgets", "sale_requests"].include? params[:sub_view]
+		- class_name = "Tenders::#{params[:sub_view].classify}"
+		- if current_user.can?(:read, class_name.constantize)
+			= render template: "/tenders/#{params[:sub_view]}/index", locals: {:collection => eval("file.#{params[:sub_view]}"), :@expediente => file, type: params[:type]}
+		- else
+			.mt-4
+				= render template: "/home/forbidden.html.haml", locals: {subject: 'Tenders::File'}

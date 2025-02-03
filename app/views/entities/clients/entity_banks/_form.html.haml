@@ -1,0 +1,19 @@
+= simple_form_for entity_bank, html: {class: 'horizontal-form'}, wrapper: :horizontal_form do |f|
+	= error_notification(f)
+	= f.association :entity, as: :hidden
+	= f.input :name, label: "Banco"
+	%hr.dotted
+	= f.input :cbu, label: "C.B.U."
+	%hr.dotted
+	= f.input :alias, label: "Alias"
+	%hr.dotted
+	= f.input :cuit, label: "C.U.I.T."
+	%hr.dotted
+	= f.input :account_type, label: "Tipo", collection: EntityBank::TYPES, prompt: "Seleccione..."
+	%hr.dotted
+	= f.input :branch_office, label: "Sucursal"
+	%hr.dotted
+	= f.input :denomination, label: "Denominación"
+	.actions
+		%hr
+		= save_button

@@ -1,0 +1,10 @@
+-params[:view] ||= 'general'
+.index
+	.index-title
+		.principal
+			#{icon('fas', 'dollar-sign')} Reporte de Cobranzas
+		.buttons.d-flex.align-items-start
+			= link_to "General", reports_receipts_path(view: 'general'), class: "btn btn-outline-dark #{'active' if params[:view] == 'general'}", data: {'skip-pjax' => true}
+	#bmenu.mx-4.d-flex.justify-content-between.align-items-center
+	- if ["general"].include? params[:view]
+		= render params[:view]

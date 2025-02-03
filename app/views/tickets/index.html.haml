@@ -1,0 +1,9 @@
+%h5.text-info
+	Puntos de función disponibles: #{15 - current_company.function_points}
+= index_table(mform: true, icon: 'ticket-alt', mtarget: "#new_ticket_modal", collection: tickets, text: "Tickets", path: new_ticket_path, jpath: tickets_path(format: :json), config: false)
+
+= modal("#{icon('fas', 'plus')} Añadir ticket", "new_ticket_modal", "new_ticket_body", "big") do
+	.modal-body
+
+= modal("#{icon('fas', 'plus')} Editar ticket", "edit_ticket_modal", "edit_ticket_body", "big") do
+	.modal-body

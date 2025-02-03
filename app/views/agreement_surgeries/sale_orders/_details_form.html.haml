@@ -1,0 +1,14 @@
+- child ||= d.object.is_a_child?
+- index = @index || d.index
+= document_detail(d, index, child) do
+	%td.d-flex.border-top-0
+		= state_point(d.object.info) unless child
+	%td
+		= nomenclador_td(d)
+		= d.hidden_field :product_code, value: "empty"
+		= d.hidden_field :product_name, value: "empty"
+	%td
+		= quantity_td(d)
+	
+	%td.fixed-col
+		= document_detail_actions d, index, child

@@ -1,0 +1,87 @@
+.border{style: "height: 900px;"}
+  %table.width_100
+    %th.border
+      .container
+        %table.width_100
+          %thead
+            %th.description_header
+              Fecha
+            %th.description_header
+              Comprobante N°
+            %th.description_header
+              Importe
+            %th.description_header
+              Abonado
+          %tbody
+          - details.compact.each do |det|
+            - if det.bill
+              %tr
+                %td
+                  = det.bill.cbte_fch
+                %td
+                  = det.bill.name(:short)
+                %td.text_right
+                  = number_to_ars det.bill.total
+                %td.text_right
+                  = number_to_ars det.total
+            - else
+              %tr
+                %td
+                %td
+                  PAGO A CUENTA
+                %td
+                %td.text_right
+                  = number_to_ars det.total
+          %tfooter
+            %tr.mt-1
+              %td
+              %td
+              %td.text_right{:style => "font-size: 22px;"}
+                TOTAL ABONADO
+              %td.text_right{:style => "font-size: 22px;"}
+                = number_to_ars details.pluck(:total).inject(0,:+)
+  %table.width_100
+    %th.border
+      .container
+        FORMAS DE PAGO
+        %table.width_100
+          %tr
+            %th.description_header
+              Número
+            %th.description_header
+              Banco
+            %th.description_header
+              Forma
+            %th.description_header
+              Vencimiento
+            %th.description_header
+              Importe
+          - payments.includes(checkbook: :bank_account).compact.each do |payment|
+            %tr
+              %td
+                = payment.number
+              %td
+                = payment.checkbook.bank_account.bank.name if payment.checkbook
+                = payment.bank_account.bank.name if payment.bank_account
+              %td
+                = payment.payment_type.name
+              %td
+                = payment.due_date
+              %td.text_right
+                = number_to_ars payment.total
+          - payment_order.taxes.each do |tax|
+            %tr
+              %td
+                = tax.number
+              %td
+              %td
+                = "RET.: #{tax.tipo}"
+              %td
+              %td.text_right
+                = number_to_ars tax.total
+          %tr.mt-1
+            %td{:colspan => "3"}
+            %td.text_right{:style => "font-size: 22px;"}
+              TOTAL PAGADO
+            %td.text_right{:style => "font-size: 22px;"}
+              = number_to_ars payment_order.total

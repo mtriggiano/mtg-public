@@ -1,0 +1,17 @@
+- params[:view] ||= 'general'
+
+- present attendance_resume do |attresu_presenter|
+	.px-3.pb-3.row
+		= client_card('3', attresu_presenter.user_name_without_link, "Empleado", 'id-card', 'info')
+		= client_card('3', "#{attresu_presenter.cumpliment}", 'Cumplimiento', 'percentage', 'secondary')
+		= client_card('3', "#{attresu_presenter.worked_hours}", 'Total horas trabajadas', 'clock', 'success')
+		= client_card('3', "#{attresu_presenter.extra_hours}", 'Total horas extra trabajadas', 'clock', 'primary')
+	%ul.nav.justify-content-center.bg-white.border-bottom.border-top.mx-3.shadow.rounded-top
+		%li.nav-item.border-animated
+			= show_links('General', 'general', params[:view], attendance_resume_path(attendance_resume.id, view: 'general'))
+		%li.nav-item.border-animated
+			= show_links('Asistencias asociadas', 'logs', params[:view], attendance_resume_path(attendance_resume.id, view: 'attendances'))
+	.container-fluid.mt-2
+		#config_fields
+			- if ['general', 'attendances'].include?(params[:view])
+				= render "/human_resources/attendance_resumes/see/#{params[:view]}", attendances: attendance_resume.attendances

@@ -1,0 +1,9 @@
+- suppliers.each do |supplier|
+  .row
+    = "#{supplier.name} - #{supplier.document_number}"
+  .row
+    %p.text-muted
+      Movimientos de cuenta. Balance:
+      = supplier.debt
+
+  = index_table(title: "false", icon: 'briefcase', can_new_path: false, collection: supplier.account_movements, jpath: supplier_account_movements_path(supplier_id: supplier.id, format: :json))

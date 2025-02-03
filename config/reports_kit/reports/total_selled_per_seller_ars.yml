@@ -1,0 +1,12 @@
+measure:
+  key: expedient_bill_detail
+  name: "Total ARS"
+  aggregation: total_selled
+filters:
+- seller
+- date
+dimensions:
+- key: seller
+  label: "Vendedor"
+order: dimension1.label asc
+format: table

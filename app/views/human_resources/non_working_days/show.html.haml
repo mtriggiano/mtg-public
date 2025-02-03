@@ -1,0 +1,16 @@
+- present non_working_day do |nwd_presenter|
+  .row
+    .col-12
+      .pr-2.pl-2.bg-white.p-3
+        .text-muted
+        = icon('fas', 'list-alt')
+        = "Información del #{non_working_day.holiday_type}"
+      %hr
+        %dl
+          = see_contact_dl("ID", non_working_day.id)
+          %hr.dotted
+          = see_contact_dl("Razón", non_working_day.reason)
+          %hr.dotted
+          = see_contact_dl("Fecha", nwd_presenter.date_label)
+          %hr.dotted
+          = see_contact_dl("Empleados excluidos", nwd_presenter.excluded_users)

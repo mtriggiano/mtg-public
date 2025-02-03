@@ -1,0 +1,17 @@
+- params[:view] ||= 'general'
+.container-fluid.d-inline-block
+	%ul.nav.bg-white.border-bottom.border-top.p-2.mb-4.mt-4
+		%li.title.nav-item.border-right
+			= link_to "Empleado #{user.name}", profile_user_path(user.id),class: 'btn btn-light float-left'
+		%li.nav-item.border-animated
+			= show_links('General', 'general', params[:view], edit_user_path(user.id, view: 'general'))
+		%li.nav-item.border-animated
+			= show_links('Laboral', 'labor', params[:view], edit_user_path(user.id, view: 'labor'))
+		%li.nav-item.border-animated
+			= show_links('Comisiones', 'comissions', params[:view], edit_user_path(user.id, view: 'comissions'))
+		%li.nav-item.border-animated
+			= show_links('Notificaciones', 'notifications', params[:view], edit_user_path(user.id, view: 'notifications'))
+		%li.nav-item.border-animated
+			= show_links('Contraseña', 'password', params[:view], edit_user_path(user.id, view: 'password'))
+	- if ['general', 'labor', "comissions", "notifications", "password"].include?(params[:view])
+		= render "/human_resources/users/form_partials/#{params[:view]}"

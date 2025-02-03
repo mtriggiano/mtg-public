@@ -1,0 +1,82 @@
+.index
+	.index-title
+		.principal
+			#{icon('fas', 'dollar-sign')} Remitos de salida
+	.card.card-body.bg-light
+		%p
+			%strong 
+				Filtros  
+		= form_tag('', class: 'form', method: :get, id: 'filtro-form', "data-type" => 'json', remote: true) do
+			.row
+				.col-md-4
+					= label_tag :tipo, 'Tipo Expediente', class: "control-label"
+					= select(:filtros, :tipo, ['Cirujia', 'Venta'], include_blank: "Todos", class: 'form-control form-control-sm')
+				.col-md-4
+					= label_tag :sin_facturas, 'Sin factura', class: "control-label"
+					= select(:filtros, :sin_facturas, ['Sin facturas asociadas', 'Con facturas asociadas'], include_blank: "Todos", class: 'form-control form-control-sm')
+				.col-md-4
+					= label_tag :seller_id, 'Vendedor', class: "control-label"
+					= collection_select(:filtros, :seller_id, @sellers, :id, :name, { :include_blank => "Todos"}, class: 'form-control')
+				.col-sm-4
+					= label_tag :fecha_start, 'Fecha Desde', :class => "control-label"
+					= text_field :filtros, :fecha_start, :class => 'form-control', :id => "startDate", :type => "date"
+				.col-sm-4
+					= label_tag :fecha_end, 'Fecha Hasta', :class => "control-label"
+					= text_field :filtros, :fecha_end, :class => 'form-control', :id => "endDate", :type => "date"
+				.col-md-3.col-sm-4
+					%br
+					= button_tag(type: "submit", class: "btn btn-success") do
+						%span.glyphicon.glyphicon-search
+						Buscar
+
+	#bmenu.mx-4.d-flex.justify-content-between.align-items-center
+	.index-body.table-responsive
+		%table#paginated_table.table{data: {title: "Reporte Remitos",source: reports_shipments_path(view: 'shipments', format: :json)}}
+			%thead.thead-light
+				%th.actions{scope: 'col'} Número
+				%th.actions{scope: 'col'} Fecha
+				%th.actions{scope: 'col'} O.S. / Cliente
+				%th.actions{scope: 'col'} Fecha de cirugía
+				%th.actions{scope: 'col'} Importe
+				%th.actions{scope: 'col'} Afiliado
+				%th.actions{scope: 'col'} Exp. Ext.
+				%th.actions{scope: 'col'} Estado
+				%th.actions{scope: 'col'} Sub Estado
+				%th.actions{scope: 'col'} Conformado?
+				%th.actions{scope: 'col'} Usuario
+				%th.actions{scope: 'col'} Lugar de entrega
+				%th.actions{scope: 'col'} Observación
+				%th.actions{scope: 'col'} O.V.
+				%th.actions{scope: 'col'} Exp. Int
+				%th.actions{scope: 'col'} Tipo
+				%th.actions{scope: 'col'} Factura
+				%th.actions{scope: 'col'} Consumo
+				%th.actions{scope: 'col'} O.C.
+				%th.actions{scope: 'col'} Vendedor
+				%th.actions{scope: 'col'} Tiempo sin facturar
+			%tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::Shipping.merge("actions" => ""))
+
+:javascript
+	$(document).ready(function() {
+		var data_filters = {
+			tabla: null,
+			url_base: "#{reports_shipments_path(format: :json)}?",
+			filtro_form: $("#filtro-form"),
+			on_submit_filter_form: function(event){
+				var url = data_filters.url_base + $(event.target).serialize();
+				if (!data_filters.tabla){
+					data_filters.tabla = $("#paginated_table").DataTable();
+				} else {
+					data_filters.tabla.ajax.url(url);
+					data_filters.tabla.ajax.reload();
+				}
+				return false;
+			}
+		}
+		data_filters.tabla = null;
+		data_filters.filtro_form.submit(data_filters.on_submit_filter_form);
+		
+	})
+	

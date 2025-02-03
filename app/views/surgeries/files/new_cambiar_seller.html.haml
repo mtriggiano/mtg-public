@@ -1,0 +1,9 @@
+= new_helper("Cambiar vendedor") do
+	= simple_nested_form_for file, url: surgeries_file_create_cambiar_seller_path(file), method: :post, html: { class: 'horizontal-form directUpload' }, wrapper: :horizontal_form do |f|
+
+		= error_notification(f)
+		- file.seller_id_temp = file.sale_orders.map{|sale_order| sale_order.sellers }.flatten.uniq.first.try(:id)
+
+		= f.input :seller_id_temp, label: "Seleccione nuevo vendedor:", include_blank: false, label: "Vendedor", collection: current_company.users
+
+		= f.submit "Guardar", class: "btn btn-primary"

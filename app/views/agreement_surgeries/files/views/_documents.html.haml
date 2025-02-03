@@ -1,0 +1,13 @@
+- params[:sub_view] ||= 'prescriptions'
+.nav.nav-tabs{ role:'tablist' }
+	= config_links("O.V. #{badge(file.sale_orders.count)}", 'sale_orders', params[:sub_view], [file, sub_view: 'sale_orders', view: 'documents'])
+	= config_links("Salidas #{badge(file.shipments.count)}" , 'shipments', params[:sub_view], [file, sub_view: 'shipments', view: 'documents'])
+
+#sub-views
+	- if ["sale_orders", "shipments"].include? params[:sub_view]
+		- class_name = "AgreementSurgeries::#{params[:sub_view].classify}"
+		- if current_user.can?(:read, class_name.constantize)
+			= render template: "/agreement_surgeries/#{params[:sub_view]}/index", locals: {:collection => eval("file.#{params[:sub_view]}"), :@expediente => file, type: params[:type]}
+		- else
+			.mt-4
+				= render template: "/home/forbidden.html.haml", locals: {subject: 'AgreementSurgeries::File'}

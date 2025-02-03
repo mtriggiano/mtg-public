@@ -1,0 +1,15 @@
+.index-body.table-responsive
+	%table#paginated_table.table{title: "Reporte FACTURAS VENTA GENERAL por proveedor", data: {source: reports_bill_details_path(bill_ids: params[:bill_ids], not_draw: params[:not_draw], format: :json)}}
+		%thead.thead-light
+			%th{scope: 'col'} Fecha
+			%th{scope: 'col'} Factura
+			%th{scope: 'col'} Cliente ID
+			%th{scope: 'col'} Cliente
+			%th{scope: 'col'} Producto codigo
+			%th{scope: 'col'} Producto
+			%th{scope: 'col'} Proveedor
+			%th{scope: 'col'} Cantidad
+			%th{scope: 'col'} Vendedor
+			%th{scope: 'col'} F. Vto
+		%tbody.table-bordered
+	= table_script(DatatableConstants::Reports::BillDetail.merge("actions" => ""))

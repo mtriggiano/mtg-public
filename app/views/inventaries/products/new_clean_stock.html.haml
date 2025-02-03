@@ -1,0 +1,15 @@
+%h2 ¿Está seguro de que desea limpiar el stock de este producto?
+
+%br
+.center-content
+  = link_to product.name, product
+
+%br 
+  = simple_form_for product, url: clean_stock_product_path(product), method: :post, html: { class: 'form-inline' } do |f|
+    = csrf_meta_tags
+    .form-group
+      
+      %label{for: 'password'} Contraseña:
+      %input{type: 'password', name: 'password', class: 'form-control', style: 'width: 50%;'} 
+
+    %button.btn.btn-primary{type: 'submit'} Confirmar

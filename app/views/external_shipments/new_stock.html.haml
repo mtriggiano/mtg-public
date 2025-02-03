@@ -1,0 +1,26 @@
+= link_to "Volver al listado de Movimiento de stock", stock_external_shipments_path
+%hr.dotted
+= simple_form_builder @external_shipment, url: create_stock_external_shipments_path, defaults: { disabled: @external_shipment.disabled? } do |f|
+  .card.shadow.mb-4.mx-4.rounded-lg{ class: "border-left-#{record.state_color}" }
+    .card-body
+      = file_header(f, true)
+      .header-detail
+        = error_notification(f)
+        .row
+          .col-sm-6.col-12
+            = number_input(f, true)
+            = f.association :client, collection: [@external_shipment.entity], label_method: :name, selected: @external_shipment.entity, disabled: true, input_html: {data: {type: 'client'}}
+            = store_input(f)
+          .col-sm-6.col-12
+            = date_input(f, :date)
+            = state_input(f, with_button: false)
+            = f.input :shipment_type, as: :select, collection: @external_shipment.class::TYPES, disabled: true
+        %hr
+        .justify-content-center.d-flex
+          - if @external_shipment.persisted? && !@external_shipment.canceled? && !@external_shipment.confirmed?
+            = button_tag "#{icon('fas', 'tasks')} Verificar stock".html_safe, class: 'btn btn-info mx-2 file_state_submit', name: "verify_stock", value: true
+            = button_tag "#{icon('fas', 'tasks')} Solicitar stock".html_safe, type: :submit, name: "request_stock", value: true, class: "btn btn-warning file_state_submit #{'hidden' unless @external_shipment.details_without_enough_stock.any?}"
+          = switch_shipment_state_button(@external_shipment)
+      = document_table(f, "surgeries") do
+        = observation_input(f)
+        = render '/purchases/shared_attachment', f: f

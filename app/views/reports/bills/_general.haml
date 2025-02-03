@@ -1,0 +1,31 @@
+.index-body.table-responsive
+	%table#paginated_table.table{title: "Reporte FACTURAS VENTA GENERAL", data: {source: reports_bills_path(bill_ids: params[:bill_ids], not_draw: params[:not_draw], format: :json)}}
+		%thead.thead-light
+			%th.actions{scope: 'col'} Tipo y clase
+			%th.actions{scope: 'col'} Pto. vta
+			%th.actions{scope: 'col'} Número
+			%th.actions{scope: 'col'} Zona
+			%th.actions{scope: 'col'} Factura
+			%th.actions{scope: 'col'} Cliente
+			%th.actions{scope: 'col'} Emisión
+			%th.actions{scope: 'col'} Vencimiento
+			%th.actions{scope: 'col'} Importe
+			%th.actions{scope: 'col'} Pago
+			%th.actions{scope: 'col'} Saldo
+			%th.actions{scope: 'col'} Afiliado
+			%th.actions{scope: 'col'} Expte.
+			%th.actions{scope: 'col'} O.C.
+			%th.actions{scope: 'col'} Vendedor
+			%th.actions{scope: 'col'} Día
+			%th.actions{scope: 'col'} Mes
+			%th.actions{scope: 'col'} Año
+			%th.actions{scope: 'col'} Estado
+			%th.actions{scope: 'col'} Cancelación
+			%th.actions{scope: 'col'} Nota
+			%th.actions{scope: 'col'} Mora
+			%th.actions{scope: 'col'} U.S.D.
+			%th.actions{scope: 'col'} Importe U.S.D.
+			%th.actions{scope: 'col'} Tipo
+		%tbody.table-bordered
+
+	= table_script(DatatableConstants::Reports::Bill.merge("actions" => ""))

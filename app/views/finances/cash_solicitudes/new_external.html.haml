@@ -1,0 +1,15 @@
+= new_helper("Solicitud de fondos para agentes externos") do
+  = simple_form_for(cash_solicitude, url: create_external_cash_solicitudes_path) do |f|
+    = error_notification(f)
+    .row
+      .col-12
+        = f.input :nombre_solicitante, label: "Nombre del solicitante", input_html: { autofocus: true }, required: true
+      .col-8
+        = f.input :motivo, label: "Motivo de la solicitud", input_html: { autocomplete: :off }, required: true
+      .col-4
+        = f.input :fecha, label: "Fecha", as: :date_picker, required: true
+      .col-12
+        = f.input :descripcion, label: "Descripción detallada", required: true
+
+    .actions
+      = save_button

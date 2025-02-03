@@ -1,0 +1,7 @@
+= index_table(icon: 'university', text: "Cuentas bancarias", mtarget: "#new_bank_modal", mform: true, config: false, collection: collection, path: new_entity_bank_path(client_id: client_id), jpath: entity_banks_path(client_id: client_id, format: :json))
+
+= modal("#{icon('fas', 'plus')} Añadir proveedor", "new_bank_modal", "new_bank_body", "big") do
+	.modal-body
+= modal("#{icon('fas', 'plus')} Editar proveedor", "edit_bank_modal", "new_bank_body", "big") do
+	.modal-body
+		= yield

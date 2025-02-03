@@ -1,0 +1,13 @@
+development:
+  server: "https://faye-conquerup.herokuapp.com/faye/faye"
+  secret_token: "batkaro"
+staging:
+  server: "http://faye-conquerup.herokuapp.com/faye/faye"
+  secret_token: "batkaro"
+test:
+  server: "http://faye-conquerup.herokuapp.com/faye/faye"
+  secret_token: "batkaro"
+production:
+  server: "https://faye-conquerup.herokuapp.com/faye/magnus"
+  secret_token: "batkaro"
+  signature_expiration: 3600 # one hour

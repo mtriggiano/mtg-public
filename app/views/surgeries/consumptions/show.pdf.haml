@@ -1,0 +1,9 @@
+- total_page 	  = 0
+- @consumption 	||= consumption
+- @group_details  = DetailPdf.new(@consumption, with_childs: true).build.reject{|d| d['quantity'] <= 0}.in_groups_of(18)
+
+- @group_details.each_with_index do |details_page, index|
+	.alwaysbreak
+		= render template: '/surgeries/consumptions/pdf/_header.html.haml'
+		= render template: '/surgeries/consumptions/pdf/_details.html.haml', :locals => { :details => details_page.compact}
+		= render template: '/surgeries/consumptions/pdf/_footer.html.haml', :locals => { :page_number => (index + 1), :total_pages => @group_details.count }

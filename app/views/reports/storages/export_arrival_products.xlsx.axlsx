@@ -1,0 +1,24 @@
+wb = xlsx_package.workbook
+title = wb.styles.add_style(:bg_color => "80CBC4", :fg_color=>"#FF000000", :sz=>14,  :border=> {:style => :thin, :color => "80CBC4"})
+wb.add_worksheet(name: "Productos") do |sheet|
+    sheet.add_row(["", "", "", "", "", "REPORTE DE ENTRADAS POR PRODUCTO", "", "", "", "", "", "", "","",""], :style=> title)
+    sheet.add_row(["", "", "", "", "", "", "", "", "", "", "", "", "","",""])
+    sheet.add_row(["", "", "", "", "", "", "", "", "", "", "", "", "","",""])
+    sheet.add_row(["ID", "Proveedor","Remito", "Fecha", "O.C.", "Cod Interno", "Nombre", "Marca", "Origen", "Stock", "P.M.", "G.T.I.N.", "Lote", "Serie", "Vencimiento"], :style=> title)
+    @batch_details.each_with_index do |batch_detail, index|
+      sheet.add_row([index + 1, batch_detail.detail.arrival.supplier.try(:name),
+                    batch_detail.detail.arrival.number,
+                    batch_detail.detail.arrival.date,
+                    batch_detail.detail.arrival.expedient_orders.map{|eo| eo.number}.join(", "),
+                    batch_detail.batch.try(:product).try(:code),
+                    batch_detail.detail.product_name,
+                    batch_detail.batch.product.branch,
+                    batch_detail.batch.product.source,
+                    batch_detail.quantity,
+                    batch_detail.batch.product.pm,
+                    batch_detail.batch.product.gtin,
+                    batch_detail.batch.code,
+                    batch_detail.batch.serial,
+                    batch_detail.batch.due_date], types: :string)
+    end
+end

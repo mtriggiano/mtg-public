@@ -1,0 +1,17 @@
+- if current_user.can?(:read, "Tenders::FileMovement")
+	= index_table(mform: true, icon: 'exchange-alt', text: "Movimientos", path: new_tenders_file_movement_path(tender_file_id: file.id), jpath: tenders_file_movements_path(tender_file_id: file.id, format: :json), mtarget: "#new_movement_modal", model_name: "Tenders::FileMovement")
+- else
+	.mt-4
+		= render template: "/home/forbidden.html.haml", locals: {:@ability => Role.find_by(class_name: "Tenders::FileMovement").abilities.find_by(action_name: :read)}
+
+= modal("#{icon('fas', 'plus')} Editar movimiento", "edit_movement_modal", "edit_movement_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'eye')} Ver movimiento", "show_movement_modal", "show_movement_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'plus')} Añadir movimiento", "new_movement_modal", "new_tender_file_tender_file_movement_body", "big") do
+	.modal-body
+		= yield

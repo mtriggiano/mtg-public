@@ -1,0 +1,16 @@
+= simple_form_for promissory_note_payment, wrapper: false do |f|
+  = error_notification(f)
+  .row.mb-3
+    .col-lg-8
+      = f.input :numero_cheque, label: "Pagaré Número (opcional)", required: false, input_html: { placeholder: "Puede quedar en blanco" }
+    .col-lg-4
+      = f.input :vencimiento, as: :date, label: "Vencimiento", required: true
+    .col-lg-8
+      = f.input :entity_id, label: "Cliente", collection: current_company.clients, required: true, input_html: { required: true }
+    .col-lg-4
+      = f.input :importe, label: "Importe", required: true, input_html: { class: "text-right" }
+    .col-lg-12
+      = f.input :concepto, label: "Concepto", required: true
+
+  .modal-footer
+    = save_button

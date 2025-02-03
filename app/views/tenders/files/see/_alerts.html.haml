@@ -1,0 +1,16 @@
+= index_table(collection: file.alerts(current_user), mform: true, mtarget: "#new_alert_file_modal", icon: 'bell', jpath: display_alerts_tenders_file_path(file.id), path: new_alert_tenders_file_path(file.id))
+
+
+= modal("#{icon('fas', 'plus')} Editar alerta", "edit_alert_modal", "edit_alert_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'eye')} Ver alerta", "show_alert_modal", "show_alert_body", "big") do
+	.modal-body
+		= yield
+	.modal-footer
+		= close_button
+
+= modal("#{icon('fas', 'plus')} Añadir alerta", "new_alert_file_modal", "new_alert_file_body", "big") do
+	.modal-body
+		= yield

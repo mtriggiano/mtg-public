@@ -1,0 +1,12 @@
+.card.shadow.mx-4.mb-4.collapse#shipment{data: {parent:"#document-accordion"}}
+	.card-header.bg-white
+		%h5.w-100.pt-2 
+			= icon('fas', 'list-alt')
+			Stock faltante
+	.card-body
+		.table-responsive
+			%table.table
+				%thead
+					%th Cantidad
+					%th Producto
+				%tbody

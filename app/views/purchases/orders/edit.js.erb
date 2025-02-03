@@ -1,0 +1,10 @@
+<% simple_nested_form_for order do |f| %>
+	<% @builder = f %>
+<% end %>
+$("tbody").html("<%= j render '/purchases/shared_details_form', {f: @builder, colspan: 8} %>");
+setSelect2();
+calculateHeader();
+toogleBody();
+<% unless order.entity_id.nil? %>
+	$("#purchase_order_supplier_id").val("<%= order.entity_id %>").trigger("change")
+<% end %>

@@ -1,0 +1,20 @@
+- present supplier do |supplier_presenter|
+	.pr-2.pl-2.w-100.shadow.bg-white.p-3.w-100
+		.text-muted
+			= icon('fas', 'list-alt')
+			Información básica
+		%hr
+			%dl
+				= see_contact_dl("Nombre", supplier.name)
+				%hr.dotted
+				= see_contact_dl("Documento", supplier.full_document)
+				%hr.dotted
+				= see_contact_dl("Dirección", supplier_presenter.address)
+				%hr.dotted
+				= see_contact_dl("C.B.U.", supplier_presenter.cbu)
+				%hr.dotted
+				= see_contact_dl("Nº de cuenta", supplier_presenter.account)
+				%hr.dotted
+				= see_contact_dl("Banco", supplier_presenter.bank)
+				%hr.dotted
+				= see_contact_dl("Contacto principal", supplier_presenter.contact_name)

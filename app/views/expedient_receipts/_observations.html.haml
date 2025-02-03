@@ -1,0 +1,6 @@
+.card.shadow.mb-4.collapse.pb-4{:id => "observation", :"data-parent" => "#document-accordion"}
+  .card-header.bg-white
+    %h5.m-0 Observaciones
+  .card-body
+    = f.input :observation, as: :text, label: false, input_html: { rows: 4 }, disabled: false
+  = save_button

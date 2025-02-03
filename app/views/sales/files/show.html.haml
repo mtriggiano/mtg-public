@@ -1,0 +1,28 @@
+- params[:view] ||= 'general'
+= link_to icon('fas', 'chevron-left'), :back, class: 'btn btn-sm text-dark'
+.container-fluid.d-inline-block
+	%ul.nav.bg-white.p-2.mb-4.rounded
+		%li.title.nav-item
+			= link_to "Exp. de ventas Nº #{file.number}", sales_file_path(file.id),class: 'btn btn-light float-left'
+		%li.nav-item.border-animated
+			= show_links('General', 'general', params[:view], sales_file_path(file.id, view: 'general'))
+		%li.nav-item.border-animated
+			= show_links('Delegaciones', 'responsables', params[:view], sales_file_path(file.id, view: 'responsables'))
+		%li.nav-item.border-animated
+			= show_links('Actividades', 'alerts', params[:view], sales_file_path(file.id, view: 'alerts'))
+		%li.nav-item.border-animated
+			= show_links('Documentos', 'documents', params[:view], sales_file_path(file.id, view: 'documents'))
+		%li.nav-item.border-animated
+			= show_links('Movimientos', 'movements', params[:view], sales_file_path(file.id, view: 'movements'))
+		%li.nav-item.border-animated
+			= show_links('Adjuntos', 'attachements', params[:view], sales_file_path(file.id, view: 'attachements'))
+		%li.nav-item.border-animated
+			= show_links('Bitácora', 'binnacle', params[:view], sales_file_path(file.id, view: 'binnacle'))
+		%li.nav-item.ml-auto
+			= link_to "#{icon('fas', 'edit')} Editar".html_safe, edit_sales_file_path(), class: 'nav-link'
+		%lin.nav-item
+			.nav-link.text-dark.border-left
+				= file.disabled? ? badge("Cerrado", "danger") : badge("Abierto", "success")
+
+	- if ['general', 'alerts', 'documents', 'movements', 'responsables', 'description', 'attachements', 'binnacle'].include?(params[:view])
+		= render "/sales/files/see/#{params[:view]}"

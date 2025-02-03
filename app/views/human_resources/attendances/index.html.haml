@@ -1,0 +1,7 @@
+= index_table(icon: 'logs', text: "Asistencias", collection: collection, can_new_path: false, jpath: eval("#{path}_attendances_path(#{object}.id, format: :json)"))
+
+= modal("#{icon('fas', 'eye')} Ver registro de asistencia", "show_attendance_modal", "show_attendance_body") do
+	.modal-body
+		= yield
+	.modal-footer
+		= close_button

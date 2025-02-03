@@ -1,0 +1,6 @@
+- joined = BatchDetail.includes({ detail: { arrival: :entity } }, { batch: :product }).where(detail_type: "ExpedientArrivalDetail").where(arrivals: { state: ["Aprobado", "Confirmado", "Anulado"] }).search_by_supplier(params[:suppliers])
+
+%p 
+  = "Funcionalidad no implementada"
+  - # mirar historial de commits de este archivo para recuperar la logica del listado.
+  - # no tenia paginacion, al recorrer 15mil registro rompe la app

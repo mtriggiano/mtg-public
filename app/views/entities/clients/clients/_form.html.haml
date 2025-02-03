@@ -1,0 +1,46 @@
+= simple_form_for client, html: {class: 'horizontal-form'}, wrapper: :horizontal_form do |f|
+	= error_notification(f)
+	.d-flex.justify-content-center
+		.mx-auto.w-50
+			= f.input :parent_id, label: "Delegación de", as: :select, collection: [client.parent], input_html: {data: {url: clients_path}}
+	%hr.dotted
+	.row
+		.col
+			= f.input :document_type, label: "Documento", required: false, wrapper: :input_group, label_html: {class: 'col-form-label-sm'} do
+				%span.input-group-addon
+					= f.input_field :document_type, collection: Afip::DOCUMENTOS, class: "form-control", prompt: "Seleccione...", style: 'width: 5rem;'
+				= f.input_field :document_number, class: 'form-control document-input autocomplete-cuit', as: :numeric, placeholder: "Sin guiones ni puntos, solo números"
+			%hr.dotted
+			= f.input :subtype, label: "Tipo", collection: Client::TYPES
+			%hr.dotted
+			= f.input :name, label: "Nombre", input_html:{autofocus: true, autocomplete: :off, class: 'autocomplete-name'}
+			%hr.dotted
+			= f.input :denomination, label: "Denominación"
+			%hr.dotted
+			= f.input :gln, label: "G.L.N."
+			%hr.dotted
+			= f.input :iva_cond, label: "Cond. IVA", collection: Client::IVA_COND, prompt: "Seleccione..."
+			%hr.dotted
+			= iibb_perception_input(f)
+			%hr.dotted
+			= f.input :id_medtronic, label: "ID Medtronic"
+		.col
+			= f.association :payment_type, label: "Tipo de pago", collection: current_company.payment_types, label_method: :name
+			%hr.dotted
+			= f.input :payment_days, label: "Plazos de pago", collection: [0, 7, 15, 30, 60, 90, 120, 150, 180]
+			%hr.dotted
+			= f.association :province, label: "Provincia"
+			%hr.dotted
+			= f.association :locality, label: "Localidad", input_html: {tags: true}
+			%hr.dotted
+			= f.input :cp, label: "C.P."
+			%hr.dotted
+			= f.input :address, label: "Dirección", input_html: {class: 'autocomplete-address'}
+			%hr.dotted
+			= f.input :iibb_aliquot, label: "Alicuota Percepcion IIBB", input_html: {class: 'form-control'}
+	%hr.dotted.d-flex.justify-content-center
+		.mx-auto.w-50
+			= f.input :recharge, label: "Recargo (%)", placeholder: "Recargo por defecto en porcentaje"
+	.actions
+		%hr
+		= save_button

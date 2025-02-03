@@ -1,0 +1,49 @@
+- unless f.object.receipt_type == "massive"
+	%h5 Comprobantes a pagar
+	.card.mb-4
+		.card-body
+			.table-responsive.m-0
+				%table.table#table-details
+					%thead
+						%th Factura
+						%th{:style => "width: 20% !important"} Saldo
+						%th{:style => "width: 20% !important"} A pagar
+						%th{:style => "width: 10px !important"}
+					%tbody
+						= f.simple_fields_for :receipt_details, wrapper: false do |d|
+							%tr.fields
+								%td
+									- if f.object.disabled?
+										- if d.object.bill
+											= link_to d.object.bill.full_name, polymorphic_path([:edit, d.object.bill])
+										- else
+											%h5 Pago a cuenta
+									- else
+										= d.association :bill, label: false, placeholder: "Pago a cuenta", input_html: { data: {url: index_by_client_sales_bills_path, secondary_data: "#expedient_receipt_entity_id"}, include_blank: "Pago a cuenta"}
+								%td
+									= d.input :total_left, label: false, input_html: { readonly: true, value: 0, class: 'text-right' }
+								%td
+									= d.input :total, placeholder: "Subtotal ($)", label: false, input_html: { class: 'text-right suma-parent-total'}
+								%td
+									= d.link_to_remove icon('fas', 'times'), class: 'text-danger' unless f.object.disabled?
+					%tfooter
+						%td.text-right{:colspan => "2"}
+							%h5.m-0 TOTAL A PAGAR
+						%td
+							= f.input :total, label: false, input_html: { class: 'form-control form-control-sm text-right m-0', disabled: true }, wrapper: false
+						%td
+			.text-center
+				= f.link_to_add "#{icon('fas', 'plus')} Comprobante".html_safe, :receipt_details, class: 'btn btn-outline-success', data: {target: "#table-details"} unless f.object.disabled?
+- else
+	%h5 Comprobantes a pagar
+	.card.mb-4
+		.card-body
+			%p.h4
+				=#La lista de cbtes es demasiado larga para ser mostrada. El total de cbtes asociados a este recibo es
+				- if f.object.receipt_details.any?
+					%ul
+						- f.object.receipt_details.includes(:bill).each do |detail|
+							%li
+								= "#{detail.bill.full_name} - Monto: #{number_to_ars(detail.total)}"
+					Total
+					= number_to_ars(f.object.receipt_details.map(&:total).reduce(:+))

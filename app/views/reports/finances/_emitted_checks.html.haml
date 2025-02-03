@@ -1,0 +1,16 @@
+.index-body.table-responsive
+  %table#paginated_table.table{data: {title: "Reporte de VALORES EMITIDOS",source: reports_finances_path(view: 'emitted_checks', format: :json)}}
+    %thead.thead-light
+      %th.actions{scope: 'col'} Cheque
+      %th.actions{scope: 'col'} F. vto
+      %th.actions{scope: 'col'} F. emision
+      %th.actions{scope: 'col'} Banco
+      %th.actions{scope: 'col'} Proveedor
+      %th.actions{scope: 'col'} Estado
+      %th.actions{scope: 'col'} Obs
+      %th.actions{scope: 'col'} Importe
+      %th.actions{scope: 'col'} Pagos
+      %th.actions{scope: 'col'} Saldo
+    %tbody.table-bordered.text-center
+
+= table_script(DatatableConstants::Reports::EmittedCheck.merge("actions" => ""))

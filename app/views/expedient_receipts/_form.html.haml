@@ -1,0 +1,14 @@
+= simple_nested_form_for expedient_receipt, defaults: { disabled: expedient_receipt.disabled? } do |f|
+
+	= render 'form_header', f: f, record: record
+
+	.row
+		.col-md-12.col-lg-5
+			= render 'details_form', f: f
+		.col-md-12.col-lg-7
+			= render 'payments', f: f
+
+	= render 'taxes', f: f
+
+	.col-12.mb-3
+		= save_button unless expedient_receipt.disabled?

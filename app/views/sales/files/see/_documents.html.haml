@@ -1,0 +1,19 @@
+- if file.is_counter_sale?
+	- params[:sub_view] ||= 'bills'
+-else
+	- params[:sub_view] ||= 'sale_requests'
+.nav.nav-tabs{ role:'tablist' }
+	= config_links("Solicitudes #{badge(file.sale_requests.count)}", 'sale_requests', params[:sub_view], sales_file_path(file.id, sub_view: 'sale_requests', view: 'documents')) unless file.is_counter_sale?
+	= config_links("Presupuestos #{badge(file.budgets.count)}", 'budgets', params[:sub_view], sales_file_path(file.id, sub_view: 'budgets', view: 'documents')) unless file.is_counter_sale?
+	= config_links("Ordenes #{badge(file.orders.count)}", 'orders', params[:sub_view], sales_file_path(file.id, sub_view: 'orders' 	, view: 'documents')) unless file.is_counter_sale?
+	= config_links("Remitos #{badge(file.shipments.count)}" , 'shipments', params[:sub_view], sales_file_path(file.id, sub_view: 'shipments', view: 'documents'))
+	= config_links("Facturación #{badge(file.bills.count)}", 'bills', params[:sub_view], sales_file_path(file.id, sub_view: 'bills', view: 'documents'))
+	= config_links("Recibos #{badge(file.bills.count)}", 'receipts', params[:sub_view], sales_file_path(file.id, sub_view: 'receipts', view: 'documents'))
+#sub-views
+	- if ["sale_requests", "budgets", "orders", "bills", "receipts", "shipments"].include? params[:sub_view]
+		- class_name = "Sales::#{params[:sub_view].classify}"
+		- if current_user.can?(:read, class_name.constantize)
+			= render template: "/sales/#{params[:sub_view]}/index", locals: {:collection => eval("file.#{params[:sub_view]}"), :@expediente => file, type: params[:type]}
+		- else
+			.mt-4
+				= render template: "/home/forbidden.html.haml", locals: {subject: 'Sales::File'}

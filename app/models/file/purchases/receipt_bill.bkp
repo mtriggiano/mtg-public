@@ -1,0 +1,7 @@
+class Purchases::ReceiptBill < ExpedientReceiptBill
+	belongs_to :receipt, class_name: "Purchases::Receipt", inverse_of: :details
+
+	def set_childs_parent
+		return true
+  	end
+end

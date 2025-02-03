@@ -1,0 +1,46 @@
+= simple_form_builder shipment, defaults: {disabled: shipment.disabled?} do |f|
+	= shared_nav(f)
+	.card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+		.card-body
+			= surgery_header(f)
+			.header-detail
+				= error_explanation(f.object)
+				.row
+					.col-sm-4.col-12
+						= number_input(f, true)
+						= sale_client_select(f)
+						= store_input(f)
+					.col-sm-4.col-12
+						= date_input(f, :date)
+						= state_input(f, with_button: false)
+						= f.input :shipment_type, as: :select, collection: shipment.class::TYPES, include_blank: false, selected: shipment.new_record? ? shipment.class::TYPES.first : shipment.shipment_type
+					.col-sm-4.col-12
+						= f.input :from, collection: Anmat::EVENTOS[current_company.anmat_type].map{|e| e[:from] unless e[:from].blank?}.compact.uniq, label: "Origen"
+						= f.input :to, collection: Anmat::EVENTOS[current_company.anmat_type].map{|e| e[:to] unless e[:to].blank?}.compact.uniq, label: "Destino"
+						= f.input :id_evento, as: :select, collection: shipment.eventos, input_html: {data: {url: eventos_path, extra_data: "#surgeries_shipment_from", secondary_data: "#surgeries_shipment_to"}}, label: "Evento"
+				= new_associated_document(f, :assign, 'abstract')
+				= observation_to_user("Solo se vincularan las ordenes con estado 'Aprobado'.")
+				%hr
+				.justify-content-center.d-flex
+					- if shipment.persisted? && !shipment.canceled? && !shipment.confirmed?
+						= button_tag "#{icon('fas', 'tasks')} Verificar stock".html_safe, class: 'btn btn-info mx-2 file_state_submit',name: "verify_stock", value: true
+						= button_tag "#{icon('fas', 'tasks')} Solicitar stock".html_safe, type: :submit, name: "request_stock", value: true, class: "btn btn-warning file_state_submit #{'hidden' unless shipment.details_without_enough_stock.any?}"
+					= switch_shipment_state_button(shipment)
+					= file_state_manager(f)
+	= content_for(:extra_links) do
+		%li.nav-item
+			= button_tag "#{icon('fas', 'list-alt')} O.V.".html_safe, id: "sale_order_details", type: :button, aria: {selected: false, controls: 'sale_order'}, data: {toggle: 'tab', target: '#sale_order'}, class: 'nav-link bg-white '
+		%li.nav-item
+			= button_tag "#{icon('fas', 'map-marker-alt')} Destino".html_safe, type: :button, aria: {selected: false, controls: 'location'}, data: {toggle: 'tab', target: '#location'}, class: 'nav-link bg-white '
+		%li.nav-item
+			= button_tag "#{icon('fas', 'file-signature')} Conformado".html_safe, type: :button, aria: {selected: false, controls: 'conformed'}, data: {toggle: 'tab', target: '#conformed'}, class: "nav-link text-#{shipment.conformed ? 'success' : 'warning'}"
+		- if shipment.approved?
+			%li.nav-item
+				= send_to_client_button(shipment)
+	= document_table(f) do
+		= render '/file_attributes_configs/shared_extra_attributes', f:f, object: shipment
+		= observation_input(f)
+		= render '/surgeries/shared_attachment', f:f
+		= render '/locations/form', f:f
+		= render 'order_details'
+= render '/sales/shipments/conformed'

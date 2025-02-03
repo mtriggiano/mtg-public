@@ -1,0 +1,13 @@
+const modalId = '#gtin_' + "<%= @random %>";
+data = $("<%= j render '/inventaries/batches/form', {d: @builder, path: filter_by_delivered_product_products_path, mode: 'check_out'} %>")
+data.find('table').unwrap('div.fields')
+data.find('[name=authenticity_token]').remove()
+data.find('[name=utf8]').remove()
+data.find('table').unwrap('form').unwrap('form').unwrap('form')
+$("a#<%= params[:link_id] %>")
+	.closest("td")
+	.html(data)
+	.append(`<button type='button' data-target=${modalId} data-toggle='modal' class='btn btn-sm btn-info gtin_modal'><i class='fas fa-qrcode'></i></button>`)
+
+$(modalId).modal("show")
+setSelect2()

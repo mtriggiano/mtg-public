@@ -1,0 +1,69 @@
+= simple_nested_form_for transfer_note do |f|
+	.card.shadow.m-4
+		.card-header.bg-white.title
+			.row
+				.col-12.col-sm-8
+					%h5.w-100.my-4
+						= button_tag icon('fas', 'eye-slash'), onclick: 'toggleHeader()', type: 'button', class: 'btn btn-light btn-sm'
+						Transferencias
+		.card-body
+			= error_notification(f)
+			.row
+				.col-sm-4.col-12.border-right.border-left
+					= f.input :number, label: "Número", label_html: {class: 'h6'}, placeholder: "Número de remito"
+					= f.association :store, as: :select, label: "Banco", label_html: {class: 'h6'}, collection: current_company.external_stores.map{|pr| [pr.name, pr.id]}
+				.col-sm-4.col-12.border-right
+					= f.input :sended_date, as: :string, label: "Fecha de envío", input_html: { class: 'bootstrap-datepicker'}, label_html: {class: 'h6'}, placeholder: "Fecha de envío"
+					= f.input :arrival_date, as: :string, label: "Fecha de llegada", input_html: { class: 'bootstrap-datepicker'}, label_html: {class: 'h6'}, placeholder: "Fecha de llegada"
+				.col-sm-4.col-12.border-right
+					= f.association :user, as: :select, label: "Generada por", label_html: {class: 'h6'}, selected: current_user.id, input_html: {readonly: true}, collection: current_company.users.map{|u| [u.name, u.id]}
+					= f.input :state, as: :select, label: "Estado", label_html: {class: 'h6'}, collection: TransferNote::STATES, input_html:{disabled: true}
+			%hr
+				.d-flex.justify-content-center
+					= change_state_button(transfer_note)
+			%hr
+				= f.input :observation, as: :text, label: "Observación", placeholder: "Ej.: Reposición para linea de traumatología ", label_html: {class: 'h6'}
+	.card.shadow.m-4.d-flex
+		.card-header.bg-white.d-flex
+			%h5.w-100.pt-2
+				Detalle
+		.card-body
+			%table.table
+				%thead
+					%th{scope: 'col'}
+						Producto
+					%th{scope: 'col'}
+						Cantidad a enviar
+					%th{scope: 'col'}
+						Depósito
+					%th{scope: 'col'}
+						Linea
+					%th{scope: 'col'}
+						Nº de lote
+					%th{scope: 'col'}
+						Observación
+					%th{scope: 'col'}
+						Accion
+				%tbody
+					= f.simple_fields_for :details, wrapper: false do |d|
+						%tr.fields
+							%td
+								= d.input :product_id, collection: current_company.products.map{|p| [p.name, p.id]}, label: false, prompt: "Seleccione...", input_html: {class: 'select2 form-control', data: {url: index_by_company_products_path(current_product: d.object.try(:product_id))}}
+								= d.hidden_field :product_name
+							%td
+								= d.input :quantity, label: false
+							%td
+								= d.association :store, as: :select, label: false, collection: current_company.local_stores.map{|pr| [pr.name, pr.id]}
+							%td
+								= d.association :store_line, as: :select, label: false, collection: current_company.store_lines.map{|pr| [pr.name, pr.id]}, input_html: {class: 'select2 form-control'}
+							%td
+								= d.input :batch, label: false, placeholder: "Nº de lote"
+							%td
+								= d.input :observation, as: :string, label: false, input_html: {disabled: true}
+							%td
+								= d.link_to_remove icon('fas', 'trash'), class: 'btn btn-danger ml-3'
+
+			%center
+				= f.link_to_add "#{icon('fas', 'plus')} Añadir detalle".html_safe, :details, class: 'btn btn-success purchase_arrival', data: {target: "table"}
+			%hr
+			= save_button

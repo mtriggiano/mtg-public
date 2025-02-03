@@ -1,0 +1,23 @@
+#index-body.table-responsive.border.p-4
+  .row
+    .col-6.calendar
+      = month_calendar events: @files, attribute: :delivery_date do |date, meetings|
+        = date.strftime("%d")
+        - if meetings.count > 0
+          - meetings.group_by(&:type).each do |file_type, files|
+            .text-truncate
+              = link_to "javascript:void(0)", onclick: "displayFiles('#{date}')" do
+                - case file_type
+                - when "Surgeries::File"
+                  #{files.count} Cirugías
+                - when "Sales::File"
+                  #{files.count} Ventas
+                - when "Tenders::File"
+                  #{files.count} Licitaciones
+    .col-6.sale_general
+      - if @files.first.try(:file)
+        = render "/sales/files/see/general", file: @file.first
+      - else
+        %h4.text-center
+          = icon('fas', 'exclamation')
+          No hay más eventos programados.

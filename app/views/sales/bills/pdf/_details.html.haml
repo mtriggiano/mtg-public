@@ -1,0 +1,132 @@
+.container{style: "height: 520px;"}
+  .container{style: "height: 480px;"}
+    %table.width_100
+      %tr
+        %th.description_header{style: 'font-size: 11px !important'} Cód.
+        %th.description_header{style: 'font-size: 11px !important'} P.M.
+        %th.description_header{style: 'font-size: 11px !important'} Producto/Servicio
+        %th.description_header{style: 'font-size: 11px !important'} Cant.
+        %th.description_header{style: 'font-size: 11px !important'} Precio Unit.
+        %th.description_header{style: 'font-size: 11px !important'} Bonif.
+        %th.description_header{style: 'font-size: 11px !important'} Subtotal
+        - if @bill.cbte_tipo == "01" || @bill.cbte_tipo == "02" || @bill.cbte_tipo == "03"
+
+          %th.description_header Alic. IVA
+
+          %th.description_header Subt. c/IVA
+      - details.compact.each do |det|
+        %tr{style: "height: 25px !important;"}
+          %td= det["product_code"]
+          %td= det["pm"]
+          %td= det["product_name"].try(:upcase)
+          %td.text_center= det["quantity"]
+          - if @bill.cbte_tipo == "01" || @bill.cbte_tipo == "02" || @bill.cbte_tipo == "03"
+            / Si el comprobante es FA, NCA, NDA, muestra el subtotal - iva_amount (ambos estan multiplicados por quantity)
+            %td.text_right= det["price"].round(2)
+            %td.text_right= det["bonus_amount"] != 0 ? det["bonus_amount"].round(2) : 0.0
+            %td.text_right
+              = (det["total"] - det["iva_amount"]).round(2)
+            %td.text_right= (det["iva"] * 100).round(1)
+            %td.text_right= sprintf('%.2f',det["total"])
+          - else
+            %td.text_right= (det["price"].round(2) * ( 1 + det["iva"] )).round(2)
+            %td.text_right= det["bonus_amount"] != 0 ? det["bonus_amount"].round(2) : 0.0
+            %td.text_right= sprintf('%.2f',det["total"])
+
+  -# - unless @bill.observation.blank?
+  -#   .footer_top.w-100.px-1{ style: "height: 80px; overflow:hidden;" }
+  -#     %p.m-0{style: 'display: flex; flex-direction: row'}
+  -#       %b Observaciones de venta:
+  -#       = strip_tags(@bill.observation)
+
+.border
+  %table.width_100
+    %tr
+      %td{rowspan: "10", style: "width: 1px;"}
+      %td{rowspan: "10"}
+        - if @bill.tributes.where("amount > 0").count > 0
+          Otros Tributos:
+          %table{style: "width:75%;"}
+            %thead
+              %tr
+                %th.description_header Descripción
+                %th.description_header Alícuota
+                %th.description_header Importe
+            %tbody
+              - @bill.tributes.where("amount  > 0").each do |t|
+                %tr
+                  %td
+                    %b= t.desc
+                  %td.text_right
+                    = t.alic
+                    \%
+                  %td.text_right
+                    = number_to_ars t.amount
+            %tfoot.description_header{style: "display: table-footer-group;"}
+              %tr
+                %td
+                  %b Total tributos
+                %td
+                %td.text_right
+                  %b
+                    = number_to_ars @bill.total_trib
+      %td
+        %br/
+      %td
+        %br/
+      %td{rowspan: "10", style: "width: 1px;"}
+
+    - if @bill.cbte_tipo == "01" || @bill.cbte_tipo == "02" || @bill.cbte_tipo == "03"
+      %tr
+        %td.text_right
+          %b
+            = total_pages > 1 ? "Subtotal conceptos página:" : "Subtotal conceptos:"
+        %td.text_right
+          = number_to_ars subtotal_page
+      %tr
+        %td.text_right
+          %b IVA 27%:
+        %td.text_right
+          = number_to_ars @bill.iva_27
+      %tr
+        %td.text_right
+          %b IVA 21%:
+        %td.text_right
+          = number_to_ars @bill.iva_21
+      %tr
+        %td.text_right
+          %b IVA 10.5%:
+        %td.text_right
+          = number_to_ars @bill.iva_10
+      %tr
+        %td.text_right
+          %b Otros Tributos:
+        %td.text_right
+          = number_to_ars @bill.total_trib
+    - else
+      %tr
+        %td.text_right
+          %b
+            = total_pages > 1 ? "Subtotal conceptos página:" : "Subtotal conceptos:"
+        %td.text_right
+          = number_to_ars total_page
+      - if @bill.client.iva_cond != "Consumidor Final"
+        %tr
+          %td.text_right
+            %b Otros Tributos:
+          %td.text_right
+            = number_to_ars @bill.total_trib
+    %tr
+      %td{colspan: "2"}
+        %hr/
+    %tr
+      %td.text_right
+        %b Importe Total:
+      %td.text_right
+        %b
+          = number_to_ars @bill.total
+    %tr
+      %td{colspan: "2"}
+        %b
+          Son:
+        = number_to_words(@bill.total)

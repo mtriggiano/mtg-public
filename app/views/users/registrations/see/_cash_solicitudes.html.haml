@@ -1,0 +1,9 @@
+= index_table(mform: true, icon: 'dollar-sign', text: "Solicitudes de fondos", jpath: cash_solicitudes_path(format: :json) , path: new_cash_solicitude_path(), mtarget: "#new_cash_solicitude_modal", collection: current_user.cash_solicitudes)
+
+= modal("#{icon('fas', 'plus')} Solicitud de fondos", "new_cash_solicitude_modal", "new_cash_solicitude_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'edit')} Solicitud de fondos", "edit_cash_solicitude_modal", "edit_cash_solicitude_body", "big") do
+	.modal-body
+		= yield

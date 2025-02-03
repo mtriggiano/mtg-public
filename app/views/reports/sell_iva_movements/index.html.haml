@@ -1,0 +1,26 @@
+.index
+  .index-title
+    .principal
+      #{icon('fas', 'dollar-sign')} Reporte de IVA VENTAS
+      =# link_to "Exportar", export_reports_sell_iva_movements_path(format: :xlsx), class: 'btn btn-info pull-right', data: {'skip-pjax' => true}
+  #bmenu.mx-4.d-flex.justify-content-between.align-items-center
+  .index-body.table-responsive
+    %table#paginated_table.table{data: {title: "Reporte IVA VENTAS", source: reports_sell_iva_movements_path(format: :json)}}
+      %thead.thead-light
+        %th.actions{scope: 'col'} Tipo y clase
+        %th.actions{scope: 'col'} Punto
+        %th.actions{scope: 'col'} Numero
+        %th.actions{scope: 'col'} Fecha
+        %th.actions{scope: 'col'} Razon social
+        %th.actions{scope: 'col'} CUIT
+        %th.actions{scope: 'col'} Neto
+        %th.actions{scope: 'col'} IVA 10.5%
+        %th.actions{scope: 'col'} IVA 21%
+        %th.actions{scope: 'col'} Exento
+        %th.actions{scope: 'col'} Perc. I.I.B.B.
+        %th.actions{scope: 'col'} Total
+        %th.actions{scope: 'col'} Zona
+        %th.actions{scope: 'col'}
+      %tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::SellIvaMovement.merge("actions" => ""))

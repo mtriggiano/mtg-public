@@ -1,0 +1,29 @@
+= simple_nested_form_for @alert, url: @url, html: {class: 'horizontal-form'}, wrapper: :horizontal_form, remote: true do |f|
+	= error_notification(f)
+	= hidden_field_tag :alert_id, @alert.id
+	= f.input :title, label: "Título"
+	%hr.dotted
+	= f.input :state, label: "Estado", collection: Alert::STATES, prompt: "Seleccione..."
+	%hr.dotted
+	= f.input :init_date, as: :string, label: "Fecha de inicio", input_html: { class: 'bootstrap-datepicker'}
+	%hr.dotted
+	= f.input :final_date, as: :string, label: "Fecha de fin", input_html: { class: 'bootstrap-datepicker'}
+	%hr.dotted
+	= f.input :body, label: "Cuerpo"
+	%hr.dotted
+	= f.input :observation, label: "Observación"
+	%hr.dotted
+	%fieldset
+		= f.simple_fields_for :alert_users do |s|
+			.fields
+				= s.input :user_id, label: "Usario", wrapper: :input_group do
+					.input-group-prepend.flex-grow-1
+						= s.input_field :user_id, collection: current_company.users.map{|u| [u.name, u.id]}, include_blank: false, class: 'form-control'
+					.input-group-append
+						= s.link_to_remove icon('fas', 'trash'), class: 'btn btn-danger'
+				%hr.dotted
+	%center
+		= f.link_to_add "#{icon('fas', 'plus')} Vincular usuario".html_safe, :alert_users, class: 'btn btn-secondary ml-2 mb-4', data: {target: 'fieldset'}
+	%row
+		.text-center
+			= save_button

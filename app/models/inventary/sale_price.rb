@@ -1,0 +1,3 @@
+class SalePrice < PriceHistory
+    
+end

@@ -1,0 +1,85 @@
+%script(src= '/assets/jquery.dotdotdot.js')
+.d-flex.justify-content-center
+	%p.w-75.text-justyfy
+		El expediente
+		%strong.text-info
+			= tender_file.title
+		de tipo
+		%strong.text-info
+			= tender_file.sale_type
+		perteneciente al cliente
+		%strong.text-info
+			= tender_file.client.name
+		inició el dia
+		%strong.text-info
+			= I18n.l(tender_file.created_at, format: :date)
+		y fue asignado a
+		%strong.text-info
+			#{tender_file.user.name}.
+
+		Actualmente se encuentra 
+		%strong.text-info
+			= tender_file.open ? 'abierto' : 'cerrado'
+		y su estado es 
+		%strong.text-info
+			#{tender_file.state.downcase}.
+		Se generaron las siguientes solicitudes:
+- if tender_file.requests.any?
+	.d-flex.justify-content-center
+		%table.table.border.w-75
+			%thead
+				%th Producto
+				%th Cantidad
+				%th Especificación
+			%tbody
+				- tender_file.requested_details.select(:product_name, :product_measurement, :description).group(:product_name, :product_measurement, :description).sum(:quantity).map do |product, quantity|
+					%tr
+						%td
+							= product[0]
+						%td
+							= quantity
+							= product[1]
+						%td.product_description
+							= product[2].html_safe
+							= link_to "[Ver más...]", "javascript:void(0)", class: 'more'
+							= link_to "[Ver menos...]", "javascript:void(0)", class: 'less'
+-if tender_file.budgets.any?
+	.d-flex.justify-content-center
+		%p.w-75.text-justyfy
+			- if tender_file.document_responsables('tender_budget').count > 1
+				Los encargados de los presupuestos #{tender_file.open ? 'son' : 'fueron'}
+			- else
+				El encargado de los presupuestos #{tender_file.open ? 'es' : 'fue'}
+			%strong.text-info
+				#{tender_file.document_responsables('tender_budget').join(", ")}.
+			Se realizaron 
+			%strong.text-info
+				= pluralize(tender_file.budgets.count, 'presupuesto', plural: 'presupuestos')
+			de los cuales los mejores precios se obtuvieron de
+	.d-flex.justify-content-center
+		%table.table.table-bordered.w-75
+			%thead
+				%tr
+					%th{rowspan: 2} Producto
+					%th{rowspan: 2} Presupuesto
+					%th.text-center{colspan: 2} Entrega
+					%th{rowspan: 2} Total($)
+				%tr
+					%th Lugar
+					%th Fecha
+			%tbody
+				- all = tender_file.budgeted_details.select("tender_budget_details.product_name, tender_budget_details.total / tender_budget_details.quantity as total, tender_budget_details.tender_budget_id as tender_budget_id")
+
+				- all.group_by(&:product_name).map{|p, v| v.min_by(&:total)}.each do |product|
+					- popover = "<ul>#{all.select{|p| p[:product_name] == product.product_name}.map{|d| '<li>' + link_to(d.tender_budget.number, edit_purchase_budget_path(d.tender_budget_id)) + ' - $' + d[:total].to_s + '</li>'}.join()}</ul>"
+					%tr
+						%td{data: {html: 'true', toggle: 'popover', title: 'Presupuestos', content: popover, trigger: 'hover'}}
+							= product.product_name
+						%td
+							= link_to product.tender_budget.number, edit_tender_budget_path(product.tender_budget_id)
+						%td
+							= product.tender_budget.delivery_date
+						%td 
+							= product.tender_budget.delivery_address
+						%td
+							$ #{product.total.round(2)}

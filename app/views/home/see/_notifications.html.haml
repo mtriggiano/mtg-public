@@ -1,0 +1,6 @@
+= index_table(icon: 'bell', text: "Notificaciones", jpath: notifications_path(format: :json), collection: current_user.notifications, can_new_path: false)
+
+= modal("#{icon('fas', 'bell')} Notificación", "show_notification_modal", "show_notification_body", "big") do
+	.modal-body
+	.modal-footer
+		= close_button

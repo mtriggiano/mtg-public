@@ -1,0 +1,11 @@
+.col-12.p-4
+	= render_report 'total_selled_per_month', actions: [] do |report|
+		= report.form do |f|
+			.row.d-flex.justify-content-end.w-100
+				.col-12.d-flex
+					= f.multi_autocomplete :entity, placeholder: 'Clientes...'
+					= f.date_range :date
+					.download-links
+						= report.export_xls_button class: 'btn btn-small btn-primary' do
+							= icon('fas', 'file-excel')
+							Exportar

@@ -1,0 +1,62 @@
+= simple_form_builder budget, default: {label_html: {class: :h6}} do |f|
+	= shared_nav(f)
+	.card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+		.card-body
+			= surgery_header(f)
+			.header-detail
+				= error_notification(f)
+				.row
+					.col-sm-4.col-12
+						= number_input(f)
+						.row
+							.col-6
+								= sale_client_select(f)
+							.col-6
+								= f.input :payment_type, label: "Condición de pago"
+						.row
+							.col
+								= client_contact_input(f)
+							.col
+								= f.association :seller, label: "Vendedor", collection: current_company.users, label_method: :name
+					.col-sm-4.col-12
+						.row
+							.col-6
+								= date_input(f, :init_date)
+							.col-6
+								= date_input(f, :final_date)
+						.row
+							.col-6
+								= date_input(f, :delivery_date)
+							.col-6
+								= f.input :delivery_address
+						.row
+							.col-6
+								= state_input(f)
+							.col-6
+								= budget_state_input(f)
+					.col-sm-4.col-12
+						.row
+							.col-6
+								= f.input :subtotal, label: 'Bruto($)', input_html: {id: 'parent_gross_price', disabled: true}
+							.col-6
+								= total_input(f)
+						.row
+							.col-6
+								= discount_input(f)
+							.col-6
+								= currency_input(f)
+						.row
+							.col-6
+								= usd_price_input(f)
+							.col-6
+								= total_usd_input(f)
+				= send_to_client_button(budget)
+				= new_associated_document(f)
+				= observation_to_user("Solo se vincularan las recetas con estado 'Aprobado'.")
+				= state_manager(f)
+				= file_state_manager(f)
+
+	= document_table(f) do
+		= render '/file_attributes_configs/shared_extra_attributes', f:f, object: budget
+		= observation_input(f)
+		= render '/sales/shared_attachment', f:f

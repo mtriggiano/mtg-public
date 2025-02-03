@@ -1,0 +1,40 @@
+.border
+  %table.width_100
+    %th.border.border{style:"width: 400px; "}
+      .container{style: "height: 770px;"}
+        %table.width_100
+          %tr
+            %th.description_header
+              Fecha
+            %th.description_header
+              Comprobante N°
+            %th.description_header
+              Importe
+
+          - details.compact.each do |det|
+            %tr
+              %td
+                = det.bill.cbte_fch
+              %td 
+                = det.bill.full_name
+              %td.text_right 
+                $ #{det.bill.total.round(2)}
+    %th.border.border{style:"width: 400px; "}
+      .container{style: "height: 770px;"}
+        %table.width_100
+          %tr
+            %th.description_header
+              Cheque N°
+            %th.description_header
+              Detalle
+            %th.description_header
+              Importe
+
+          - details.compact.each do |det|
+            %tr
+              %td
+                = det.number
+              %td 
+                = det.payment_type
+              %td.text_right 
+                $ #{det.total.round(2)}

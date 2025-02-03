@@ -1,0 +1,16 @@
+.form-group.col-md-12
+  %p.text_muted
+    Asignar años de vacaciones a descontar
+%table.table-hover#table_discount
+  %thead
+    %th
+      Año
+    %th
+      Dias a descontar
+    %th
+  %tbody
+    = f.simple_fields_for :days_asignations,  wrapper: false do |da|
+      = render 'fields', da: da, debt_vacations: debt_vacations, max_days: @max_days
+
+.form-group.col-md-3.col-md-offset-9
+  = f.link_to_add "#{icon('fas', 'plus')}".html_safe, :days_asignations, class: 'btn btn-primary', data: {target: '#table_discount'}

@@ -1,0 +1,30 @@
+%h2.mb-3 Cuentas bancarias
+
+%ul.nav.home-nav.mb-3.align-items-end
+  %li.nav-item.border-animated
+    %a.nav-link.active{ href: "#" } Cuentas registradas
+  %li.nav-item.border-animated
+    %a.nav-link.disabled{ href: "#" } Vista diaria
+  %li.nav-item.border-animated
+    %a.nav-link.disabled{ href: "#" } Calendario de riesgos
+
+%h5.text-muted Cuentas registradas
+.row
+  - current_company.bank_accounts.order(saldo_disponible: :desc).each do |bank_account|
+    .col-lg-3.col-md-4.mb-3
+      = link_to bank_account do
+        .card{style: 'min-height: 180px'}
+          .card-body.d-flex.flex-column.align-items-center.justify-content-center
+            %h5.text-center
+              = bank_account.alias_tag.upcase
+            %p.text-center
+              = bank_account.bank.name.upcase
+            %p.text-small.text-muted.text-center
+              = bank_account.type
+
+  .col-lg-3.col-md-4.mb-3
+    = link_to new_bank_account_path, class: 'btn btn-success w-100 p-0' do
+      .d-flex.flex-column.align-items-center.justify-content-center{style: 'min-height: 180px'}
+        %h2
+          = icon('fas', 'plus')
+        %p Nueva cuenta

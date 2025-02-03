@@ -1,0 +1,92 @@
+- params[:view] ||= 'transactions'
+- params[:fecha] ||= Date.today
+%h2.text-center
+  = general_cash_account.nombre
+.row.mb-3
+  .col-lg-3.col-md-6
+    %p.text-muted.mb-1 Efectivo en caja
+    .card.mb-3
+      .card-body
+        %div.text-right.mb-2.py-2
+          %span.h3
+            = number_to_ars @saldo_efectivo_pesos
+        %div.text-right.mb-2.py-2
+          %span.h3
+            = number_to_us @saldo_efectivo_dolares
+  .col-lg-3.col-md-6
+    %p.text-muted.mb-1
+      Movimientos del día ($) -
+      = params[:fecha]
+    .card.mb-3
+      .card-body
+        %div.text-right.mb-2.py-2
+          %span.h3.text-success
+            = number_to_ars @ingresos
+            = icon('fas', 'arrow-up')
+        %div.text-right.mb-2.py-2
+          %span.h3.text-danger
+            = number_to_ars @egresos
+            = icon('fas', 'arrow-down')
+
+  .col-lg-3.col-md-6
+    %p.text-muted.mb-1 Saldos en cartera
+    .card.mb-3
+      .card-body
+        %div.text-right.mb-2.py-2
+          %span.float-left.mt-2.text-muted
+            Cheques
+          %span.h3
+            = number_to_ars @saldo_cheques
+        %div.text-right.mb-2.py-2
+          %span.float-left.mt-2.text-muted
+            Pagarés
+          %span.h3
+            = number_to_ars @saldo_pagares
+  .col-lg-3.col-md-6
+    %p.text-muted.mb-1
+      Vencimientos cercanos (5 días)
+    .card.mb-3
+      .card-body
+        %div.text-right.mb-2.py-2
+          %span.float-left.mt-2.text-muted
+            Cheques
+          %span.h3.text-success
+            = number_to_ars @proximos_cheques
+        %div.text-right.mb-2.py-2
+          %span.float-left.mt-2.text-muted
+            Pagarés
+          %span.h3.text-success
+            = number_to_ars @proximos_pagares
+
+%ul.nav.home-nav.justify-content-center.mb-3
+  %li.nav-item.border-animated
+    = show_links('Movimientos', 'transactions', params[:view], general_cash_account_path(general_cash_account, view: 'transactions', fecha: params[:fecha]))
+  %li.nav-item.border-animated
+    = show_links('Cartera', 'checks' , params[:view], general_cash_account_path(general_cash_account, view: 'checks', fecha: params[:fecha]))
+  %li.nav-item.border-animated
+    = show_links('Solicitudes', 'pendings' , params[:view], general_cash_account_path(general_cash_account, view: 'pendings', fecha: params[:fecha]))
+  %li.nav-item.border-animated
+    = show_links('Gastos', 'expenditures', params[:view], general_cash_account_path(general_cash_account, view: 'expenditures', fecha: params[:fecha]))
+  %li.nav-item.border-animated
+    = show_links('Arqueo', 'balances', params[:view], general_cash_account_path(general_cash_account, view: 'balances', fecha: params[:fecha]))
+  %li.nav-item.border-animated
+    = show_links('Rendiciones', 'imprest_records', params[:view], general_cash_account_path(general_cash_account, view: 'imprest_records', fecha: params[:fecha]))
+= form_tag polymorphic_path(general_cash_account, view: params[:view], fecha: params[:fecha]), method: :get, class: "d-flex justify-content-center" do
+  .form-group.mb-3
+    .row.d-flex.align-items-center
+      - if ["transactions", "expenditures", "balances"].include?(params[:view])
+        .input-group.col
+          .input-group-prepend
+            %span.input-group-text
+              = icon('fas', 'search')
+          = text_field_tag(:fecha, params[:fecha] || Date.today, placeholder: "Buscar por fecha...", data: { behaviour: 'datepicker' })
+          .input-group-append
+            = button_tag "#{icon('fas', 'search')}".html_safe, type: 'submit', class: 'btn btn-primary'
+    = hidden_field_tag :view, params[:view]
+.card.mb-5
+  .card-body
+    - if ['transactions', 'checks', 'pendings', 'balances', 'expenditures', 'imprest_records'].include?(params[:view])
+      = render "/finances/general_cash_accounts/see/#{params[:view]}", fecha: params[:fecha]
+
+.text-center.mb-5
+  = link_to "#{icon('fas', 'print')} Imprimir - Fecha: #{params[:fecha]}".html_safe, print_general_cash_account_path(general_cash_account, format: :pdf, fecha: params[:fecha]), target: :_blank, class: 'btn btn-outline-primary', data: { "skip-pjax": true }

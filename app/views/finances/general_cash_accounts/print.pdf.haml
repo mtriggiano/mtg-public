@@ -1,0 +1,150 @@
+.text_size_10
+  %table.width_100.border
+    %tr
+      %th.text-center
+        Rendición de Gastos -
+        = general_cash_account.nombre
+      %th
+        Fecha:
+        = @fecha
+      %th
+        Impresión:
+        = @hora
+
+  %table.width_100
+    %tr
+      %th.width_50.description_header
+        Egresos
+
+      %th.width_50.description_header
+        Ingresos
+
+  %table.width_100.mb-2{:style => "height:350px;"}
+    %td.width_50.vertical-align-top
+      %table.width_100
+        %thead
+          %th.description_header Comp.
+          %th.description_header Lugar/persona
+          %th.description_header Concepto
+          %th.description_header Importe
+          %th.description_header Forma
+        %tbody
+        - @egresos.each do |expense|
+          %tr
+            %td
+              = expense.codigo
+            %td
+              = expense.entidad
+            %td
+              = expense.description
+            %td.text_right
+              = number_to_ars expense.monto
+            %td.text_center
+              = expense.forma
+        %tfooter
+          %tr
+            %td.text_right.text-bold{:colspan => "3"}
+              TOTAL EGRESOS
+            %td.text_right.text-bold
+              = number_to_ars @total_egresos
+            %td.text-bold.text_center ($)
+
+    %td.width_50.vertical-align-top
+      %table.width_100
+        %thead
+          %th.description_header Comp.
+          %th.description_header Lugar/persona
+          %th.description_header Concepto
+          %th.description_header Importe
+          %th.description_header Forma
+        %tbody
+          %tr
+            %td
+            %td
+              = general_cash_account.nombre
+            %td
+              Saldo anterior -
+              = @fecha - 1.day
+            %td.text_right
+              = number_to_ars @saldo_anterior_pesos
+            %td.text_center
+              Efectivo ($)
+          - @ingresos.each do |income|
+            %tr
+              %td
+                = income.codigo
+              %td
+                = income.entidad
+              %td
+                = income.description
+              %td.text_right
+                = number_to_ars income.monto
+              %td.text_center
+                = income.forma
+        %tfooter
+          %tr
+            %td.text_right.text-bold{:colspan => "3"}
+              TOTAL INGRESOS
+            %td.text_right.text-bold
+              = number_to_ars @total_ingresos
+            %td.text-bold.text_center ($)
+
+
+  %table.width_100.mb-4
+    %td.width_50
+      %table.width_100
+        %tr
+          %th.description_header{:colspan => "5"}
+            Cheques en Cartera
+        %tr
+          %th.description_header Nro.
+          %th.description_header Cliente
+          %th.description_header Vencimiento
+          %th.description_header Días
+          %th.description_header Importe
+        %tbody
+        - @cheques.each do |cheque|
+          %tr
+            %td
+              = cheque.numero_cheque
+            %td
+              = cheque.client.try(:name)
+            %td
+              = cheque.vencimiento
+            %td{:class => color_por_dias_faltantes(cheque.dias_restantes(@fecha))}
+              = cheque.dias_restantes(@fecha)
+            %td.text_right
+              = number_to_ars cheque.importe
+
+    %td.width_50
+      %table.mx-auto.text_size_12
+        %tr
+          %th.description_header{:colspan => "2"}
+            TOTALES
+        %tr
+          %th.description_header.px-1
+            PESOS
+          %th.px-1.text_right
+            = number_to_ars @saldo_efectivo_pesos
+        %tr
+          %th.description_header.px-1
+            DOLARES
+          %th.px-1.text_right
+            = number_to_us @saldo_efectivo_dolares
+        %tr
+          %th.description_header.px-1
+            CHEQUES
+          %th.px-1.text_right
+            = number_to_ars @saldo_cheques
+
+  %table.width_100.mb-3
+    %td.width_50
+    %td.width_50
+      %table.width_100
+        %tr
+          %td.text_center
+            %span.signature-border-top.text_size_12
+              Firma cajero
+          %td.text_center
+            %span.signature-border-top.text_size_12
+              Firma gerente

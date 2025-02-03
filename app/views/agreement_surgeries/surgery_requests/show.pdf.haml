@@ -1,0 +1,207 @@
+- company_presenter ||= CompanyPresenter.new(surgery_request.company, self)
+.alwaysbreak
+  .border
+    %table.width_100
+      %tr{style: "line-height: 10px !important;"}
+        %th.text_size_20.text_left.header_word_break{style:"text-align: center; width: 200px; line-height: 10px;"}
+          %p
+            = wicked_pdf_image_tag surgery_request.company.pdf_logo, width: "200px"
+        %th.header_word_break{style:"width: 300px; text-align: left; padding-left: 50px; font-size: 11px;"}
+          %p
+            = surgery_request.company.try(:address)
+          %p
+            = surgery_request.company.postal_code + " " + surgery_request.company.try(:locality).try(:province).try(:name) + " - " + surgery_request.company.try(:locality).try(:province).try(:country).try(:name)
+          %p
+            = "#{surgery_request.company.try(:contact_number)}".html_safe
+          %p
+            = "#{surgery_request.company.try(:email)}".html_safe
+          %p
+            = "C.U.I.T.: #{surgery_request.company.try(:cuit)}".html_safe
+          %p
+            www.magnus.com.ar
+        %th.header_word_break.border-left{style:"width: 250px;"}
+          %p.text_size_20
+            SOLICITUD DE CIRUGIA
+          %p.text_size_20
+            Nº
+            = surgery_request.number
+          %p.text_size_15{style: "line-height: 1.5;"}
+            Fecha:
+            = I18n.l(surgery_request.created_at, format: '%d/%m/%Y')
+   
+  .border
+    .container{style: "height: 550px; font-size: 9px;"}
+      %table.width_100{style: 'font-size: 11px;'}
+        %tr
+          %th.description_header{colspan: 3}
+            Solicitante
+        %tr
+          %td
+            %b
+              Apellidos y nombres:
+            = "#{surgery_request.first_name} #{surgery_request.last_name}"
+          %td
+            %b
+              Médico:
+            = surgery_request.doctor
+        %tr
+          %td
+            %b
+              Sexo:
+            = surgery_request.gender
+          %td
+            %b
+              Edad:
+            = surgery_request.age
+        %tr
+          %td
+            %b
+              Fecha Nacimiento:
+            = surgery_request.birthday
+          %td
+            %b
+              Tipo Doc:
+            = Afip::DOCUMENTOS.key(surgery_request.document_type) rescue nil 
+        %tr
+          %td
+            %b
+              Nº Documento:
+            = surgery_request.document_number
+          %td
+            %b
+              Direccion:
+            = surgery_request.address
+        %tr
+          %td
+            %b
+              Tel:
+            = surgery_request.phone
+        %tr
+          %td
+            %b
+              Celular:
+            = surgery_request.mobile_phone
+        %tr
+          %td
+            %b
+              Localidad:
+            = surgery_request.locality.name
+          %td
+            %b
+              Provincia:
+            = surgery_request.province.name
+        %tr
+          %td
+            %b
+              Obra Social:
+            = surgery_request.social_work
+          %td
+            %b
+              Nº Afiliado:
+            = surgery_request.pacient_number
+        %tr
+          %th.description_header{colspan: 3}
+            Citujia
+        %tr
+          %td
+            %b
+              Tipo cirugia:
+            = surgery_request.surgery_type
+          %td
+            %b
+              Fecha cirugia:
+            = surgery_request.surgery_date
+        %tr
+          %td
+            %b
+              Tiempo:
+            = surgery_request.surgery_time
+          %td
+            %b
+              Miembro derecho:
+            = surgery_request.right_limb ? "SI" : "NO" 
+          %td
+            %b
+              Miembro izquierdo:
+            = surgery_request.left_limb ? "SI" : "NO" 
+        %tr
+          %td
+            %b
+              Historia Cliica:
+            = surgery_request.medical_history
+          %td
+            %b
+              Institucion:
+            = surgery_request.institution
+        %tr
+          %td
+            %b
+              Medico:
+            = surgery_request.doctor
+          %td
+            %b
+              Lugar de cirugia:
+            = surgery_request.surgical_site
+        %tr
+          %th.description_header{colspan: 3}
+            Materiales
+        %tr
+          %th.description_header{colspan: 2}
+            Descripcion
+          %th.description_header
+            Cantidad
+        - surgery_request.surgery_request_details.each_with_index do |surgery_request_detail, index|
+          %tr
+            %td{colspan: 2}
+              = surgery_request_detail.surgery_material
+            %td
+              = surgery_request_detail.quantity
+        %tr{style:"border-bottom: 1px solid black;"}
+          %td{colspan: 3}
+            %hr
+            %b
+              Disponibilidad de Stock Interno?:
+            = surgery_request.internal_stock ? "SI" : "NO"
+  .row.footer_bottom
+    .container.border{style: "font-size: 11px;"}
+      %table.width_100
+        %th.description_header{colspan: 3}
+          Proveedor
+        %tr{style: "height: 100px;"}
+          %td.text_center
+            Autoriza?:
+            
+          %td{colspan: 2}
+            %b
+              Firma y sello:
+        %tr{style: "height: 100px;"}
+          %td.text_center
+            No Autoriza?:
+          %td{colspan: 2}
+            %b
+              Firma y sello:        
+    .container.border{style: "font-size:11px;"}
+      %table.width_100
+        %tr
+          %td.text_justify{style: "padding-left: 40px;"}
+            %b
+              Observación:
+            = raw surgery_request.observation
+    .container.border{style: "padding: 20px 40px; font-size: 8px;"}
+      %table.width_100
+        %tr
+          %td.text_justify
+            * El vencimiento de los productos es superior a 12 (doce) meses.
+        %tr
+          %td.text_justify
+            * Una vez entregados los productos, los mismos no tendrán devolución bajo ninguna circunstancia.
+        %tr
+          %td.text_justify
+            * La forma de pago y el límite de crédito quedan sujetos a la decisión de la gerencia, luego del análisis correspondiente a la documentación presentada.class_selector.
+        %tr
+          %td.text_justify
+            * "En virtud de lo dispuesto por el art. 2 de la Ley 26.529, no podrá ser exigible la presentación médica del paciente como requisito para el pago del precio de los productos. Con la Factura se acompañará únicamente el correspondiente remito y el certificado de implante."
+  %br
+  .text_center
+    Página
+    = "#{1} de #{1}"

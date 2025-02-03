@@ -1,0 +1,12 @@
+<% simple_nested_form_for budget do |f|
+	@builder = []
+	f.simple_fields_for :details, defaults: {disabled: budget.disabled?, label: false}, wrapper: false do |d|
+		@builder << d
+	end
+end %>
+
+$("tbody").html("");
+
+<% @builder.each_with_index do |b, index| %>
+	$("tbody").append("<%= j render '/purchases/budgets/details_form', {d: b, child: false} %>");
+<% end %>

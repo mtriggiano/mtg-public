@@ -1,0 +1,20 @@
+/ PIE DE PAGINA
+.row.footer_bottom
+  %center
+    - if delivery_note.state != "Finalizado"
+      ****************
+      %b
+        Estado: [#{delivery_note.state}]
+      ****************
+      %br/
+      %br/
+  .container.border
+    %table.width_100
+      %tr
+        %td.text_center
+          = delivery_note.company.name
+          \- #{delivery_note.company.address}
+%br/
+.text_center
+  Página #{page_number} de #{total_pages}
+/ FIN PIE DE PAGINA

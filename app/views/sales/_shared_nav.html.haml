@@ -1,0 +1,48 @@
+= link_to icon('fas', 'chevron-left'), :back, class: 'btn btn-sm text-dark'
+- if document.persisted?
+	%ul.nav.nav-tabs.mx-4.border-bottom-0.justify-content-center
+		%li.title.nav-item.border-right
+			= link_to  "#{icon('fas', 'list')} Ventas".html_safe, sales_files_path(), class: 'btn btn-light float-left'
+		%li.nav-item
+			= link_to "Expediente", sales_file_path(document.file_id), class: 'nav-link'
+		- unless document.file.is_counter_sale?
+			%li.nav-item.dropdown
+				= link_to "Solicitudes", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name == 'Sales::SaleRequest'}"
+				.dropdown-menu
+					- document.file.sale_requests.each do |request|
+						= link_to "Nº #{request.number}", edit_sales_sale_request_path(request.id), class: 'dropdown-item'
+					- unless document.file.disabled?
+						= link_to "#{icon('fas', 'plus')} Generar solicitud".html_safe, new_sales_sale_request_path(file_id: document.file_id), class: 'dropdown-item'
+			%li.nav-item.dropdown
+				= link_to "Presupuestos", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name == 'Sales::Budget'}"
+				.dropdown-menu
+					- document.file.budgets.each do |budget|
+						= link_to "Nº #{budget.number}", edit_sales_budget_path(budget.id), class: 'dropdown-item'
+					- unless document.file.disabled?
+						= link_to "#{icon('fas', 'plus')} Generar presupuesto".html_safe, new_sales_budget_path(file_id: document.file_id), class: 'dropdown-item'
+			%li.nav-item.dropdown
+				= link_to "Ordenes", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name == 'Sales::Order'}"
+				.dropdown-menu
+					- document.file.orders.each do |order|
+						= link_to "Nº #{order.number}", edit_sales_order_path(order.id), class: 'dropdown-item'
+					- unless document.file.disabled?
+						= link_to "#{icon('fas', 'plus')} Generar orden".html_safe, new_sales_order_path(file_id: document.file_id), class: 'dropdown-item'
+			%li.nav-item.dropdown
+				= link_to "Compras", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle"
+				.dropdown-menu
+					- document.file.purchase_requests.each do |purchase|
+						= link_to "Nº #{purchase.number}", edit_purchases_purchase_request_path(purchase.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Facturación", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name == 'Sales::Bill'}"
+			.dropdown-menu
+				- document.file.bills.each do |bill|
+					= link_to bill.name(:short), edit_sales_bill_path(bill.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Registrar comprobante".html_safe, new_sales_bill_path(file_id: document.file_id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Remitos", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name == 'Sales::Shipment'}"
+			.dropdown-menu
+				- document.file.shipments.each do |shipment|
+					= link_to "Nº #{shipment.number}", edit_sales_shipment_path(shipment.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Registrar remito".html_safe, new_sales_shipment_path(file_id: document.file_id), class: 'dropdown-item'

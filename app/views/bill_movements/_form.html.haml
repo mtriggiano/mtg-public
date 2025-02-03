@@ -1,0 +1,14 @@
+= simple_form_for bill_movement, html: { class: 'horizontal-form'}, wrapper: :horizontal_form do |f|
+  = error_notification(f)
+
+  = f.input :date, as: :date_picker, label: "Fecha"
+  %hr.dotted
+  = f.association :bill, label_method: :full_name, label: "Factura", collection: current_company.expedient_bills.approveds
+  %hr.dotted
+  = f.input :delivered_to, label: "Entregado a"
+  %hr.dotted
+  .d-flex.justify-content-around
+    = f.input :signed,label: "¿Firmada?"
+    = f.input :returned, label: "¿Devuelta?"
+  %hr.dotted
+  = f.input :observation, label: "Observación"

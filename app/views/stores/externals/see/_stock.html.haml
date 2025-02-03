@@ -1,0 +1,8 @@
+- present external_store, StorePresenter do |external_store_presenter|
+	.row
+		.col-12
+			.pr-2.pl-2.shadow.bg-white.p-3
+				.text-muted
+					= icon('fas', 'list-alt')
+					Stock en banco
+			= render template: '/stores/stocks/index.html.haml', locals:{store: external_store}

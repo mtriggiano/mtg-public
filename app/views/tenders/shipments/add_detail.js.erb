@@ -1,0 +1,19 @@
+<% simple_nested_form_for tender_shipment do |f|
+	@builder = []
+	f.simple_fields_for :details, @detail, child_index: @index, wrapper: false do |d|
+		d.simple_fields_for :childs, @detail.childs, wrapper: false do |c|
+			@builder << c
+		end
+	end
+end %>
+
+$("tr#parent_<%= @index %>").find("button").addClass( "highlightButton" ).removeClass("highlightButton",1000,"linear");
+
+<% if @detail.childs.any? %>
+	//$("tr#parent_<%= @index %>").find(".tender_shipment_details_product").find("select").prop("disabled", true);
+<% end %>
+
+<% @detail.childs.each_with_index do |child, index| %>
+	$("<%= j render '/tenders/tender_shipments/details_form', {d: @builder[index], child: true} %>").insertAfter($("tr#parent_<%= @index %>"));
+<% end %>
+setSelect2();

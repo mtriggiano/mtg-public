@@ -1,0 +1,61 @@
+%h2
+  = "#{emitted_check.check_type} emitido"
+= simple_nested_form_for emitted_check do |f|
+  .card.mb-4.border-left-info
+    .card-body
+      = error_notification(f)
+      .row
+        .col-3.form-group
+          %p.mb-1 Chequera
+          %h4
+            - unless emitted_check.checkbook.nil?
+              = link_to emitted_check.checkbook.nombre, checkbook_path(emitted_check.checkbook)
+            - else
+              = "Sin chequera"
+        .col-3.form-group
+          = f.input :numero, required: true
+        .col-3.form-group
+          %p.mb-1 Fecha de emisión
+          %h4
+            = emitted_check.created_at
+        .col-3.form-group
+          %p.mb-1 Fecha de vencimiento
+          %h4
+            = emitted_check.vencimiento
+        .col-6.form-group
+          %p.mb-1 A la orden de
+          %h4
+            = emitted_check.supplier.name
+        .col-3.form-group
+          = f.input :importe_pagado, required: true
+        .col-3.form-group
+          = f.input :estado, collection: EmittedCheck::ESTADOS
+        .col-6.form-group
+          %p Orden de pago
+          %h4
+            - if emitted_check.payment_order.nil?
+              Sin vincular
+            - else
+              = link_to emitted_check.payment_order.name, purchases_payment_order_path(emitted_check.payment_order)
+        .col-3.form-group
+          %p Saldo
+          %h2.saldo.text-right
+            = number_to_ars emitted_check.saldo
+        .col-3.form-group
+          %p Importe
+          %h2.text-right
+            = number_to_ars emitted_check.importe
+
+
+  = f.simple_fields_for :check_amends do |d|
+    .fields
+      %p.text-left.text-muted.mb-1 Salvedad
+      .card.mb-3
+        .card-body.text-left
+          = d.link_to_remove icon('fas', 'times'), class: 'btn btn-danger float-right', style: 'line-height: 1rem; padding: 0.2rem'
+          = d.input :descripcion, required: true, as: :text
+  .text-center
+    = f.link_to_add "#{icon('fas', 'plus')} Salvedad".html_safe, :check_amends, class: 'btn btn-outline-success'
+
+  .actions.text-center.mt-3
+    = save_button

@@ -1,0 +1,17 @@
+= document_detail(d, d.index, false) do
+	%td
+		= d.association :bill, label: false, input_html: {data: {url: index_by_client_sales_bills_path, secondary_data: "#surgeries_receipt_entity_id"}}
+	%td
+		= d.input :total_left, label: false, input_html: {disabled: true, value: d.object.total_left}
+	%td
+		= d.input :payment_type_id, as: :select, collection: current_company.payment_types,label_method: :name, label: false, input_html: {disabled: true, value: d.object.total_left}
+	%td
+		= d.input :number, label: false, placeholder: "Número de comprobante"
+	%td
+		= d.input :due_date, label: false, as: :date_picker
+	%td
+		= d.input :total, placeholder: "Subtotal ($)", label: false
+	%td
+		= d.link_to_remove icon('fas', 'trash'), class: 'btn btn-danger'
+%tr
+	%td{colspan: 5}

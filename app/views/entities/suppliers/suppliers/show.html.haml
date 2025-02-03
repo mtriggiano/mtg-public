@@ -1,0 +1,61 @@
+- params[:view] ||= 'general'
+= link_to icon('fas', 'chevron-left'), :back, class: 'btn btn-sm text-dark'
+- present supplier do |supplier_presenter|
+	.text-center
+		%h2
+			= supplier.name
+		%p.m-0
+			= supplier.iva_cond
+		%p.text-muted.text-small Proveedor
+		%p.text-small
+			= link_to "#{icon('fas', 'edit')} Editar".html_safe, edit_supplier_path(supplier)
+
+	.row
+		.col-xl-4.col-sm-12.mb-3
+			.card
+				.card-body
+					%div.text-right.mb-2.py-2
+						%span.float-left.mt-2.text-muted Cotizaciones
+						%span.h4
+							= supplier.purchase_budgets.count
+					%div.text-right.mb-2.py-2
+						%span.float-left.mt-2.text-muted TOTAL
+						%span.h4
+							= number_to_ars supplier.purchase_budgets.pluck(:total).inject(0, :+)
+		.col-xl-4.col-sm-12.mb-3
+			.card
+				.card-body
+					%div.text-right.mb-2.py-2
+						%span.float-left.mt-2.text-muted Ventas
+						%span.h4
+							= supplier.purchase_invoices.count
+					%div.text-right.mb-2.py-2
+						%span.float-left.mt-2.text-muted TOTAL
+						%span.h4
+							= number_to_ars supplier.total_billed
+		.col-xl-4.col-sm-12.mb-3
+			.card
+				.card-body
+					%div.text-right.mb-2.py-2
+						%span.float-left.mt-2.text-muted Pendientes
+						%span.h4
+							= number_to_ars supplier.purchase_invoices.approveds.unpaid.pluck(:total_left).inject(0, :+)
+					%div.text-right.mb-2.py-2
+						%span.float-left.mt-2.text-muted Cta. Cte.
+						%span.h4
+							= number_to_ars supplier.current_balance
+
+	%ul.nav.home-nav.justify-content-center.mb-3
+		%li.nav-item.border-animated
+			= show_links('General', 'general', params[:view], supplier_path(supplier.id, view: 'general'))
+		- if can?(:read, SupplierContact)
+			%li.nav-item.border-animated
+				= show_links('Contactos', 'contacts' , params[:view], supplier_path(supplier.id, view: 'contacts'))
+		%li.nav-item.border-animated
+			= show_links('Reportes', 'charts', params[:view], supplier_path(supplier.id, view: 'charts'))
+		%li.nav-item.border-animated
+			= show_links('Cuenta corriente', 'account_movements', params[:view], supplier_path(supplier.id, view: 'account_movements'))
+
+	#config_fields
+		- if ['general', 'contacts', 'charts', 'account_movements'].include?(params[:view])
+			= render "/entities/suppliers/suppliers/see/#{params[:view]}", supplier_contacts: supplier.contacts

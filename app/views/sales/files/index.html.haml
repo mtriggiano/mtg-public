@@ -1,0 +1,9 @@
+= index_table(mform: true, mtarget: "#new_file_modal", icon: 'folder')
+
+= modal("#{icon('fas', 'plus')} Añadir expediente", "new_file_modal", "new_file_body", "extra-big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'plus')} Editar expediente", "edit_file_modal", "edit_file_body", "extra-big") do
+	.modal-body
+		= yield

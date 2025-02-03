@@ -1,0 +1,41 @@
+%p.mb-1
+  Movimientos anteriores
+%table.contable-table
+  %thead
+    %th Fecha
+    %th Comp.
+    %th Lugar/Persona
+    %th Concepto
+    %th Importe
+    %th Forma
+  %tbody
+    - @previous_transactions.each do |log|
+      - if log.income?
+        %tr
+          %td
+            = log.created_at
+          %td
+            = link_to log.codigo, income_path(log.logable_id)
+          %td.word-breakeable
+            = log.entidad
+          %td.word-breakeable
+            = log.description
+          %td.text-right{ :class => negative_colored_number_klass(log.monto) }
+            = number_to_ars log.monto
+          %td
+            = log.forma
+      - else
+        %tr
+          %td
+            = log.created_at
+          %td
+            = link_to log.codigo, expense_path(log.logable_id)
+          %td.word-breakeable
+            = log.entidad
+          %td.word-breakeable
+            = log.description
+          %td.text-right{ :class => negative_colored_number_klass(-log.monto) }
+            = number_to_ars -log.monto
+          %td
+            = log.forma
+= paginate(@previous_transactions, "previous_page")

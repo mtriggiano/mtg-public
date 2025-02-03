@@ -1,0 +1,57 @@
+.index
+	.index-title
+		.principal
+			#{icon('fas', 'dollar-sign')} Remitos de salida
+			= link_to "Sin facturas asociadas", "#", class: "btn btn-outline-dark", id: "sin-facturas-btn"
+	#bmenu.mx-4.d-flex.justify-content-between.align-items-center
+	.index-body.table-responsive
+		%table#paginated_table.table{data: {title: "Reporte SALIDAS ALMACEN",source: reports_storages_path(view: 'shipments', format: :json)}}
+			%thead.thead-light
+				%th.actions{scope: 'col'} Número
+				%th.actions{scope: 'col'} Fecha
+				%th.actions{scope: 'col'} O.S. / Cliente
+				%th.actions{scope: 'col'} Fecha de cirugía
+				%th.actions{scope: 'col'} Importe
+				%th.actions{scope: 'col'} Afiliado
+				%th.actions{scope: 'col'} Exp. Ext.
+				%th.actions{scope: 'col'} Estado
+				%th.actions{scope: 'col'} Conformado?
+				%th.actions{scope: 'col'} Usuario
+				%th.actions{scope: 'col'} Lugar de entrega
+				%th.actions{scope: 'col'} Observación
+				%th.actions{scope: 'col'} O.V.
+				%th.actions{scope: 'col'} Exp. Int
+				%th.actions{scope: 'col'} Tipo
+				%th.actions{scope: 'col'} Factura
+				%th.actions{scope: 'col'} Consumo
+				%th.actions{scope: 'col'} O.C.
+				%th.actions{scope: 'col'} Vendedor
+				%th.actions{scope: 'col'} Tiempo sin facturar
+			%tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::Shipping.merge("actions" => ""))
+
+:javascript
+	$(document).ready(function() {
+		var url_base =  "#{reports_storages_path(view: 'shipments')}&";
+		//var textTodas = "Todas";
+		const textSinFacturas = "Sin facturas asociadas";
+		const $sinFacturasBtn = $("#sin-facturas-btn");
+
+		$($sinFacturasBtn).click(function(){
+
+			$(this).toggleClass('active');
+			//var text = $(this).hasClass('active') ? textSinFacturas : textTodas;
+			//$('#nico-btn').text(text);
+
+			url_base = url_base + "bills_band=" + $(this).hasClass('active') + "&";
+			console.log(url_base);
+
+			const paginated_table = $("#paginated_table").DataTable();
+			paginated_table.ajax.url(url_base);
+			paginated_table.ajax.reload();
+
+			return false;
+		})
+
+	});

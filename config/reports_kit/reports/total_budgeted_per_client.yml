@@ -1,0 +1,17 @@
+measure: 
+  key: expedient_budget
+  name: "Presupuestado"
+  aggregation: total_budgeted
+filters:
+- entity
+- init_date
+dimensions:
+- key: entity
+  limit: 10
+order: dimension1.label asc
+chart:
+  type: pie
+  options:
+    legend:
+      display: true
+      position: bottom

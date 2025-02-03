@@ -1,0 +1,17 @@
+= params[:view_format] ||= "normal"
+.index
+	.index-title
+		.principal
+			= icon('fas', 'list-alt')
+			Especialidades asociadas
+		.buttons{style: "flex-shrink: 0 !important;"}
+			- if params[:view_format] == "details"
+				= link_to "#{icon('fas', 'eye')} Ver por solicitud".html_safe, stores_external_path(external_store.id, view: 'requests', view_format: "normal"), class: 'btn btn-light border float-right'
+			- else
+				= link_to "#{icon('fas', 'eye')} Ver por detalle".html_safe, stores_external_path(external_store.id, view: 'requests', view_format: "details"), class: 'btn btn-light border float-right'
+			= link_to_new("Añadir solicitud", new_stores_stock_request_path(external_id: external_store.id))
+			
+	- if params[:view_format] == "normal"
+		= index_table(title: "false", icon: 'hand-paper', text: "Solicitudes de stock", jpath: stores_stock_requests_path(external_id: external_store.id, view_format: "normal", format: :json), columns: StockRequest::TABLE_COLUMNS)
+	- else
+		= index_table(title: "false", icon: 'hand-paper', text: "Solicitudes de stock", jpath: stores_stock_requests_path(external_id: external_store.id, view_format: "details", format: :json), columns: StockRequestDetail::TABLE_COLUMNS)

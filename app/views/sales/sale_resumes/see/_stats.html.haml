@@ -1,0 +1,43 @@
+.pr-2.pl-2.row
+  .col-12.col-md-4.col-sm-6
+    .card.shadow.toggle-card
+      .card-header.text-muted.bg-white
+        = icon('fas', 'chart-line')
+        Facturas
+      .card-body
+        = column_chart sale_resume.bills.group_by_week(:created_at, format: "%a %d/%m").count
+  .col-12.col-md-4.col-sm-6
+    .card.shadow.toggle-card
+      .card-header.text-muted.bg-white
+        = icon('fas', 'chart-bar')
+        Recibos
+      .card-body
+        = column_chart sale_resume.receipts.group_by_week(:created_at, format: "%a %d/%m").count
+  .col-12.col-md-4.col-sm-6
+    .card.shadow.toggle-card
+      .card-header.text-muted.bg-white
+        = icon('fas', 'chart-pie')
+        Facturas pagadas
+      .card-body
+        = column_chart sale_resume.bills.where(cbte_tipo: ["01", "06", "11"]).where("sale_bills.total_left = 0").group_by_week(:created_at, format: "%a %d/%m").count
+  .col-12.col-md-4.col-sm-6
+    .card.shadow.toggle-card
+      .card-header.text-muted.bg-white
+        = icon('fas', 'chart-pie')
+        Facturas con deudas
+      .card-body
+        = column_chart sale_resume.bills.where(cbte_tipo: ["01", "06", "11", "02", "07", "12"]).where("sale_bills.total_left > 0").group_by_week(:created_at, format: "%a %d/%m").count
+  .col-12.col-md-4.col-sm-6
+    .card.shadow.toggle-card
+      .card-header.text-muted.bg-white
+        = icon('fas', 'chart-pie')
+        Formas de pago mas utilizadas
+      .card-body
+        = pie_chart sale_resume.receipt_details.group_by{|a| a.payment_type}.map{|a, b| [a, b.count]}.to_h
+  .col-12.col-md-4.col-sm-6
+    .card.shadow.toggle-card
+      .card-header.text-muted.bg-white
+        = icon('fas', 'chart-pie')
+        Deuda por clientes
+      .card-body
+        = column_chart sale_resume.bills.group_by{|a| a.client.name}.map{|a, b| [a, b.map(&:total_left_for_reports).reduce(:+)]}.to_h

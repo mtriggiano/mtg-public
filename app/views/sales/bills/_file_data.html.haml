@@ -1,0 +1,19 @@
+.card.shadow.mb-4.mx-4.rounded-lg
+	.card-header
+		%h5 #{icon('fas', 'list-alt')} Datos adicionales
+	.card-body
+		.row.small-form
+			- if bill.type == "Surgeries::ClientBill"
+				= f.simple_fields_for :client_bills_shipments, bill.client_bills_shipments.empty? ? bill.client_bills_shipments.build : bill.client_bills_shipments, wrapper: false do |fs|
+					.col
+						= fs.association :shipment, label: "Remito", collection: bill.file.nil? ? [] : bill.file.shipments.approveds ,value_method: :id,label_method: :number, input_html: {data: {url: surgeries_shipments_path(from: :client_bill), extra_data: "#file_select"}}
+			= f.simple_fields_for :file, wrapper: false do |ff|
+				= ff.input :id, as: :hidden, input_html: {value: bill.file_id}
+				.col
+					= ff.input :external_purchase_order_number, label: "O.C. (cliente)"
+				.col
+					= ff.input :external_number, label: "N° Exp. (cliente)"
+				.col
+					= ff.input :pacient, label: "Afiliado"
+				.col
+					= ff.input :pacient_number, label: "N° Afiliado"

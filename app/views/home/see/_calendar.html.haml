@@ -1,0 +1,68 @@
+.row
+	.col-lg-6
+		.card.mb-3
+			.card-body.d-flex
+				.p-3.mr-2.text-success.text-center{style: 'min-width: 150px'}
+					%h3
+						= current_user.finalized_alerts
+						= icon('fas', 'check-circle')
+					%h5.text-center Completas
+				.p-3.mr-2.text-warning.text-center{style: 'min-width: 150px'}
+					%h3
+						= current_user.pending_alerts
+						= icon('fas', 'fire')
+					%h5.text-center Pendientes
+				= link_to new_alert_user_path(current_user.id), class: 'btn btn-success p-3 mx-auto', data: { target: '#new_alert_modal', toggle: 'toggle' } do
+					.text-center
+						%h3
+							= icon('fas', 'plus')
+						%h5.text-center Nueva tarea
+
+	.col-lg-6
+		= render "/users/profile_card", user: current_user
+
+	.col-lg-12
+		.card.mb-3
+			.card-body.p-4
+				.header.mb-4
+					%span.h4 Tablero de tareas
+					.float-right
+						.btn-group
+							= link_to "Vista semanal".html_safe, home_path(view: 'calendar', sub_view: 'week'), class: 'btn btn-outline-secondary'
+							= link_to "Vista mensual".html_safe, home_path(view: 'calendar', sub_view: 'month'), class: 'btn btn-outline-secondary'
+
+				-if params[:sub_view] == "week"
+					.mb-5
+						= week_calendar events: current_user.alerts do |date, tasks|
+							= date.strftime("%d")
+							- tasks.first(3).each do |task|
+								.task.d-flex.text-truncate
+									%span.state
+										= state_circle(task.open?, task.state)
+									= link_to task.title, [:show, task, task.file, {alert_id: task.id, format: :html}]
+
+				- else
+					.mb-5
+						= month_calendar events: current_user.alerts do |date, tasks|
+							= date.strftime("%d")
+							- tasks.first(3).each do |task|
+								.task.d-flex.text-truncate
+									%span.state
+										= state_circle(task.open?, task.state)
+									= link_to task.title, [:show, task, task.file, {alert_id: task.id, format: :html}]
+
+	.col-lg-6
+		.card
+			.card-body
+				%p.h4 Tareas de la semana
+				= line_chart current_user.alerts.group(:state).group_by_day(:final_date).count
+	.col-lg-6
+		.card
+			.card-body
+				%p.h4 Rendimiento por día
+				= column_chart current_user.alerts.finished.group_by_day_of_week(:created_at, format: "%a").count
+
+
+= modal("#{icon('fas', 'plus')} Alerta", "new_alert_modal", "new_alert_body", "big") do
+	.modal-body
+		= yield

@@ -1,0 +1,50 @@
+%h2 Configuración de cajas
+
+%div.mt-5.mb-2
+	%span.h4.text-muted
+		Tipos de pagos habilitados
+	%span.float-right
+		= link_to "#{icon('fas', 'plus')} Nuevo".html_safe, new_payment_type_path
+.row
+	- @cash_accounts.each do |cash_account|
+		.col-lg-4.col-md-6.col-sm-12
+			%p.mb-1.mt-2
+				%span.text-muted
+					= cash_account.nombre
+			.card
+				.card-body
+					.table-responsive
+						%table.table.table-hover
+							%thead
+								%th Nombre
+								%th ¿Imputa?
+								%th
+							%tbody
+								- cash_account.payment_types.each do |payment_type|
+									%tr
+										%td
+											= payment_type.name
+										%td
+											= imputed_in_cash_helper payment_type
+										%td
+											= link_to_edit edit_payment_type_path(payment_type)
+											= link_to_destroy payment_type
+	.col-lg-4.col-md-6.col-sm-12
+		%p.mb-1.mt-2
+			%span.text-muted
+				Sin caja vinculada
+		.card
+			.card-body
+				.table-responsive
+					%table.table.table-hover
+						%thead
+							%th Nombre
+							%th
+						%tbody
+							- payment_types.sin_caja.each do |payment_type|
+								%tr
+									%td
+										= payment_type.name
+									%td
+										= link_to_edit edit_payment_type_path(payment_type)
+										= link_to_destroy payment_type

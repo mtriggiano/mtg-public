@@ -1,0 +1,13 @@
+- disabled ||= false
+= simple_nested_form_for file_movement, html: {class: 'horizontal-form'}, wrapper: :horizontal_form, defaults:{disabled: disabled} do |f|
+	.row
+		.col-8.offset-2
+			.row
+				= error_notification(f)
+			= f.input :file_id, as: :hidden, input_html: {value: file.id}
+			= f.input :from, as: :fake, label: "Enviar desde", input_html: {value: file.departments.last.name, disabled: true}
+			%hr.dotted
+			= f.association :sender, as: :select, label: "Enviado por", input_html: { disabled: true}, selected: current_user.id, collection: current_company.users.map{ |u| [u.name, u.id]}
+			%hr.dotted
+			= f.association :department, label: "Enviar a", collection: current_company.departments
+			= f.association :file, as: :hidden, value: file.id

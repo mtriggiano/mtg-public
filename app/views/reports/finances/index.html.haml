@@ -1,0 +1,10 @@
+-params[:view] ||= 'emitted_checks'
+.index
+	.index-title
+		.principal
+			#{icon('fas', 'dollar-sign')} Reporte de Finanzas
+		.buttons.d-flex.align-items-start
+			= link_to "Valores emitidos", reports_finances_path(view: 'emitted_checks'), class: "btn btn-outline-dark #{'active' if params[:view] == 'emitted_checks'}", data: {'skip-pjax' => true}
+	#bmenu.mx-4.d-flex.justify-content-between.align-items-center
+	- if ["emitted_checks"].include? params[:view]
+		= render params[:view]

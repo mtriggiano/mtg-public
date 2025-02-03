@@ -1,0 +1,9 @@
+= index_table(mform: true, model_name: "Store", icon: 'warehouse', text: "Depósitos", mtarget: "#new_store_modal", config: false)
+
+= modal("#{icon('fas', 'plus')} Añadir deposito", "new_store_modal", "new_store_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'edit')} Editar deposito", "edit_store_modal", "edit_store_body", "big") do
+	.modal-body
+		= yield

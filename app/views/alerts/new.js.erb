@@ -1,0 +1,6 @@
+modal_body = $('div[id^=new_alert_][id$=_modal]').find('div.modal-body')
+modal_body.html("<%= j render template: '/alerts/new.html.haml', locals: {:@alert => @alert } %>")
+<% if @alert.errors.any? %>
+	modal_body.find("form").append('<div class="modal-footer"><button name="button" type="submit" class="btn btn-primary text-center"><i class="fas fa-save"></i> Guardar</button><button name="button" type="button" class="btn btn-secondary text-center" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button></div>');
+	disableButtonOnSubmit();
+<% end %>

@@ -1,0 +1,7 @@
+= index_table(icon: 'user-times', jpath: non_present_users_path(format: :json), can_new_path: false, collection: collection)
+
+= modal("#{icon('fas', 'eye')} Ver falta", "show_non_present_user_modal", "show_non_present_user_body") do
+	.modal-body
+		= yield
+	.modal-footer
+		= close_button

@@ -1,0 +1,21 @@
+= document_detail(d, d.index, false) do
+  - pp d.object.try(:product_name)
+  %td
+    = d.input :subtype, collection: [["Producto", "Surgeries::ClientBillInventary"], ["Servicio", "Surgeries::ClientBillService"]], label: false, include_blank: false
+  %td
+    = d.input :seller_id, include_blank: "Ninguno", collection: current_company.users, required: true
+  %td
+    = product_td(d)
+  %td
+    = quantity_td(d)
+    = measurement_td(d)
+  %td
+    = price_td(d)
+  %td
+    = discount_td(d)
+  %td
+    = iva_forced_td(d, !d.object.try(:product_name).nil?)
+  %td.fixed-col
+    = total_td(d)
+  %td.fixed-col
+    = d.link_to_remove icon('fas', 'trash'), class: "btn btn-danger ml-3 #{'disabled' if client_bill.disabled?}"

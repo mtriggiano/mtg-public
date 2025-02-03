@@ -1,0 +1,21 @@
+.form-group.col-md-12
+  %h5.text_muted
+    Asignar años de vacaciones a descontar
+%table.table-hover#table_discount
+  %thead
+    %th
+      Año
+    %th
+      Dias a descontar
+    %th
+  %tbody
+    = f.simple_fields_for :debt_vacations, wrapper: false do |da|
+      %tr.fields
+        %td
+          = da.input :year, as: :select, label: false, collection: (1994..Date.today.year).map{|a| a}
+        %td
+          = da.input :days, label: false
+        %td
+          = da.link_to_remove "#{icon('fas','trash')}".html_safe, class: 'btn btn-danger';
+.form-group.col-md-3.col-md-offset-9
+  = f.link_to_add "#{icon('fas', 'plus')}".html_safe, :debt_vacations, class: 'btn btn-primary', data: {target: '#table_discount'}

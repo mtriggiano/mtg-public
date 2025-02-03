@@ -1,0 +1,14 @@
+#custom_attributes.card.shadow.mx-4.mb-4.collapse{data: {parent: "#document-accordion"}}
+	.card-header.bg-white
+		%h5.w-100.pt-2 Atributos personalizados
+	.card-body
+		- if object.has_custom_attributes?
+			.row
+				= f.simple_fields_for :custom_attributes, OpenStruct.new(object.custom_attributes) do |d|
+					- eval("current_company.#{object.class.name.snakecase.split("/").map(&:singularize).join("_")}_configs").each do |config|
+						- config.quantity.times do
+							.col-2
+								= d.input config.extra_attribute_sym, label: "#{config.extra_attribute}"
+		- else
+			%p.text-muted
+				No tienes ningun atributo personalizad configurado.

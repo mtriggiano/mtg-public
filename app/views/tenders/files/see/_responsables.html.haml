@@ -1,0 +1,24 @@
+.row
+	.col-8.offset-2.card
+		.card-body
+			%h5.text-center.card-title
+				= icon('fas', 'clipboard-list')
+				Delegaciones
+			%hr
+			= simple_nested_form_for file, html: {class: 'horizontal-form'}, wrapper: :horizontal_form, defaults: {disabled: file.disabled?} do |f|
+				= hidden_field_tag :view, "responsables"
+				= f.input :user_id, as: :select, label: "Responsable general", collection: current_company.users.map{|u| [u.name, u.id]}
+				%fieldset
+					= f.simple_fields_for :responsables, file.build_responsables do |r|
+						%hr.dotted
+						.form-row.text-center
+							.col-6
+								= r.input :document_type, as: :select, collection: Responsable::DOCUMENT[:tenders], selected: r.object.document_type.try(:to_sym), label: "Asignar", input_html: {disabled: true}
+							.col-6.pl-4
+								= r.hidden_field :document_type
+								= r.input :user_id, as: :select, label: "a", collection: current_company.users.map{|u| [u.name, u.id]}, label_html: {class: 'text-center'}
+				%center
+					= f.link_to_add "#{icon('fas', 'plus')} Añadir responsable".html_safe, :responsables, class: 'btn btn-success', data:{target: 'fieldset'}
+				%hr
+				.actions
+					= save_button

@@ -1,0 +1,5 @@
+<% simple_nested_form_for sale_order do |f| %>
+	<% @builder = f %>
+<% end %>
+
+$("tbody:not([class='custom-details'])").html("<%= j render '/surgeries/shared_details_form', f: @builder %>");

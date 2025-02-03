@@ -1,0 +1,43 @@
+- params[:view] ||= 'general'
+- present client_contact do |contact_presenter|
+	.container-fluid.d-inline-block
+		.bg-info.text-white.mx-4
+			.row
+				.col-md-2.col-12.p-4.justify-content-center
+					.card.bg-info.border-0
+						%center
+							= image_tag "/images/default_user.png", class: 'card-img-top rounded-circle border bg-white contact-avatar'
+							.card-body
+								%h5 #{client_contact.name}
+				.col-md-5.col-6.p-4
+					.card.bg-info.border-0.ml-4
+						= contact_presenter.badge_span
+						= contact_presenter.email_span
+						= contact_presenter.phone_span
+						= contact_presenter.mobile_phone_span
+				.col-md-5.col-6.p-4
+					.p-1
+						%i.small
+							= icon('fas', 'building')
+							= client_contact.client.name
+					.p-1
+						%i.small
+							= icon('fas', 'map-marked-alt')
+							= client_contact.client.address
+					.p-1
+						%i.small
+							= icon('fas', 'id-card')
+							= contact_presenter.client_full_document
+	.container-fluid.d-inline-block
+		%ul.nav.bg-white.border-bottom.border-top.mx-4.p-2
+			%li.title.nav-item
+				= link_to "#{icon('fas', 'plane')} #{client.name}".html_safe, client_path(client.id), class: 'btn btn-light float-left'
+			%li.title.nav-item.border-right
+				= link_to  "#{icon('fas', 'user')} #{client_contact.name}".html_safe, polymorphic_path([client_contact.client, client_contact]), class: 'btn btn-light float-left'
+			%li.nav-item.border-animated
+				= show_links('General', 'general', params[:view], polymorphic_path([client_contact.client, client_contact], view: 'general'))
+			%li.nav-item.border-animated
+				= show_links('Registros', 'contact_records', params[:view], polymorphic_path([client_contact.client, client_contact], view: 'contact_records'))
+		.mx-4
+			- if ['general', 'contact_records'].include?(params[:view])
+				= render "/entities/clients/client_contacts/see/#{params[:view]}"

@@ -1,0 +1,72 @@
+.d-flex.justify-content-center
+  .col-lg-8
+    %h3
+      Registro de Gasto
+    %p.text-muted.mb-1 Información del comprobante
+    .card.mb-4
+      .card-body
+        .row
+          .col-md-4.form-group
+            %p.text-muted.mb-1 Código
+            %h5
+              = expense_detail.codigo_recibo
+          .col-md-4.form-group
+            %p.text-muted.mb-1 Comprobante
+            %h5
+              = expense_detail.codigo_comprobante
+          .col-md-2.form-group
+            %p.text-muted.mb-1 Fecha emisión
+            %h5
+              = expense_detail.fecha
+          .col-md-2.form-group
+            %p.text-muted.mb-1 Fecha pago
+            %h5
+              = expense_detail.fecha_registro
+          .col-md-6.form-group
+            %p.text-muted.mb-1 Proveedor
+            %h5
+              = expense_detail.supplier_name
+          .col-md-6.form-group
+            %p.text-muted.mb-1 Documento asociado
+            %h5
+              = expense_detail.order.try(:name)
+          .col-md-12.form-group
+            %p.text-muted.mb-1 Descripción del gasto
+            %h5
+              = expense_detail.descripcion
+          .col-md-12.text-muted.text-right
+            %p.mb-0
+              Registrado el día:
+              = expense_detail.created_at
+            %p.mb-0
+              Actualizado el día:
+              = expense_detail.updated_at
+
+    %p.text-muted.mb-1 Información contable
+    .card.mb-4
+      .card-body
+        .row
+          .col-md-4
+            %p.text-muted.mb-1 Fecha de registro
+            %h5
+              = expense_detail.fecha_registro
+          .col-md-4
+            %p.text-muted.mb-1 I.V.A.
+            %h5.text-right
+              = number_to_ars expense_detail.sum_iva
+          .col-md-4
+            %p.text-muted.mb-1 Percep. I.V.A.
+            %h5.text-right
+              = number_to_ars expense_detail.percep_iva
+          .col-md-4
+            %p.text-muted.mb-1 I.I.B.B.
+            %h5.text-right
+              = number_to_ars expense_detail.percep_iibb
+          .col-md-4
+            %p.text-muted.mb-1 NO Gravados
+            %h5.text-right
+              = number_to_ars expense_detail.no_gravados
+          .col-md-4
+            %p.text-muted.mb-1 TOTAL
+            %h5.text-right
+              = number_to_ars expense_detail.total

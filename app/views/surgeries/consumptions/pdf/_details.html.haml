@@ -1,0 +1,49 @@
+- total = 0
+.row.border{style: "padding-top: 5px;"}
+  .container{style: "height: 750px; font-size: 9px;"}
+    %table.width_100
+      %tr
+        %th.description_header
+          Cant.
+        %th.description_header
+          Producto
+        %th.description_header
+          Marca
+        %th.description_header
+          Codigo
+        %th.description_header
+          ¿Propio?
+        %th.description_header
+          Lote
+        %th.description_header
+          Nº Serie
+        %th.description_header
+          Vencimiento
+        %th.description_header
+          Precio
+
+      - details.compact.each do |det|
+        - total += (det['total']) rescue 0
+        %tr{style: "height: 25px !important; font-size: 13px !important"}
+          %td.text_center
+            = det['quantity']
+          %td
+            = det['product_name']          
+          %td
+            = det['branch']
+          %td.text_center
+            = det['product_code']
+          %td
+            = det['own']
+          %td
+            = det['code']
+          %td
+            = det['serial']
+          %td
+            = det['due_date']
+          %td.text_right{style: "white-space:nowrap;"}
+            = number_to_ars(det['total'])          
+      %tr{style: "height: 25px !important; font-size: 13px !important"}
+        %th.text_right{:colspan => "9"}
+          = number_to_ars(total)
+        

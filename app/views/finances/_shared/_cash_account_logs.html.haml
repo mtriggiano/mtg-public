@@ -1,0 +1,20 @@
+%table.contable-table
+  %thead
+    %th Comp.
+    %th Lugar/Persona
+    %th Concepto
+    %th.text-right Importe
+    %th Forma
+  %tbody
+    - logs.each do |log|
+      %tr
+        %td
+          = link_to log.codigo, income_path(log.logable_id)
+        %td.word-breakeable
+          = log.user.name if log.user.present?
+        %td.word-breakeable
+          = log.description
+        %td{ :class => negative_colored_number_klass(log.monto) }
+          = number_to_ars log.monto
+        %td
+          = log.forma

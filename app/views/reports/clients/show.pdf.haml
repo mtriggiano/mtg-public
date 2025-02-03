@@ -1,0 +1,66 @@
+
+%table.width_100
+	%tr.text_center
+		%th
+			%p
+				= wicked_pdf_image_tag current_company.pdf_logo, width: "200px"
+
+- ([client] + client.childs).each do |current_client|
+	- if current_client.bills.confirmed.any?
+		%table.width_100
+			%tr.text_left
+				%th{style: "font-size: 11px !important"}
+					= current_client.name
+
+		%table.width_100{style: 'border-collapse: collapse;'}
+			%thead{style: 'background-color: #0384fc; color: white; padding-top: 1rem; font-size: 8px; padding-bottom: 5px;'}
+				%tr
+					%th{style: 'padding-top: 1rem; '} Factura
+					%th{style: 'padding-top: 1rem; '} Emisión
+					%th{style: 'padding-top: 1rem; '} Vencimiento
+					%th{style: 'padding-top: 1rem; '} Total
+					%th{style: 'padding-top: 1rem; '} Pagado
+					%th{style: 'padding-top: 1rem; '} Saldo
+					%th{style: 'padding-top: 1rem; '} Afiliado
+					%th{style: 'padding-top: 1rem; '} Expe
+					%th{style: 'padding-top: 1rem; '} Orden de Com
+					%th{style: 'padding-top: 1rem; '} Observación
+			%tbody
+				- current_client.bills.confirmed.only_bills.select{|b| b.real_total_left > 0}.each_with_index do |bill, index|
+					%tr{style: "font-size: 7px !important; background-color: #{index.odd? ? 'white' : '#C1C1C1'}"}
+						%td{style: 'padding: 5px;'}
+							= bill.full_name
+						%td{style: 'padding: 5px;'}
+							= bill.date
+						%td{style: 'padding: 5px;'}
+							= bill.due_date
+						%td{style: 'text-align: right; padding: 5px;'}
+							= number_to_currency( bill.real_total, unit: bill.currency == "ARS" ? "$" : "U$D", format: "%u %n", seperator: ',')
+						%td{style: 'text-align: right; padding: 5px;'}
+							= number_to_currency( bill.total_pay, unit: bill.currency == "ARS" ? "$" : "U$D", format: "%u %n", seperator: ',')
+						%td{style: 'text-align: right; padding: 5px;'}
+							= number_to_currency( bill.real_total_left, unit: bill.currency == "ARS" ? "$" : "U$D", format: "%u %n", seperator: ',')
+						%td{style: 'padding: 5px;'}
+							= bill.dig(:file, :pacient)
+						%td{style: 'padding: 5px;'}
+							= bill.dig(:file, :external_number)
+						%td{style: 'padding: 5px;'}
+							= bill.dig(:file, :external_purchase_order_number)
+						%td{style: 'padding: 5px;'}
+							= raw bill.note
+			%tfooter
+				%tr{style: 'border-top: 1px solid #000;font-size: 11px !important;'}
+					%td{colspan: 3, style: 'text-align: right; padding-top: 1rem;' }
+						Total:
+					%td{style: 'text-align: right; padding: 1rem 5px 0 0;'}
+						= number_to_currency(current_client.bills.confirmed.only_bills.sum(&:real_total_left), unit: "$", format: "%u %n", seperator: ',')
+					%td{colspan: 4, style: 'padding-top: 1rem;'}
+%center
+	%table.width_25{style: 'margin-top: 3rem; background-color: #0384fc; color: white;'}
+		-([client] + client.childs).each do |current_client|
+			- if current_client.bills.confirmed.only_bills.only_bills.sum(&:real_total_left) > 0
+				%tr.text_left
+					%th{style: "font-size: 12px !important"}
+						= "Total #{current_client.name}: "
+					%th{style: "font-size: 12px !important"}
+						= number_to_currency(current_client.bills.confirmed.only_bills.only_bills.sum(&:real_total_left), unit: "$", format: "%u %n", seperator: ',')

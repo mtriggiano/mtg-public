@@ -1,0 +1,4 @@
+<% simple_nested_form_for arrival do |f| %>
+	<% @builder = f %>
+<% end %>
+$("table.parent-table > tbody").html("<%= j render '/purchases/shared_details_form', {f: @builder, colspan: 10} %>");

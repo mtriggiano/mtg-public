@@ -1,0 +1,83 @@
+.index
+    .index-title
+        .principal
+            #{icon('fas', 'dollar-sign')} Remitos Facturados
+    .card.card-body.bg-light
+        %p
+            %strong 
+                Filtros  
+        = form_tag('', class: 'form', method: :get, id: 'filtro-form', "data-type" => 'json', remote: true) do
+            .row
+                .col-md-4 
+                    = label_tag :tipo, 'Tipo Expediente', class: "control-label"
+                    = select(:filtros, :tipo, ['Cirujia', 'Venta'], include_blank: "Todos", class: 'form-control form-control-sm')
+                .col-md-4
+                    = label_tag :sin_facturas, 'Sin factura', class: "control-label"
+                    = select(:filtros, :sin_facturas, ['Sin facturas asociadas', 'Con facturas asociadas'], include_blank: "Todos", class: 'form-control form-control-sm')
+                .col-md-4
+                    = label_tag :seller_id, 'Vendedor', class: "control-label"
+                    = collection_select(:filtros, :seller_id, @sellers || [], :id, :name, { :include_blank => "Todos"}, class: 'form-control')
+                .col-md-4
+                    = label_tag :supplier_id, 'Proveedor', class: "control-label"
+                    = collection_select(:filtros, :supplier_id, @suppliers || [], :id, :name, { :include_blank => "Todos"}, class: 'form-control')
+                .col-md-4
+                    = label_tag :id_medtronic, 'ID Medtronic', class: "control-label"
+                    = collection_select(:filtros, :id_medtronic, @client_medtronic_ids || [], :to_s, :to_s, { :include_blank => "Todos"}, class: 'form-control')
+                .col-md-2
+                    = label_tag :fecha_desde, 'Fecha Remito desde', class: "control-label"
+                    = text_field(:filtros, :fecha_desde, class: 'form-control', :type =>"date")
+                .col-md-2
+                    = label_tag :fecha_hasta, 'Fecha Remito hasta', class: "control-label"
+                    = text_field(:filtros, :fecha_hasta, class: 'form-control', :type =>"date")
+                .col-md-2
+                    = label_tag :fecha_factura_desde, 'Fecha Factura desde', class: "control-label"
+                    = text_field(:filtros, :fecha_factura_desde, class: 'form-control', :type =>"date")
+                .col-md-2
+                    = label_tag :fecha_factura_hasta, 'Fecha Factura hasta', class: "control-label"
+                    = text_field(:filtros, :fecha_factura_hasta, class: 'form-control', :type =>"date")
+                .col-md-3.col-sm-4
+                    %br
+                    = button_tag(type: "submit", class: "btn btn-success") do
+                        %span.glyphicon.glyphicon-search
+                        Buscar
+    #bmenu.mx-4.d-flex.justify-content-between.align-items-center
+    .index-body.table-responsive
+        %table#paginated_table.table{data: {title: "Reporte Remitos facturados",source: reports_shipment_details_path(view: 'shipments', format: :json)}}
+            %thead.thead-light
+                %th.actions{scope: 'col'} Fecha Remito
+                %th{scope: 'col'} Factura
+                %th{scope: 'col'} Fecha Factura
+                %th{scope: 'col'} Remito
+                %th{scope: 'col'} Cliente ID
+                %th{scope: 'col'} Cliente
+                %th{scope: 'col'} Producto codigo
+                %th{scope: 'col'} Producto
+                %th{scope: 'col'} Proveedor
+                %th{scope: 'col'} Cantidad
+                %th{scope: 'col'} Vendedor
+                %th{scope: 'col'} F. Vto
+            %tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::ShipmentDetail.merge("actions" => ""))
+
+:javascript
+    $(document).ready(function() {
+        var data_filters = {
+            tabla: null,
+            url_base: "#{reports_shipment_details_path(format: :json)}?",
+            filtro_form: $("#filtro-form"),
+            on_submit_filter_form: function(event){
+                var url = data_filters.url_base + $(event.target).serialize();
+                if (!data_filters.tabla){
+                    data_filters.tabla = $("#paginated_table").DataTable();
+                } else {
+                    data_filters.tabla.ajax.url(url);
+                    data_filters.tabla.ajax.reload();
+                }
+                return false;
+            }
+        }
+        data_filters.tabla = null;
+        data_filters.filtro_form.submit(data_filters.on_submit_filter_form);
+    })
+	

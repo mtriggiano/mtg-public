@@ -1,0 +1,88 @@
+- company_presenter ||= CompanyPresenter.new(supplier_request.company, self)
+.border_round
+  %table.width_100
+    %tr{style: "line-height: 10px !important;"}
+      %th.text_size_20.text_left.header_word_break{style:"text-align: center; width: 200px; line-height: 10px;"}
+        %p
+          = wicked_pdf_image_tag supplier_request.company.pdf_logo, width: "200px"
+      / %th.text_size_invoice_type
+      /   .budget_type
+      /     = supplier_request.budget_type == "Oficial" ? "R" : "X"
+      %th.header_word_break{style:"width: 300px; text-align: left; padding-left: 50px;"}
+        %p{style: 'font-size: 11px;'}
+          = supplier_request.company.try(:address)
+        %p{style: 'font-size: 11px;'}
+          = supplier_request.company.postal_code + " " + supplier_request.company.try(:locality).try(:province).try(:name) + " - " + supplier_request.company.try(:locality).try(:province).try(:country).try(:name)
+        %p{style: 'font-size: 11px;'}
+          = "#{supplier_request.company.try(:contact_number)}".html_safe
+      %th.header_word_break{style:"width: 250px;"}
+        %br
+        %p.text_size_20
+          Nº
+          = supplier_request.number
+        %p.text_size_20
+          Fecha:
+          = I18n.l(supplier_request.created_at, format: :date)
+        %p.text_size_10
+          Proveedor:
+          = supplier_request.supplier.name
+  %table.width_100
+    %tr{style: "text-align: left;"}
+      %th{style: "padding-left: 40px !important; font-size: 40px;"}
+        PEDIDO DE CIRUGÍA
+%table.width_100{style: 'font-size: 11px;'}
+  %tr
+    %td.width_50.border_round
+      %table{style: "padding-left: 20px;"}
+        %tr
+          %td
+            %b
+              Paciente:
+            = supplier_request.file.try(:pacient)
+        %tr
+          %td
+            %b
+              Médico:
+            = supplier_request.file.try(:doctor)
+        %tr
+          %td
+            %b
+              Fecha de entrega en quirófano:
+            = supplier_request.deliver_to_hospital
+        %tr
+          %td
+            %b
+              Fecha de cirugía:
+            = supplier_request.file.try(:surgery_end_date)
+        %tr
+          %td
+            %b
+              Lugar:
+            = supplier_request.file.try(:place)
+    %td.width_50.border_round
+      %table{style: "padding-left: 20px;"}
+        %tr
+          %td
+            %b
+              Vendedor:
+            = supplier_request.dig(:seller, :name)
+        %tr
+          %td
+            %b
+              Departamento de emisión:
+            Compras
+        %tr
+          %td
+            %b
+              Nº Afiliado:
+            = supplier_request.file.try(:pacient_number)
+        %tr
+          %td
+            %b
+              Logística:
+            logistica@magnus.com.ar
+        %tr
+          %td
+            %b
+              Nº Expediente:
+            = supplier_request.file.try(:number)

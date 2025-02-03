@@ -1,0 +1,11 @@
+= simple_nested_form_for(justification_record, url: "approve_#{approve_path}".to_sym, html: { class: 'horizontal-form directUpload', data: {'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url,'host' => URI.parse(@s3_direct_post.url).host} }, wrapper: :horizontal_form) do |f|
+  .row
+    .col-8.offset-2
+      = approve_toggle(f, :approved)
+  #reject_reasons
+    %hr.dotted
+      = f.input :reject_reason, label: 'Rechazado por:', input_html: {class: 'reject_reason', disabled: false}, label_html: {class: 'reject_reason_label'}
+  #approve_attachs.hidden
+    = render '/human_resources/_shared/shared_attachment', f: f
+  .modal-footer
+    = save_button

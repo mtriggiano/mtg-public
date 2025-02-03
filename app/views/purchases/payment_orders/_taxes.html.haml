@@ -1,0 +1,21 @@
+.card.mb-4
+	.card-header.bg-white
+		%h5.pt-2
+			Retenciones
+	.card-body
+		= f.simple_fields_for :taxes, wrapper: false do |t|
+			.fields
+				.border.rounded-lg.py-3.px-2.mb-4.text-left
+					.float-right
+						= t.link_to_remove icon('fas', 'times'), class: 'text-danger' unless document_disabled
+					.row
+						.col-4
+							= t.input :tipo, label: "Tipo", collection: current_company.tax_types, include_blank: true, input_html: { tags: true }
+						.col-4
+							= t.input :number, label: "Registro"
+						.col-4
+							= t.input :total, label: "Importe", input_html: { min: 0, class: 'suma-pagos text-right' }, required: true
+
+		.text-center
+			= f.link_to_add "#{icon('fas', 'plus')} Añadir retención".html_safe, :taxes, class: 'btn btn-outline-success' unless payment_order.disabled?
+		.mb-4

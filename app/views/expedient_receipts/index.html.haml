@@ -1,0 +1,28 @@
+= index_table(collection: collection, icon: 'receipt', text: "Recibos") do
+	= button_tag "#{icon('fas', 'file-import')} Importar".html_safe, type: 'button', data: {target: "#import_modal", toggle: "modal"}, class: 'btn btn-info'
+
+= modal("#{icon('fas', 'cogs')} Configurar campos", "config_modal", "config_modal_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'file-import')} Importar recibo masivo", "import_modal", "import_modal_body") do
+	= form_tag import_expedient_receipts_path(), {multipart: true, method: :post} do
+		.modal-body
+			.format.w-100.text-center
+				.text-muted
+					Seleccione el archivo del cual importara los detalles del recibo. Solo 3 columnas: PTO VENTA - NRO DE FACTURA - IMPORTE A PAGAR
+				.form-group
+					= file_field_tag :file , :class => 'btn ', accept: ".csv, .xls, .xlsx"
+			.format.w-100
+				.form-group.col-12
+					= label_tag :clients, "Cliente", class: 'mr-2'
+					= select_tag :client, options_for_select(current_company.clients.map{|a| [a.name, a.id]}, params[:client])
+				.form-group.col-12
+					= label_tag :date, "Fecha", class: 'mr-2'
+					= text_field_tag :date, Date.today, data: { behaviour: 'datepicker' }, placeholder: "Fecha del recibo", class: 'form-control mr-2'
+				.form-group.col-12
+					= label_tag :current_user, "Registrado por:", class: 'mr-2'
+					= text_field_tag :current_user, current_user.name, disabled: true, class: 'form-control mr-2'
+		.modal-footer
+			= submit_tag "Importar", type: :submit, class: 'btn btn-primary'
+			= close_button

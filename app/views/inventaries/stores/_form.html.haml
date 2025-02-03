@@ -1,0 +1,7 @@
+= simple_form_for(store, html: { class: 'horizontal-form' }, wrapper: :horizontal_form) do |f|
+  = error_notification(f)
+
+
+  = f.input :name, label: "Deposito", placeholder: "Deposito"
+  %hr.dotted
+    = f.input :location, label: "Ubicación", placeholder: "Ubicación del deposito"

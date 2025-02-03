@@ -1,0 +1,27 @@
+%table.table
+	%p.text-muted.text-left
+		Presione #{icon('fas', 'exchange-alt')} (TAB) para agregar lotes.
+	%thead
+		%tr
+			%th
+			%th
+	%tbody.gtins-body
+		= f.simple_fields_for :gtin, f.object.gtin || f.object.build_gtin, wrapper: false do |b|
+			%tr.fields
+				%td{colspan: 2}
+					%table
+						%tr
+							%td.font-weight-bold
+								Producto
+							%td.text-truncate.text-left{style: 'max-width: 200px'}
+								= f.object.product.try(:name)
+						%tr
+							%td.font-weight-bold
+								G.T.I.N.
+							%td.row
+								= b.input :code, label: false, placeholder: "Código"
+						%tr
+							%td{colspan: 2}
+								= render '/purchases/arrivals/batches', b:b
+%hr
+= close_button

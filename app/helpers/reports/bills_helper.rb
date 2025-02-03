@@ -1,0 +1,2 @@
+module Reports::BillsHelper
+end

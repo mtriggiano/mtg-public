@@ -1,0 +1,27 @@
+- params[:view] ||= 'general'
+
+- present company do |company_presenter|
+	.row.pb-3
+		= client_card('3', company_presenter.name, company_presenter.society_name, 'id-card', 'info')
+		= client_card('3', company_presenter.total_income, 'Total ingresos en el último mes', 'hand-holding-usd', 'success')
+		= client_card('3', company_presenter.total_expenses, 'Total gastos en el último mes', 'hand-holding-usd', 'danger')
+		= client_card('3', Client.where(created_at: Date.today.at_beginning_of_month .. Date.today.at_end_of_month).count, 'Clientes nuevos en el último mes', 'briefcase', 'primary')
+	%ul.nav.justify-content-center.bg-light.border-bottom.border-top.bg-white
+		%li.nav-item.border-animated
+			= show_links('General', 'general', params[:view], company_path(current_company.id, view: 'general'))
+		%li.nav-item.border-animated
+			= show_links('Personal', 'users' , params[:view], company_path(current_company.id, view: 'users'))
+		%li.nav-item.border-animated
+			= show_links('Roles', 'user-lock' , params[:view], company_path(current_company.id, view: 'roles'))
+		%li.nav-item.border-animated
+			= show_links('Comisiones', 'comissions', params[:view], company_path(current_company.id, view: 'comissions'))
+		%li.nav-item.border-animated
+			= show_links('Bancos', 'banks', params[:view], company_path(current_company.id, view: 'banks'))
+		%li.nav-item.border-animated
+			= show_links('Tarjetas', 'cards', params[:view], company_path(current_company.id, view: 'cards'))
+		%li.nav-item.border-animated
+			= show_links('Configuración', 'config', params[:view], edit_company_path(current_company.id))
+
+	#config_fields.mt-2
+		- if ['general', 'users', 'accountant', 'comissions', 'roles'].include?(params[:view])
+			= render "/companies/see/#{params[:view]}"

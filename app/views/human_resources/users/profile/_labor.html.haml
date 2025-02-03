@@ -1,0 +1,14 @@
+- present user do |user_presenter|
+  .pr-2.pl-2.w-100.shadow.bg-white.p-3.w-100
+    .text-muted
+      = icon('fas', 'list-alt')
+      Información laboral
+    %hr
+      %dl
+        = see_contact_dl("Rol", user_presenter.role)
+        %hr.dotted
+        = see_contact_dl("Inicio de Actividades", user_presenter.start_of_activity)
+        %hr.dotted
+        = see_contact_dl("ID de biométrico", user.machine_id)
+        %hr.dotted
+        = see_contact_dl("Contrato", user_presenter.contract)

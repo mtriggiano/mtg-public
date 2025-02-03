@@ -1,0 +1,28 @@
+.pb-4
+	.table-responsive.m-4
+		%table{class: "table gtin-table-#{d.index}"}
+			%thead
+				%th.w-25 Cantidad
+				%th.w-100 Código trazable
+				%th.w-25 Acción
+			%tbody
+				= d.simple_fields_for :batch_details, wrapper: false do |g|
+					%tr.fields
+						%td.w-25
+							= g.input :quantity, label: false
+						%td.w-100
+							- if product.nil?
+								= g.association :batch, label: false, input_html:{data: { url: path}}, label_method: :full_text
+							- else
+								- if consumption
+									= g.association :batch, collection: product.batches.joins(:batch_details).where("batch_details.detail_type = ? OR batches.id = ?", "ExpedientShipmentDetail", g.object.try(:batch_id)).distinct("batches.id").order("batches.due_date DESC").map{|a| [a.full_text, a.id]}, label: false
+								- else
+									- batch_collection = product.batches.where("batches.id = ? OR batches.state = true", g.object.try(:batch_id)).order("batches.due_date DESC").map{|batch| [batch.full_text, batch.id]} 
+									- batch_collection << [g.object.try(:batch).try(:full_text), g.object.try(:batch_id)] if g.object.batch.present?
+									= g.association :batch, collection: batch_collection.uniq, label: false
+						%td.w-25
+							= g.link_to_remove icon('fas', 'trash'), class: 'btn btn-sm btn-danger'
+	- if d.object.new_record?
+		= d.link_to_add "Añadir", :batch_details, class: 'btn btn-success', data: {target: "table.gtin-table-#{d.index}"}, blueprint: "$(link).next('[id$=_batch_details_fields_blueprint]')"
+	- else
+		= d.link_to_add "Añadir", :batch_details, class: 'btn btn-success', data: {target: "table.gtin-table-#{d.index}"}

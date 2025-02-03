@@ -1,0 +1,21 @@
+- delivery_note ||= @delivery_note
+= simple_nested_form_for delivery_note, defaults: {disabled: delivery_note.disabled?} do |f|
+	.card.shadow.m-4
+		= file_header(f)
+		.card-body
+			= error_notification(f)
+			.row
+				.col-sm-4.col-12.border-right
+					= number_input(f)
+					= f.association :purchase_return, label: "Devolución", label_html: {class: 'h6'}, collection: current_company.purchase_returns.map{|pr| [pr.number, pr.id]}, prompt: "Seleccione...", input_html: {data: {placeholder: "N° de devolución.", url: index_by_file_purchase_returns_path(), extra_data: "#file_select"}}
+				.col-sm-4.col-12.border-right
+					= store_input(f)
+					= date_input(f, :date)
+				.col-sm-4.col-12
+					= user_input(f)
+					= state_input(f, with_button: false)
+			= render '/file_attributes_configs/shared_extra_attributes', f:f, object: delivery_note
+			= observation_input(f)
+			= render '/purchases/shared_attachment', f:f
+			= render '/purchases/shared_links', f: f
+	= document_table(f)

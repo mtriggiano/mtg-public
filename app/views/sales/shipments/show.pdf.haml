@@ -1,0 +1,39 @@
+- total_page = 0
+- @sale_shipment ||= shipment
+- if @sale_shipment.shipment_type == "Traslado + Oficial"
+	- @sale_shipment.shipment_type = "Traslado"
+	- group_details = DetailPdf.new(@sale_shipment, with_childs: true).build.reject{|d| d['quantity'] <= 0}.in_groups_of(28)
+	- group_details.each_with_index do |details_page, index|
+		.alwaysbreak
+			= render template: '/sales/shipments/pdf/_header.html.haml', locals: {sale_shipment: @sale_shipment}
+			= render template: '/sales/shipments/pdf/_details_traslado.html.haml', :locals => { :details => details_page.compact, sale_shipment: @sale_shipment}
+			= render template: '/sales/shipments/pdf/_footer.html.haml', :locals => { :page_number => (index + 1), :total_pages => group_details.count, sale_shipment: @sale_shipment }
+	- if @sale_shipment.attachments.any?
+		.alwaysbreak
+			= render template: '/sales/shipments/pdf/_header.html.haml', locals: {sale_shipment: @sale_shipment}
+			= render template: '/sales/shipments/pdf/_attachments.html.haml', sale_shipment: @sale_shipment
+	- @sale_shipment.shipment_type = "Oficial"
+	- group_details = DetailPdf.new(@sale_shipment, with_childs: false).build.reject{|d| d['quantity'] <= 0}.in_groups_of(28)
+	- group_details.each_with_index do |details_page, index|
+		.alwaysbreak
+			= render template: '/sales/shipments/pdf/_header_oficial.html.haml', locals: {sale_shipment: @sale_shipment}
+			= render template: '/sales/shipments/pdf/_details_traslado.html.haml', :locals => { :details => details_page.compact, sale_shipment: @sale_shipment}
+			= render template: '/sales/shipments/pdf/_footer.html.haml', :locals => { :page_number => (index + 1), :total_pages => group_details.count, sale_shipment: @sale_shipment }
+- elsif @sale_shipment.shipment_type == "Oficial"
+	- group_details = DetailPdf.new(@sale_shipment, with_childs: false).build.reject{|d| d['quantity'] <= 0}.in_groups_of(28)
+	- group_details.each_with_index do |details_page, index|
+		.alwaysbreak
+			= render template: '/sales/shipments/pdf/_header_oficial.html.haml', locals: {sale_shipment: @sale_shipment}
+			= render template: '/sales/shipments/pdf/_details_traslado.html.haml', :locals => { :details => details_page.compact, sale_shipment: @sale_shipment}
+			= render template: '/sales/shipments/pdf/_footer.html.haml', :locals => { :page_number => (index + 1), :total_pages => group_details.count, sale_shipment: @sale_shipment }
+- elsif @sale_shipment.shipment_type == "Traslado"
+	- group_details = DetailPdf.new(@sale_shipment, with_childs: true).build.reject{|d| d['quantity'] <= 0}.in_groups_of(28)
+	- group_details.each_with_index do |details_page, index|
+		.alwaysbreak
+			= render template: '/sales/shipments/pdf/_header.html.haml', locals: {sale_shipment: @sale_shipment}
+			= render template: '/sales/shipments/pdf/_details_traslado.html.haml', :locals => { :details => details_page.compact, sale_shipment: @sale_shipment}
+			= render template: '/sales/shipments/pdf/_footer.html.haml', :locals => { :page_number => (index + 1), :total_pages => group_details.count, sale_shipment: @sale_shipment }
+	- if @sale_shipment.attachments.any?
+		.alwaysbreak
+			= render template: '/sales/shipments/pdf/_header.html.haml', locals: {sale_shipment: @sale_shipment}
+			= render template: '/sales/shipments/pdf/_attachments.html.haml', sale_shipment: @sale_shipment

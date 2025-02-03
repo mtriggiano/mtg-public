@@ -1,0 +1,19 @@
+= simple_nested_form_for role do |f|
+	= f.input :name, as: :string, required: false, label: "Nombre del rol", wrapper: :input_group do
+		= f.input_field :name
+		%span.input-group-addon
+			= f.link_to_add "#{icon('fas', 'plus')} Añadir permisos".html_safe, :abilities, class: 'btn btn-success', data: {target: '.form-fields'}
+	.row.form-fields
+		= f.simple_fields_for :abilities, wrapper: false do |ra|
+			.col-4.fields
+				.card.shadow.m-2
+					.card-body
+						.input-group
+							.flex-grow-1
+								= ra.input_field :class_name, collection: RoleAbility::DEFAULT_CLASSES, as: :grouped_select, group_method: :last, label: false
+							.input-group-append.flex-shrink-1
+								= ra.link_to_remove icon('fas', 'trash'), class: 'btn btn-danger input-group-text'
+						%hr.dotted
+							= ra.input :ability_actions, label: false, collection: RoleAbility::DEFAULT_ACTIONS, as: :check_boxes, include_hidden: false, :input_html => {multiple: true}, include_blank: false, checked: ra.object.ability_actions.map(&:name)
+	.actions
+		= save_button

@@ -1,0 +1,7 @@
+<% simple_nested_form_for tender_bill do |f|
+	@builder = f
+end %>
+
+$("tbody").html("<%= j render '/tenders/tender_bills/details_form', f: @builder %>");
+setSelect2();
+calculateHeader();

@@ -1,0 +1,19 @@
+.table-responsive
+	%table{class: "table gtin-table-#{b.index}"}
+		%thead
+			%th ID Transaccion
+			%th G.T.I.N.
+			%th Serial
+			%th Acción
+		%tbody
+			= b.simple_fields_for :gtins, wrapper: false do |g|
+				%tr
+					%td
+						= g.input :transaction_id, label: false
+					%td
+						= g.input :code, label: false, class: 'gtin-input'
+					%td
+						= g.input :serial, label: false
+					%td
+						= g.link_to_remove icon('fas', 'trash'), class: 'btn btn-sm btn-danger'
+= b.link_to_add "Añadir", :gtins, class: 'btn btn-success', data: {target: "table.gtin-table-#{b.index}"}

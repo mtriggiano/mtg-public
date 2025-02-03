@@ -1,0 +1,30 @@
+%p.mb-1 Cheques depositados en la cuenta
+.card.mb-4
+  .card-body
+    - if checks.any?
+      .table-responsive
+        %table
+          %thead
+            %th Número
+            %th Cliente
+            %th Vencimiento
+            %th Depósito
+            %th.text-center Importe
+          %tbody
+            - saldo_cheques = 0
+            - checks.each do |check|
+              %tr
+                %td
+                  = link_to check.numero_cheque, promissory_payment_path(check)
+                %td
+                  = check.client.try(:name)
+                %td
+                  = check.vencimiento
+                %td
+                  = check.fecha_deposito
+                %td.text-right
+                  = number_to_ars check.importe
+    - else
+      %h5.text-center.text-muted.my-3
+        = icon('fas', 'exclamation-circle')
+        No encontramos cheques depositados en la cuenta

@@ -1,0 +1,11 @@
+- total_page 	  = 0
+- @devolution 	||= devolution
+- supplier 		||= @devolution.supplier
+
+//TRASLADO
+- group_details = DetailPdf.new(@devolution, with_childs: true).build.in_groups_of(19)
+- group_details.each_with_index do |details_page, index|
+	.alwaysbreak
+		= render template: '/purchases/devolutions/pdf/_header.html.haml', locals: {supplier: supplier}
+		= render template: '/purchases/devolutions/pdf/_details.html.haml', :locals => { :details => details_page.compact}
+		= render template: '/purchases/devolutions/pdf/_footer.html.haml', :locals => { :page_number => (index + 1), :total_pages => group_details.count }

@@ -1,0 +1,15 @@
+= index_table(mform: true, icon: 'list-alt', text: "Tareas asignadas", jpath: alerts_path(format: :json) , path: new_alert_user_path(current_user.id), mtarget: "#new_alert_modal", collection: current_user.alerts, without_permission: true)
+
+= modal("#{icon('fas', 'plus')} Añadir alerta", "edit_alert_modal", "edit_alert_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'eye')} Ver alerta", "show_alert_modal", "show_alert_body", "big") do
+	.modal-body
+		= yield
+	.modal-footer
+		= close_button
+
+= modal("#{icon('fas', 'plus')} Añadir alerta", "new_alert_modal", "new_alert_body", "big") do
+	.modal-body
+		= yield

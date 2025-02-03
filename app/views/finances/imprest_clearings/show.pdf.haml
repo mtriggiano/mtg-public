@@ -1,0 +1,6 @@
+- group_details = @transactions.in_groups_of(25, fill_with= nil)
+- group_details.each_with_index do |details_page, index|
+	.alwaysbreak
+		= render '/finances/imprest_clearings/pdf/header.html.haml', imprest_clearing: imprest_clearing
+		= render '/finances/imprest_clearings/pdf/details.html.haml', details: details_page.compact, imprest_clearing: imprest_clearing
+		= render '/finances/imprest_clearings/pdf/footer.html.haml'

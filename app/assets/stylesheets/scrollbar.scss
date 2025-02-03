@@ -1,0 +1,20 @@
+@import "variables";
+
+::-webkit-scrollbar {
+  width: 0.7rem;  /* remove scrollbar space */
+  margin-top: 88px !important;
+  z-index: 9999;
+  /*background: transparent;   optional: just make scrollbar invisible */
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: $background-accent-color;
+  border-radius: 0.3rem;
+}

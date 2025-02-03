@@ -1,0 +1,8 @@
+- present external_store, StorePresenter do |external_store_presenter|
+	.row
+		.col-12
+			.pr-2.pl-2.shadow.bg-white.p-3
+				.text-muted
+					= icon('fas', 'list-alt')
+					Tranferencias
+			= index_table(mform: true, title: "false", icon: 'list-alt', text: "Actividades", path: new_stores_external_store_activity_path(external_store.id), jpath: stores_external_store_activities_path(external_store.id, format: :json), mtarget: "#new_store_activity_modal", columns: StoreActivity::TABLE_COLUMNS)

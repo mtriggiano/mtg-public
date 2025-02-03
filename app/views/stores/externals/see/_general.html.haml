@@ -1,0 +1,21 @@
+- present external_store, StorePresenter do |external_store_presenter|
+	.row
+		.col-3
+			.pr-2.pl-2.shadow.bg-white.p-3
+				.text-muted
+					= icon('fas', 'list-alt')
+					Información básica
+				%hr
+					%dl
+						= see_contact_dl("Nombre", external_store_presenter.name, 4)
+						%hr.dotted
+						= see_contact_dl("Ubicación", external_store_presenter.location, 4)
+						%hr.dotted
+						= see_contact_dl("Estado", external_store_presenter.state, 4)
+		.col-9
+			.pr-2.pl-2.shadow.bg-white.p-3.d-flex.align-items-center
+				.text-muted.flex-grow-1
+					= icon('fas', 'list-alt')
+					Especialidades asociadas
+				= link_to_new("Agregar especialidad", new_stores_external_store_line_path(external_id: external_store.id), {class: 'btn btn-primary btn-sm', id: "new_stores_line", data:{target: "#new_store_line_modal", toggle: "modal", form: true}})
+			= render template: '/stores/externals/store_lines/index.html.haml', locals: {external_store: external_store}

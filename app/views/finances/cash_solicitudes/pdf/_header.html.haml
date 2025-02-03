@@ -1,0 +1,64 @@
+%table.width_100.border
+  %tr
+    %th.text_center{style:"width: 15%;"}
+      = wicked_pdf_image_tag cash_solicitude.company.pdf_logo, style: "max-width: 200px; max-height: 50px"
+    %th.text_left{style:"width: 60%;"}
+      %h1.m-0 Informe de gastos
+    %th.text_left
+      %p.m-0
+        = cash_solicitude.company.name
+      %p.m-0
+        = cash_solicitude.company.try(:address)
+%table.width_100.border
+  %tr
+    %td.text_right{style: "width: 15%"}
+      %b
+        CÓDIGO:
+    %td.text_left
+      = cash_solicitude.codigo
+    %td.text_right{style: "width: 15%"}
+      %b
+        FECHA RENDICIÓN:
+    %td.text_left
+      = cash_solicitude.cash_refund.fecha
+    %td.text_right{style: "width: 15%"}
+      %b
+        ENTREGADO
+    %td.text_right
+      = number_to_ars cash_solicitude.cash_withdrawal.importe
+  %tr
+    %td.text_right
+      %b
+        SOLICITANTE:
+    %td.text_left
+      - if cash_solicitude.user
+        = cash_solicitude.user.name
+      - else
+        = cash_solicitude.nombre_solicitante
+    %td.text_right
+      %b
+        ENTREGADO POR:
+    %td.text_left
+      = cash_solicitude.cash_withdrawal.user.try(:name)
+    %td.text_right{style: "width: 15%"}
+      %b
+        TOTAL GASTOS
+    %td.text_right
+      - total_gastos = cash_solicitude.expense_details.pluck(:total).inject(0, :+)
+      = number_to_ars total_gastos
+  %tr
+    %td.text_right
+      %b
+        MOTIVO:
+    %td.text_left
+      = cash_solicitude.motivo
+    %td.text_right
+      %b
+        FECHA ENTREGA:
+    %td.text_left
+      = cash_solicitude.cash_withdrawal.fecha
+    %td.text_right{style: "width: 15%"}
+      %b
+        A RENDIR
+    %td.text_right
+      = number_to_ars cash_solicitude.cash_refund.importe

@@ -1,0 +1,20 @@
+measure: 
+  key: expedient_budget
+  name: "Presupuestado ($)"
+  aggregation: total_budgeted
+filters:
+- seller
+- init_date
+dimensions:
+- key: init_date
+  label: Mes
+- key: seller
+  limit: 10
+order: dimension1.label asc
+chart:
+  options:
+    scales:
+      xAxes:
+      - stacked: true
+      yAxes:
+      - stacked: true

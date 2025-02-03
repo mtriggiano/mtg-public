@@ -1,0 +1,229 @@
+- disabled ||= false
+= simple_nested_form_for surgery_request, html: { class: 'horizontal-form directUpload', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }, wrapper: :horizontal_form, defaults:{disabled: disabled} do |f|
+  = error_notification(f)
+  .row
+    .col-md-6
+      = f.input :number, label: "Numero", disabled: true
+    .col-md-6
+      = f.input :request_date, as: :date_picker, label: "Fecha Solicitud"
+
+  %hr.dotted
+  %legend.text-center
+    Solicitante
+  .row
+    .col-6
+      = f.input :first_name, label: "Nombres"
+    .col-6
+      = f.input :last_name, label: "Apellidos"
+    .col-6  
+      = f.input :birthday, as: :date_picker, label: "Fecha nacimiento"
+    .col-6
+      = f.input :gender, label: "Sexo", collection: AgreementSurgeries::SurgeryRequest::GENEROS, required: true, prompt: "Seleccione..."
+    .col-6  
+      = f.input :age, label: "Edad"
+    .col-6
+      = f.input :nationality, label: "Nacionalidad", collection: nationalities_options, required: true, prompt: "Seleccione..."
+    .col-6
+      = f.input :document_type, label: "Tipo Documento", collection: Afip::DOCUMENTOS, selected: "96", disabled: true
+    .col-6
+      = f.input :document_number, label: "Nro Documento"  
+    .col-6
+      = f.input :address, label: "Direccion"
+    .col-3
+      = f.input :mobile_phone, label: "Celular"
+    .col-3
+      = f.input :phone, label: "Telefono"
+    .col-6
+      = f.input :province_id, as: :fake_select, collection: [options_from_collection_for_select(Province.order(:name), :id, :name, surgery_request.province_id)], prompt: "Seleccione...", label: "Provincia", required: true
+    .col-6
+      = f.association :locality, as: :select, input_html: {id: 'locality_id'}, prompt: "Seleccione...", label: "Localidad"
+    .col-6
+      = f.input :social_work, label: "Obra social"
+    .col-6
+      = f.input :pacient_number, label: "Nro Afiliado"
+
+  %hr.dotted
+  %legend.text-center
+    Cirugia
+  .row
+    .col-12
+      = f.input :surgery_type, label: "Tipo Cirugia"
+    .col-6
+      = f.input :surgery_date, as: :date_picker, label: "Fecha cirugía", required: :true
+    .col-6
+      = f.input :surgery_time, as: :radio_buttons, collection: AgreementSurgeries::SurgeryRequest::SURGERY_TYPE_OPTIONS, label: "Tipo", wrapper_html: {class: 'd-flex'}, requierd: true
+    .col-6
+      = f.input :right_limb, label: "Miembro derecho?"
+    .col-6  
+      = f.input :left_limb, label: "Miembro izquierdo?"
+    .col-12
+      = f.input :medical_history, label: "Historia clinica"
+      = f.input :institution, label: "Institucion"
+      = f.input :doctor, label: "Medico"
+      = f.input :surgical_site, label: "Lugar de cirugia"
+    .col.6
+  %hr.dotted
+  %legend.text-center
+    Materiales
+  .table-responsive.m-0
+    %table.table#table-details
+      %thead
+        %th{:style => "width: 70% !important"} Material
+        %th{:style => "width: 20% !important"} Cantidad
+        %th{:style => "width: 10px !important"}
+      %tbody
+        = f.simple_fields_for :surgery_request_details, wrapper: false do |d|
+          %tr.fields
+            %td
+              = d.input :surgery_material, label: false
+            %td
+              = d.input :quantity, label: false 
+            %td
+              = d.link_to_remove icon('fas', 'times'), class: 'text-danger' unless f.object.disabled?
+  .text-center
+    = f.link_to_add "#{icon('fas', 'plus')} Material".html_safe, :surgery_request_details, class: 'btn btn-outline-success', data: {target: "#table-details"} unless disabled
+
+  %hr.dotted
+    = f.input :internal_stock, label: "Disponibilidad de Stock Interno?"
+  .row
+    .col-12
+      = f.input :observation, label: "Observacion"
+  %hr.dotted
+  .row
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag surgery_request.get_dni, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.dni && f.object.dni != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.dni
+          = f.input :dni, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "DNI"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag surgery_request.get_anses_negative, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.dni && f.object.anses_negative != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.anses_negative
+          = f.input :anses_negative, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Negativa de ANSES"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag surgery_request.get_anses_no_negative, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.anses_no_negative && f.object.anses_no_negative != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.anses_no_negative
+          = f.input :anses_no_negative, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "No nevativa de ANSES"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag surgery_request.get_surgical_sheet, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.surgical_sheet && f.object.surgical_sheet != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.surgical_sheet
+          = f.input :surgical_sheet, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Foja quirirjica"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag surgery_request.get_codem, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.codem && f.object.codem != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.codem
+          = f.input :codem, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Informe CODEM"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag surgery_request.get_clinical_record_cover, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.clinical_record_cover && f.object.clinical_record_cover != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.clinical_record_cover
+          = f.input :clinical_record_cover, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Caratula historia clinica"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag surgery_request.get_implant_certificate, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.implant_certificate && f.object.implant_certificate != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.implant_certificate
+          = f.input :implant_certificate, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Certificado de implante"
+  .row
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag surgery_request.get_implant_certificate, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.father_dni && f.object.father_dni != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.father_dni
+          = f.input :father_dni, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "DNI Padre"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag surgery_request.get_implant_certificate, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.mother_dni && f.object.mother_dni != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.mother_dni
+          = f.input :mother_dni, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "DNI Madre"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag surgery_request.get_implant_certificate, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.father_anses_negative && f.object.father_anses_negative != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.mother_dni
+          = f.input :father_anses_negative, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Negativa Anses Padre"
+    .col.text-center
+      .row.d-block.with-title
+        .mx-2.1.justify-content-center
+          .caption.captionload
+            = image_tag "/images/load.gif", class: 'img-fluid '
+          .img_wrp
+            = image_tag surgery_request.get_implant_certificate, width: '90px', height: '75px', alt: 'Añadir imagen', class: "border img-fuild image", data: {index: f.index}
+          - if f.object.mother_anses_negative && f.object.mother_anses_negative != "/images/attachment.png"
+            %br
+            = icon("fas", "check-circle text-success")
+            = link_to "Ver archivo", f.object.mother_anses_negative
+          = f.input :mother_anses_negative, as: :file, input_html: { hidden: true, class: "file_input", data: {index: f.index} }, label: "Negativa Anses Madre"
+
+  .actions
+    %hr
+    = save_button

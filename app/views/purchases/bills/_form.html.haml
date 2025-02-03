@@ -1,0 +1,67 @@
+= simple_form_builder bill, default: {label_html: {class: :h6}} do |f|
+  = shared_nav(f)
+  .card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+    .card-body
+      = file_header(f)
+      .header-detail
+        = error_notification(f)
+        .row
+          .col-sm-4.col-12.border-right
+            .row
+              .col-sm-4
+                = f.input :sale_point, label: "Pto. Venta", input_html: { maxlength: 5, type: "number" }, required: true
+              .col-sm-8
+                = f.input :number, input_html: { maxlength: 8, type: "number" }, required: true
+            = supplier_input(f)
+            .cbte_tipo
+              = f.input :cbte_tipo, collection: Afip::CBTE_TIPO.map{|a| [a.last, a.first]}, prompt: "Seleccione..."
+          .col-sm-4.col-12.border-right
+            .row
+              .col-6
+                = f.input :total_trib, min: 0, label: "Tributos($)", input_html: {disabled: true}
+              .col-6
+                = f.input :iva_amount, input_html:{id: 'parent_iva_amount', disabled: true}
+            .row
+              .col-6
+                = total_usd_input(f)
+              .col-6
+                = usd_price_input(f)
+            .row
+              .col-6
+                = f.input :gross_amount, input_html: {id: 'parent_gross_price', disabled: true}
+              .col-6
+                = f.input :total, input_html:{id: 'parent_total', disabled: true}
+          .col-sm-4.col-12
+            .row
+              .col-6
+                = date_input(f, :cbte_fch)
+              .col-6
+                = f.input :registration_date, as: :date_picker, input_html: {value: Date.today}
+            .row
+              .col-6
+                = date_input(f, :due_date)
+              .col-6
+                = currency_input(f)
+            .row
+              .col-6
+                = state_input(f, with_button: false)
+              .col-6
+                = f.input :concept, collection: Afip::CONCEPTOS.keys, input_hml: {include_blank: false}
+          .dynamic-bill-info.col-12
+            = render 'dynamic_attributes', f:f
+        .row
+          .col-6
+            = new_associated_document(f, :assign)
+          .col-6
+            = new_associated_document(f, :filter)
+        = observation_to_user("Se vincularan todos los detalles de un único remito.")
+        = state_manager(f)
+  = content_for(:extra_links) do
+    %li.nav-item
+      = button_tag "#{icon('fas', 'hand-holding-usd')} Tributos".html_safe, type: :button, aria: {selected: false, controls: 'tributes'}, data: {toggle: 'tab', target: '#tributes'}, class: 'nav-link bg-white'
+
+  = document_table(f) do
+    = render '/tributes/form', f: f
+    = render '/file_attributes_configs/shared_extra_attributes', f:f, object: bill
+    = observation_input(f)
+    = render '/purchases/shared_attachment', f:f

@@ -1,0 +1,19 @@
+.index  
+  #bmenu.mx-4.d-flex.justify-content-between.align-items-center
+  .index-body.table-responsive
+    %table#paginated_table.table{data: {title: "",source: reports_storages_path(view: 'table_calendar', format: :json)}}
+      %thead.thead-light
+        %th.actions{scope: 'col'} Fecha entrega
+        %th.actions{scope: 'col'} Expediente
+        %th.actions{scope: 'col'} Cliente
+        %th.actions{scope: 'col'} Paciente / afiliado
+        %th.actions{scope: 'col'} Remitos
+        %th.actions{scope: 'col'} Tipo
+        %th.actions{scope: 'col'} Título
+        %th.actions{scope: 'col'} Doctor
+        %th.actions{scope: 'col'} Ordenes de venta
+        %th.actions{scope: 'col'} Vendedor
+        %th.actions{scope: 'col'} Técnico instrumentador        
+      %tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::File.merge("actions" => ""))

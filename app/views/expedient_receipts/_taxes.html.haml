@@ -1,0 +1,25 @@
+%h5 Percepciones
+.card.mb-5
+	.card-body
+		.table-responsive.m-0
+			%table.table#table-taxes
+				%thead
+					%tr
+						%th Tipo
+						%th Nº certificado
+						%th Importe
+						%th{:style => "width: 10px !important"}
+				%tbody
+					= f.simple_fields_for :taxes, wrapper: false do |t|
+						%tr.fields
+							%td
+								= t.input :tipo, label: false, collection: current_company.tax_types, prompt: "Seleccione...", input_html: { tags: true, required: true }
+							%td
+								= t.input :number, label: false
+							%td
+								= t.input :total, label: false, input_html: { min: 0, class: "suma-pagos" }
+							%td
+								= t.link_to_remove icon('fas', 'times'), class: 'text-danger' unless f.object.disabled?
+
+		.text-center
+			= f.link_to_add "#{icon('fas', 'plus')} Percepción".html_safe, :taxes, class: 'btn btn-outline-success', data: {target: "#table-taxes"} unless f.object.disabled?

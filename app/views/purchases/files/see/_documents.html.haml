@@ -1,0 +1,16 @@
+- params[:sub_view] ||= 'purchase_requests'
+.nav.nav-tabs{ role:'tablist' }
+	= config_links("Solicitudes #{badge(file.purchase_requests.count)}", 'purchase_requests', params[:sub_view], [file, sub_view: 'purchase_requests', view: 'documents'])
+	= config_links("Presupuestos #{badge(file.budgets.count)}", 'budgets', params[:sub_view], purchases_file_path(file.id, sub_view: 'budgets', view: 'documents'))
+	= config_links("Ordenes #{badge(file.orders.count)}", 'orders', params[:sub_view], purchases_file_path(file.id, sub_view: 'orders' 	, view: 'documents'))
+	= config_links("Remitos #{badge(file.arrivals.count)}"		, 'arrivals'	, params[:sub_view], purchases_file_path(file.id, sub_view: 'arrivals' 	, view: 'documents'))
+	= config_links("Devoluciones #{badge(file.devolutions.count)}" , 'devolutions', params[:sub_view], purchases_file_path(file.id, sub_view: 'devolutions', view: 'documents'))
+	= config_links("Facturación #{badge(file.bills.count)}" , 'bills', params[:sub_view], purchases_file_path(file.id, sub_view: 'bills', view: 'documents'))
+#sub_views
+	- if ["purchase_requests", "budgets", "orders", "arrivals", "devolutions", "bills"].include?(params[:sub_view])
+		- class_name = "Purchases::#{params[:sub_view].classify}"
+		- if current_user.can?(:read, class_name.constantize)
+			= render template: "/purchases/#{params[:sub_view]}/index", locals: {collection: eval("file.#{params[:sub_view]}"), :@expediente => file, type: params[:sub_view]}
+		- else
+			.mt-4
+				= render template: "/home/forbidden.html.haml", locals: {subject: 'Purchases::File'}

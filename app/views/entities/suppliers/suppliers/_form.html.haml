@@ -1,0 +1,24 @@
+= simple_form_for supplier, html: {class: 'horizontal-form'}, wrapper: :horizontal_form do |f|
+	= f.input :document_type, label: "Documento", required: false, wrapper: :input_group do
+		%span.input-group-addon
+			= f.input_field :document_type, collection: Afip::DOCUMENTOS, class: "form-control", prompt: "Seleccione...", style: 'width: 5rem;'
+		= f.input_field :document_number, class: 'form-control document-input autocomplete-cuit', as: :numeric, placeholder: "Sin guiones ni puntos, solo números"
+	%hr.dotted
+	= f.input :name, label: "Nombre", input_html:{autofocus: true, autocomplete: :off, class: 'autocomplete-name'}
+	%hr.dotted
+	= f.input :gln, label: "Gln"
+	%hr.dotted
+	= f.input :bank, label: "Banco"
+	%hr.dotted
+	= f.input :account, label: "Cuenta"
+	%hr.dotted
+	= f.input :cbu, label: "CBU"
+	%hr.dotted
+	= f.input :iva_cond, label: "Cond. IVA", collection: Supplier::IVA_COND, prompt: "Seleccione..."
+	%hr.dotted
+	= f.input :sector, label: "Sector", collection: Entity::SECTORS, prompt: "Seleccione..."
+	%hr.dotted
+	= f.input :address, label: "Dirección", input_html: {class: 'autocomplete-address'}
+	.actions
+		%hr
+		= save_button

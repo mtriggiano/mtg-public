@@ -1,0 +1,18 @@
+- present company do |company_presenter|
+	= simple_form_for(company, html: {class: 'horizontal-form'}, wrapper: :horizontal_form) do |f|
+		= f.hidden_field :view, value: params[:view]
+		.row
+			.col-8.offset-2
+				= error_notification(f)
+				= f.input :country_id, as: :fake_select, collection: [options_from_collection_for_select(Country.order(:name), :id, :name, company_presenter.country_id)], prompt: "Seleccione...", label: "País", required: true
+				%hr.dotted
+				= f.input :province_id, as: :fake_select, collection: [options_from_collection_for_select(Province.order(:name), :id, :name, company_presenter.province_id)], prompt: "Seleccione...", label: "Provincia", required: true
+				%hr.dotted
+				= f.association :locality, as: :select, input_html: {id: 'locality_id'}, prompt: "Seleccione...", label: "Localidad"
+				%hr.dotted
+				= f.input :postal_code, label: 'Código postal'
+				%hr.dotted
+				= f.input :address, label: 'Dirección'
+
+		%hr
+			= save_button

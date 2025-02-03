@@ -1,0 +1,68 @@
+%h1.mb-3
+  = regular_cash_account.nombre
+
+.row
+  .col-lg-4.col-md-6
+    %p.mb-1.text-muted Efectivo
+    .card.mb-3
+      .card-body
+        - payment_types.efectivo_pesos.each do |payment_type|
+          %div.text-right.mb-2.py-2
+            %span.h3
+              = number_to_ars payment_type.balance
+            %p.m-0.text-muted
+              = payment_type.name.upcase
+
+  .col-lg-4.col-md-6
+    %p.mb-1.text-muted Tarjetas de crédito
+    .card.mb-3
+      .card-body
+        - payment_types.tarjetas_credito.each do |payment_type|
+          %div.text-right.mb-2.py-2
+            %span.h3
+              = number_to_ars payment_type.balance
+            %p.m-0.text-muted
+              = payment_type.name.upcase
+
+  .col-lg-4.col-md-6
+    %p.mb-1.text-muted Tarjetas de débito
+    .card.mb-3
+      .card-body
+        - payment_types.tarjetas_debito.each do |payment_type|
+          %div.text-right.mb-2.py-2
+            %span.h3
+              = number_to_ars payment_type.balance
+            %p.m-0.text-muted
+              = payment_type.name.upcase
+
+
+
+%ul.nav.justify-content-center.home-nav.mb-3
+  %li.nav-item.border-animated
+    = show_links('Movimientos del día', 'transactions', params[:view], regular_cash_account_path(regular_cash_account, view: 'transactions', fecha: params[:fecha]))
+  %li.nav-item.border-animated
+    = show_links('Registros anteriores', 'previous', params[:view], regular_cash_account_path(regular_cash_account, view: 'previous', fecha: params[:fecha]))
+  %li.nav-item.border-animated
+    = show_links('Gastos', 'expenditures', params[:view], regular_cash_account_path(regular_cash_account, view: 'expenditures', fecha: params[:fecha]))
+  %li.nav-item.border-animated
+    = show_links('Arqueos', 'balances', params[:view], regular_cash_account_path(regular_cash_account, view: 'balances', fecha: params[:fecha]))
+  %li.nav-item.border-animated
+    = show_links('Rendiciones', 'imprest_records', params[:view], regular_cash_account_path(regular_cash_account, view: 'imprest_records', fecha: params[:fecha]))
+
+= form_tag polymorphic_path(regular_cash_account, view: params[:view], fecha: params[:fecha]), method: :get, class: "d-flex justify-content-center" do
+  .form-group.mb-3
+    .row.d-flex.align-items-center
+      .input-group.col
+        .input-group-prepend
+          %span.input-group-text
+            = icon('fas', 'search')
+        = text_field_tag(:search, params[:search], placeholder: "Buscar...", class: "form-control text-center", autocomplete: :off)
+        .input-group-append
+          = button_tag "#{icon('fas', 'search')}".html_safe, type: 'submit', class: 'btn btn-primary'
+    = hidden_field_tag :view, params[:view]
+
+.card
+  .card-body
+    - params[:view] ||= 'transactions'
+    - if ['transactions', 'previous', 'expenditures', 'balances', 'imprest_records'].include?(params[:view])
+      = render "/finances/regular_cash_accounts/see/#{params[:view]}"

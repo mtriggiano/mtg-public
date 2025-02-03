@@ -1,0 +1,28 @@
+%p
+	%strong Atencion
+	%ul.text-capitalize
+		%ol Las cantidades no declaradas serán asignadas al lote por defecto S/N 
+		%ol Agregue aqui lotes distintos de S/N 
+.table-responsive
+	%table{class: "table gtin-table-#{d.index}"}
+		%thead
+			%th Cantidad
+			%th Serial
+			%th Lote
+			%th Vencimiento
+			%th Acción
+		%tbody
+			= d.simple_fields_for :batch_details, wrapper: false do |g|
+				%tr.fields
+					%td
+						= g.input :quantity, label: false
+					= g.simple_fields_for :batch, g.object.batch || g.object.build_batch, wrapper: false do |b|
+						%td
+							= b.input :serial, label: false, disabled: ( b.object.id.present?)
+						%td
+							= b.input :code, label: false, class: 'gtin-input', disabled: ( b.object.id.present?)
+						%td
+							= b.input :due_date, label: false, as: :date_picker, disabled: ( b.object.id.present?)
+					%td
+						= g.link_to_remove icon('fas', 'trash'), class: 'btn btn-sm btn-danger'
+= d.link_to_add "Añadir", :batch_details, class: 'btn btn-success', data: {target: "table.gtin-table-#{d.index}"}, blueprint: "$(link).next('[id$=_batch_details_fields_blueprint]')"

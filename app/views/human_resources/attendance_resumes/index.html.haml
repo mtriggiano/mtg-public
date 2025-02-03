@@ -1,0 +1,14 @@
+= index_table(icon: 'calendar', jpath: attendance_resumes_path(format: :json) ,collection: current_company.attendance_resumes, can_new_path: false) do
+  = button_tag "#{icon('fas', 'file-import')} Importar".html_safe, type: 'button', data: {target: "#import_modal", toggle: "modal"}, class: 'btn btn-info'
+
+= modal("#{icon('fas', 'file-import')} Importar excel", "import_modal", "import_modal_body") do
+  = form_tag import_attendance_resumes_path(), {multipart: true, method: :post} do
+    .modal-body
+      .format.w-100.text-center
+        .text-muted
+          Seleccione el archivo del cual importara las asistencias
+      .form-group
+        = file_field_tag :file , :class => 'btn ', accept: ".csv, .xls, .xlsx"
+    .modal-footer
+      = submit_tag "Importar", type: :submit
+      = close_button

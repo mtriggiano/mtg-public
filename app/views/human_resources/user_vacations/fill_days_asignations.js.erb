@@ -1,0 +1,20 @@
+<% unless @vacation.nil? %>
+  <% simple_nested_form_for @vacation do |f| %>
+    <% @builder = f %>
+    <%= f.simple_fields_for :days_asignations, user_vacation.new_record? ? user_vacation.days_asignations.build : user_vacation.days_asignations, :wrapper => false do |da| %>
+      <% @da = da %>
+    <% end %>
+  <% end %>
+<% end %>
+<% if @band %>
+  $("#vacations_form").html("<%= j render '/human_resources/user_vacations/form', {f: @builder, debt_vacations: @debt_vacations, user_id: params[:user_id]} %>")
+  //$("#user_debt_vacations").html("<%= j render template: '/human_resources/user_vacations/_fields_partial', locals: {debt_vacations: @debt_vacations, f: @builder} %>")
+  $("#days_asignations_fields_blueprint").attr("data-blueprint", "<%= j render '/human_resources/user_vacations/fields', da: @da, debt_vacations: @debt_vacations %>");
+  $("#save_button").removeAttr('disabled');
+  $("#vac_errors").html("");
+<% else %>
+  $("#vacations_form").html("<%= j render '/human_resources/user_vacations/form', {f: @builder, debt_vacations: @debt_vacations} %>")
+  //$("#days_asignations_fields_blueprint").attr("data-blueprint", "<%= j render '/human_resources/user_vacations/fields', da: @da, array: @debt_vacations, max_days: @max_days.nil? ? 0 : @max_days %>");
+  //$("#vac_errors").html("<%# error_for_modal_js(@message, 'danger') %>");
+  $("#save_button").attr('disabled', 'disabled');
+<% end %>

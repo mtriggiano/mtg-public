@@ -1,0 +1,62 @@
+= link_to icon('fas', 'chevron-left'), :back, class: 'btn btn-sm text-dark'
+- if document.persisted?
+	%ul.nav.nav-tabs.mx-4.border-bottom-0.justify-content-center
+		%li.title.nav-item.border-right
+			= link_to  "#{icon('fas', 'list')} Expediente de licitación".html_safe, tenders_files_path(), class: 'btn btn-light float-left'
+		%li.nav-item
+			= link_to "Expediente", tenders_file_path(document.file_id), class: 'nav-link'
+		- unless document.file.is_counter_tender?
+			%li.nav-item.dropdown
+				= link_to "Pliegos", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "nav-link dropdown-toggle #{'active' if document.class.name == 'Tenders::Budget'}"
+				.dropdown-menu
+					- document.file.sale_requests.each do |sale_request|
+						= link_to "Nº #{sale_request.number}", edit_tenders_sale_request_path(sale_request.id), class: 'dropdown-item'
+					- unless document.file.disabled?
+						= link_to "#{icon('fas', 'plus')} Generar pliego".html_safe, new_tenders_sale_request_path(file_id: document.file_id), class: 'dropdown-item'
+			%li.nav-item.dropdown
+				= link_to "Presupuestos", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "disabled nav-link dropdown-toggle #{'active' if document.class.name == 'Tenders::Budget'}"
+				.dropdown-menu
+					- document.file.budgets.each do |budget|
+						= link_to "Nº #{budget.number}", edit_tenders_budget_path(budget.id), class: 'dropdown-item'
+					- unless document.file.disabled?
+						= link_to "#{icon('fas', 'plus')} Generar presupuesto".html_safe, new_tenders_budget_path(file_id: document.file_id), class: 'dropdown-item'
+			%li.nav-item.dropdown
+				= link_to "Ofertas", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "disabled nav-link dropdown-toggle #{'active' if document.class.name == 'Tenders::Order'}"
+				.dropdown-menu
+					- document.file.orders.each do |order|
+						= link_to "Nº #{order.number}", edit_tenders_order_path(order.id), class: 'dropdown-item'
+					- unless document.file.disabled?
+						= link_to "#{icon('fas', 'plus')} Generar orden".html_safe, new_tenders_order_path(file_id: document.file_id), class: 'dropdown-item'
+			%li.nav-item.dropdown
+				= link_to "Comparativas", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "disabled nav-link dropdown-toggle"
+				.dropdown-menu
+					- document.file.purchase_requests.each do |purchase|
+						= link_to "Nº #{purchase.number}", edit_purchases_purchase_request_path(purchase.id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "O.C.P", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "disabled nav-link dropdown-toggle #{'active' if document.class.name == 'Tenders::Bill'}"
+			.dropdown-menu
+				- document.file.bills.each do |bill|
+					= link_to "Nº #{bill.comp_number}", edit_tenders_bill_path(bill.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Registrar comprobante".html_safe, new_tenders_bill_path(file_id: document.file_id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Ordenes de Venta", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "disabled nav-link dropdown-toggle #{'active' if document.class.name == 'Tenders::Bill'}"
+			.dropdown-menu
+				- document.file.bills.each do |bill|
+					= link_to "Nº #{bill.comp_number}", edit_tenders_bill_path(bill.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Registrar comprobante".html_safe, new_tenders_bill_path(file_id: document.file_id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Facturación", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "disabled nav-link dropdown-toggle #{'active' if document.class.name == 'Tenders::Bill'}"
+			.dropdown-menu
+				- document.file.bills.each do |bill|
+					= link_to "Nº #{bill.comp_number}", edit_tenders_bill_path(bill.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Registrar comprobante".html_safe, new_tenders_bill_path(file_id: document.file_id), class: 'dropdown-item'
+		%li.nav-item.dropdown
+			= link_to "Remitos", "#", data: {toggle: 'dropdown'}, role: 'button', aria: {haspopup: true, expanded: false}, class: "disabled nav-link dropdown-toggle #{'active' if document.class.name == 'Tenders::Shipment'}"
+			.dropdown-menu
+				- document.file.shipments.each do |shipment|
+					= link_to "Nº #{shipment.number}", edit_tenders_shipment_path(shipment.id), class: 'dropdown-item'
+				- unless document.file.disabled?
+					= link_to "#{icon('fas', 'plus')} Registrar remito".html_safe, new_tenders_shipment_path(file_id: document.file_id), class: 'dropdown-item'

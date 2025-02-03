@@ -1,0 +1,9 @@
+= simple_form_for user, url: invite_stores_users_path(), html: { method: :post} do |f|
+	.card
+		.card-body
+			%i.small
+				Al enviar una invitación, al usuario le llegará un email con los datos necesarios para asociarce al banco. Una vez que el mismo complete el proceso de registro, deberas asignarles roles.
+	%hr.dotted
+	- user.class.invite_key_fields.each do |field| 
+		= f.input field
+	= f.input :store_id, as: :hidden

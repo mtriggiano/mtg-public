@@ -1,0 +1,28 @@
+measure: 
+  key: expedient_bill
+  name: "Facturado ($)"
+  aggregation: total_selled
+filters:
+- entity
+- date
+- number
+dimensions:
+- key: date
+  label: Mes
+- key: entity
+  limit: 10
+order: dimension1.label asc
+chart:
+  type: horizontalBar
+  options:
+    scales:
+      xAxes:
+      - stacked: true
+        scaleLabel:
+          display: true
+          labelString: Facturas
+      yAxes:
+      - stacked: true
+        scaleLabel:
+          display: true
+          labelString: Clientes

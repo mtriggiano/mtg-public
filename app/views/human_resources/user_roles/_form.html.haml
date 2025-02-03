@@ -1,0 +1,9 @@
+= simple_nested_form_for user, url: set_role_user_path(user.id), wrapper: :horizontal_form do |f|
+	= error_notification(f)
+	.row
+		.col-12.border-bottom
+			=f.label "Seleccione los roles del usuario"
+		.col-4.mt-3
+			= f.association :roles, label: false, collection: current_company.roles, label_method: :name, as: :check_boxes, input_html: {multiple: true}
+	.actions
+		=save_button

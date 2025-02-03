@@ -1,0 +1,15 @@
+.index-body.table-responsive
+  %table#paginated_table.table{data: {title: "Reporte COSTOS COMPRAS", source: reports_purchases_path(view: 'costing', format: :json)}}
+    %thead.thead-light
+      %th.actions{scope: 'col'} Expediente
+      %th.actions{scope: 'col'} Fecha
+      %th.actions{scope: 'col'} Médico
+      %th.actions{scope: 'col'} Paciente
+      %th.actions{scope: 'col'} Cliente
+      %th.actions{scope: 'col'} O.V. ($)
+      %th.actions{scope: 'col'} Estado
+      %th.actions{scope: 'col'} Margen ($)
+      %th.actions{scope: 'col'} Proveedores
+    %tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::Costing.merge("actions" => ""))

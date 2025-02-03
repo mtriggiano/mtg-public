@@ -1,0 +1,55 @@
+.container
+  .row
+    .border
+      %table.width_100
+        %tr
+          %td= wicked_pdf_image_tag delivery_note.company.logo.gsub('https', 'http') ,:height => "80"
+          %td.width_75
+            %h1.text_size_25.text_center REMITO DE VENTA
+          %td.width_25
+            %table.width_100
+              %tr
+                %td
+                  N° #{delivery_note.number}
+                  - if delivery_note.state != "Finalizado"
+                    %b
+                      [#{delivery_note.state}]
+              %tr
+                %td
+                  Fecha: #{delivery_note.created_at}
+/ ENCABEZADO DATOS EMPRESA
+.border
+  %div
+    %center
+      = delivery_note.company.locality.name
+      , #{delivery_note.company.address} - Teléfono: #{delivery_note.company.contact_number}
+  %div
+    %center
+      E-mail: #{delivery_note.company.email} - CUIT: #{delivery_note.company.cuit}
+      %center
+/ ENCABEZADO DATOS CLIENTE
+.border
+  %table.width_100
+    %tr
+      %td
+        %b Departamento de Emisión: COMPRAS
+      %td
+        %b Proveedor N°:
+        = delivery_note.purchase_return.supplier.id
+    %tr
+      %td
+        %b Proveedor Razón Social:
+        = delivery_note.purchase_return.supplier.name
+      - unless delivery_note.purchase_return.supplier.contacts.blank?
+        %td
+          %b Tel:
+          = delivery_note.purchase_return.supplier.contacts.first.phone.blank? ? delivery_note.purchase_return.supplier.contacts.first.phone : " "
+    %tr
+      - unless delivery_note.purchase_return.supplier.contacts.blank?
+        %td
+          %b E-mail:
+          = delivery_note.purchase_return.supplier.contacts.first.email? ? delivery_note.purchase_return.supplier.contacts.first.email : " "
+      %td
+        %b Dirección:
+        = delivery_note.purchase_return.supplier.address
+/ FIN DEL ENCABEZADO

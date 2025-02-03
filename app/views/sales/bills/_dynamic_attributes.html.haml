@@ -1,0 +1,8 @@
+.row
+	.col
+		=# f.input :fch_vto_pago, input_html: {placeholder: "Vto. Pago"}, as: :date_picker
+		= f.input :due_days, as: :select, collection: ExpedientBill::DUE_DAYS.map{|cadena, val| [cadena, val]}, input_html: {required: true}
+	.col
+		= f.input :fch_ser_desde, input_html: {placeholder: "Desde"}, as: :date_picker
+	.col
+		= f.input :fech_ser_hasta, input_html: {placeholder: "Hasta"}, as: :date_picker

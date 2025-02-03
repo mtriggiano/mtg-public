@@ -1,0 +1,88 @@
+- company_presenter ||= CompanyPresenter.new(sale_budget.company, self)
+.border
+  %table.width_100
+    %tr{style: "line-height: 10px !important;"}
+      %th.text_size_20.text_left.header_word_break{style:"text-align: center; width: 200px; line-height: 10px;"}
+        %p
+          = wicked_pdf_image_tag sale_budget.company.pdf_logo, width: "200px"
+      / %th.text_size_invoice_type
+      /   .budget_type
+      /     = sale_budget.budget_type == "Oficial" ? "R" : "X"
+      %th.header_word_break{style:"width: 300px; text-align: left; padding-left: 50px; font-size: 11px;"}
+        %p
+          = sale_budget.company.try(:address)
+        %p
+          = sale_budget.company.postal_code + " " + sale_budget.company.try(:locality).try(:province).try(:name) + " - " + sale_budget.company.try(:locality).try(:province).try(:country).try(:name)
+        %p
+          = "#{sale_budget.company.try(:contact_number)}".html_safe
+        %p
+          = "#{sale_budget.company.try(:email)}".html_safe
+        %p
+          = "C.U.I.T.: #{sale_budget.company.try(:cuit)}".html_safe
+        %p
+          www.magnus.com.ar
+      %th.header_word_break.border-left{style:"width: 250px;"}
+        %p.text_size_20
+          PRESUPUESTO
+        %p.text_size_20
+          Nº
+          = sale_budget.number
+        %p.text_size_20
+          Fecha:
+          = I18n.l(sale_budget.init_date, format: :default)
+        %p{style: "font-size: 12px;"}
+          Mantenimiento de oferta:
+          = I18n.l(sale_budget.final_date, format: :default)
+.border
+  %table.width_100{style: 'font-size: 11px;'}
+    %tr
+      %td
+        %b
+          Cliente razón social:
+        = sale_budget.client.name
+      %td
+        %b
+          Médico:
+        = sale_budget.file.doctor
+    %tr
+      %td
+        %b
+          Departamento de emisión:
+        = sale_budget.file.file_movements.try(:last).try(:department).try(:name)
+      %td
+        %b
+          Lugar de entrega:
+        = sale_budget.delivery_address
+    %tr
+      %td
+        %b
+          Afiliado:
+        = sale_budget.file.pacient
+      %td
+        %b
+          Nº Afiliado:
+        = sale_budget.file.pacient_number
+    %tr
+      %td
+        %b
+          Nº Expediente:
+        = sale_budget.file.number
+      %td
+        %b
+          Lugar de emisión:
+        = sale_budget.file.province
+    %tr
+      %td
+        %b
+          Vendedor:
+        = sale_budget.seller.try(:name)
+    %tr
+      %td
+        %b
+          Confeccionó:
+        = sale_budget.user.try(:name)
+    -# %tr
+    -#   %td{style: 'font-size: 13px;'}
+    -#     %b
+    -#       N° Orden de compra de Obra social:
+    -#     = sale_budget.file.try(:external_purchase_order_number)

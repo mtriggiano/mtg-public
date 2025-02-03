@@ -1,0 +1,49 @@
+= index_table(mform: true, model_name: "Product", icon: 'cube', text: "Productos", mtarget: "#new_product_modal", config: false) do
+	= link_to "#{icon('fas', 'fa-layer-group')} Valores de stock".html_safe, valores_stock_products_path, class: 'btn btn-primary'
+	= button_tag "#{icon('fas', 'cloud-download-alt')} A.N.M.A.T.".html_safe, type: 'button', data: {target: "#import_anmat_modal", toggle: "modal"}, class: 'btn btn-danger'
+	= button_tag "#{icon('fas', 'file-import')} Importar".html_safe, type: 'button', data: {target: "#import_modal", toggle: "modal"}, class: 'btn btn-info'
+	= link_to "#{icon('fas', 'file-export')} Exportar".html_safe, export_products_path(format: :xlsx), class: 'btn btn-info', data: {confirm: 'Esta por exportar todos los productos almacenados, ¿está seguro?', 'skip-pjax' => true}
+
+= modal("#{icon('fas', 'plus')} Añadir producto", "new_product_modal", "new_product_body", "big") do
+	.modal-body
+
+= modal("#{icon('fas', 'plus')} Editar producto", "edit_product_modal", "edit_product_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'file-import')} Importar excel", "import_modal", "import_modal_body") do
+	= form_tag import_products_path(), {multipart: true, method: :post} do
+		.modal-body
+			.format.w-100.text-center
+				.text-muted
+					Descargue el formato necesario para poder importar los productos.
+				= link_to import_format_products_path(format: :xlsx), class: 'my-3 btn btn-outline-info', data:{'skip-pjax' => true} do
+					= icon('fas', 'download')
+					Descargar formato
+			%hr
+			.format.w-100.text-center
+				.text-muted
+					Seleccione el archivo del cual importara los productos
+			.form-group
+				= file_field_tag :file , :class => 'btn ', accept: ".csv, .xls, .xlsx"
+		.modal-footer
+			= submit_tag "Importar", type: :submit
+			= close_button
+
+= modal("#{icon('fas', 'file-import')} Importar desde A.N.M.A.T.", "import_anmat_modal", "import_anmat_modal_body") do
+	= form_tag import_products_path(anmat: true), method: :post do
+		.modal-body
+			%ul
+				%h5
+					= icon('fas','exclamation-triangle')
+					Consideraciones:
+				%li Tenga en cuenta que A.N.M.A.T. solo devuelve los productos trazables.
+				%li Los productos registrados en A.N.M.A.T. pueden tener un nombre distinto al que MAGNUS maneja actualmente.
+			.text-center.border-top
+				.form-group.pt-2
+					= label_tag :store, "Seleccione el depósito donde se importaran."
+					= select_tag :store , options_for_select(current_company.stores.map{|store| [store.name, store.id]})
+					= hidden_field_tag :anmat, true
+		.modal-footer
+			= button_tag "Importar", type: :submit, class: 'btn btn-danger'
+			= close_button

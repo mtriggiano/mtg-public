@@ -1,0 +1,7 @@
+= index_table(mform: true, icon: 'users', text: "Contactos de #{client.name}", collection: collection, path: new_client_client_contact_path(client_id), jpath: client_client_contacts_path(client_id, format: :json), mtarget: "#new_contact_modal", config: false)
+
+= modal("#{icon('fas', 'plus')} Añadir contacto", "new_contact_modal", "new_contact_body", "big") do
+	.modal-body
+
+= modal("#{icon('fas', 'plus')} Editar contacto", "edit_contact_modal", "edit_contact_body", "big") do
+	.modal-body

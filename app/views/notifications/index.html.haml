@@ -1,0 +1,12 @@
+- notifications.first(10).each do |notification|
+  = link_to notification.link, class: 'bg-transparent notification-link' do
+    .p-4.hoverable{:class => "border-#{notification.color}", style: "border-left: 8px solid;"}
+      %h6{class: "mt-0 text-truncate text-#{notification.color}"}
+        = notification.title
+      %p.text-container.text-wrap.text-muted.mb-0
+        = notification.body
+      %span.text-wrap.float-right.bottom-0.mb-0.text-muted
+        %small
+          = icon('fas', 'clock')
+          Hace
+          = distance_of_time_in_words(Time.now ,notification.updated_at.to_time)

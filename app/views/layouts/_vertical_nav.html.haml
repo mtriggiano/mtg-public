@@ -1,0 +1,213 @@
+- if user_signed_in?
+  - roles_cache_key = current_user.roles.map { |role| [role.id, role.updated_at.to_i] }.flatten.join("-")
+  - cache(["user_sidebar_menu", current_user.id, roles_cache_key]) do
+    .wrapper
+      %nav#sidebar.active.pb-4
+        .sidebar-header
+          = company_logo(current_user)
+        %ul.list-unstyled.components
+          = navspan('Inicio', 'home', root_path, title: 'Inicio', class: 'final-item')
+          .dropdown-divider
+
+          - if can?(:read, Client)
+            = navspan('Clientes', 'briefcase', "#clientsSubmenu", data: {toggle: 'collapse'}, aria: {expanded: false}, class: 'dropdown-toggle')
+            %li
+              %ul.collapse.list-unstyled#clientsSubmenu
+                - if can?(:read, Client)
+                  = navspan "Listado", 'users', clients_path, class: 'dropdown-item final-item', title: "Clientes"
+                - if can?(:read, ExpedientReceipt)
+                  = navspan 'Recibos', 'list-alt', expedient_receipts_path, class: 'dropdown-item final-item', title: 'Recibos'
+
+          - if can?(:read, Supplier)
+            = navspan('Proveedores', 'plane', "#suppliersSubmenu", data: {toggle: 'collapse'}, aria: {expanded: false}, class: 'dropdown-toggle')
+            %li
+              %ul.collapse.list-unstyled#suppliersSubmenu
+                - if can?(:read, Supplier)
+                  = navspan "Listado", 'users', suppliers_path, class: 'dropdown-item final-item', title: "Proveedores"
+                - if can?(:read, ExternalBill)
+                  = navspan "Facturación", 'dollar-sign', external_bills_path, class: 'dropdown-item final-item', title: "Facturas de proveedores"
+                - if can?(:read, Purchases::PaymentOrder)
+                  = navspan 'Ordenes de pago', 'list-alt', purchases_payment_orders_path, class: 'dropdown-item final-item', title: 'Ordenes de pago'
+                - if can?(:read, Calendar)
+                  = navspan 'Calendario de pagos', 'calendar', calendar_purchases_payment_orders_path, class: 'dropdown-item final-item', title: 'Calendario de pago'
+
+          - if can?(:read, User)
+            = navspan 'RRHH', 'users', "#attendanceSubmenu", data: {toggle: 'collapse'}, aria: {expanded: false}, class: 'dropdown-toggle'
+            %li
+              %ul.collapse.list-unstyled#attendanceSubmenu
+                - if can?(:read, User)
+                  = navspan "Empleados", 'users', users_path, class: 'dropdown-item final-item', title: "Empleados"
+                - if can?(:read, Attendance)
+                  = navspan "Asistencias del Día", 'user-times', day_attendances_path, class: 'dropdown-item final-item', title: "Asistencias del día"
+                - if can?(:read, AttendanceCategory)
+                  = navspan 'Turnos de trabajo', 'handshake', attendance_categories_path, class: 'dropdown-item final-item', title: 'Turnos de trabajo'
+                - if can?(:read, NonWorkingDay)
+                  = navspan 'Días no laborales', 'calendar', non_working_days_path, class: 'dropdown-item final-item', title: 'Días no laborales'
+                - if can?(:read, AttendanceResume)
+                  = navspan 'Resumen mensual', 'file-excel', attendance_resumes_path, class: 'dropdown-item final-item', title: 'Resumen mensual'
+                - if can?(:read, UserVacation)
+                  = navspan 'Vacaciones', 'umbrella-beach', user_vacations_path, class: 'dropdown-item final-item', title: 'Vacaciones'
+                - if can?(:read, Permission)
+                  = navspan "Justificaciones", 'file-alt', permissions_path, class: 'dropdown-item final-item', title: 'Justificaciones y Suspensiones'
+                - if can?(:read, NonPresentUser)
+                  = navspan "Empleados Ausentes", 'user-times', non_present_users_path, class: 'dropdown-item final-item', title: 'Empleados ausentes'
+                - if can?(:read, WorkStation)
+                  = navspan "Puestos de trabajo", "suitcase", work_stations_path, class: 'dropdown-item final-item', title: 'Puestos de trabajo'
+
+          - if can?(:read, Product)
+            = navspan 'Almacén', 'cubes', "#stockSubmenu", data: {toggle: 'collapse'}, aria: {expanded: false}, class: 'dropdown-toggle'
+            %li
+              %ul.collapse.list-unstyled#stockSubmenu
+                - if can?(:read, ProductCategory)
+                  = navspan 'Categorías', 'folder-open', product_categories_path, class: 'dropdown-item final-item', title: "Categorías de los distintos productos"
+                - if can?(:read, Product)
+                  = navspan 'Productos', 'cube', products_path, class: 'dropdown-item final-item', title: "Productos"
+                - if can?(:read, Box)
+                  = navspan 'Cajas', 'box', boxes_path, class: 'dropdown-item final-item', title: "Cajas de cirugía"
+                - if can?(:read, ExternalArrival)
+                  = navspan 'Arribos', 'arrow-circle-left', external_arrivals_path, class: 'dropdown-item final-item', title: "Remitos de entrada"
+                - if can?(:read, ExternalShipment)
+                  = navspan 'Salidas', 'arrow-circle-right', external_shipments_path, class: 'dropdown-item final-item', title: "Remitos de salida"
+                - if can?(:read, Product)
+                  = navspan 'Movimiento de stock interno', 'arrow-circle-right', stock_external_shipments_path, class: 'dropdown-item final-item', title: "Salida de stock"
+                - if can?(:read, Store)
+                  = navspan 'Depósitos', 'warehouse', stores_path, class: 'dropdown-item final-item', title: "Depósitos"
+                - if current_user.email != 'email_de_mtg' && can?(:read, Surgeries::ExcelSurgery)
+                  = navspan 'Organizador Cirugias', 'calendar', surgeries_excel_surgeries_path, class: 'dropdown-item final-item', title: 'Organizador'
+
+          - if can?(:read, Surgeries::File)
+            = navspan 'Cirugías', 'briefcase-medical', "#surgerySubmenu", data: {toggle: 'collapse'}, aria: {expanded: false}, class: 'dropdown-toggle'
+            %li
+              %ul.collapse.list-unstyled#surgerySubmenu
+                - if can?(:read, Surgeries::File)
+                  = navspan 'Expedientes', 'folder', surgeries_files_path, class: 'dropdown-item final-item', title: 'Expediente de compras'
+                - if can?(:read, Calendar)
+                  = navspan 'Calendario', 'calendar', surgeries_calendars_path, class: 'dropdown-item final-item', title: 'Calendario de cirugías'
+                - if can?(:read, Surgeries::Prescription)
+                  = navspan 'Recetas', 'notes-medical', surgeries_prescriptions_path, class: 'dropdown-item final-item', title: 'Pedidos'
+                - if can?(:read, Surgeries::Budget)
+                  = navspan 'Cotizaciones', 'notes-medical', surgeries_budgets_path, class: 'dropdown-item final-item', title: 'Cotizaciones de cirugías'
+                - if can?(:read, Surgeries::SaleOrder)
+                  = navspan 'O.V.', 'notes-medical', surgeries_sale_orders_path, class: 'dropdown-item final-item', title: 'Ordenes de venta de cirugías'
+                - if can?(:read, Surgeries::PurchaseRequest)
+                  = navspan 'Solicitudes', 'hand-paper', surgeries_purchase_requests_path, class: 'dropdown-item final-item', title: 'Pedidos'
+                - if can?(:read, Surgeries::SupplierRequest)
+                  = navspan 'Pedidos', 'hand-paper', surgeries_supplier_requests_path, class: 'dropdown-item final-item', title: 'Pedidos'
+                - if can?(:read, Surgeries::Shipment)
+                  = navspan 'Salidas', 'arrow-circle-right', surgeries_shipments_path, class: 'dropdown-item final-item', title: 'Remitos de salida'
+                - if can?(:read, Surgeries::Consumption)
+                  = navspan 'Consumos', 'hand-paper', surgeries_consumptions_path, class: 'dropdown-item final-item', title: 'Consumos'
+                - if can?(:read, Surgeries::Devolution)
+                  = navspan 'Devoluciones', 'hand-paper', surgeries_devolutions_path, class: 'dropdown-item final-item', title: 'Devoluciones'
+                - if can?(:read, Surgeries::PurchaseOrder)
+                  = navspan 'O.C.', 'list-alt', surgeries_purchase_orders_path, class: 'dropdown-item final-item', title: 'Ordenes de compra de cirugías'
+                - if can?(:read, Surgeries::ClientBill)
+                  = navspan 'F.V.', 'dollar-sign', surgeries_client_bills_path, class: 'dropdown-item final-item', title: 'Facturación'
+
+          - if can?(:read, AgreementSurgeries::SurgeryRequest)
+            = navspan 'Convenio', 'briefcase-medical', "#convenioSurgerySubmenu", data: {toggle: 'collapse'}, aria: {expanded: false}, class: 'dropdown-toggle'
+            %li
+              %ul.collapse.list-unstyled#convenioSurgerySubmenu
+                - if can?(:read, AgreementSurgeries::SurgeryRequest)
+                  = navspan 'Solicitudes', 'folder', agreement_surgeries_surgery_requests_path, class: 'dropdown-item final-item', title: 'Cirugias por convenio'
+                - if can?(:read, AgreementSurgeries::SurgeryMaterial)
+                  = navspan 'Nomenclador', 'folder', agreement_surgeries_surgery_materials_path, class: 'dropdown-item final-item', title: 'Materiales'
+                - if can?(:read, AgreementSurgeries::PriceUpdate)
+                  = navspan 'Precios', 'folder', agreement_surgeries_price_updates_path, class: 'dropdown-item final-item', title: 'Precios'
+                - if can?(:read, AgreementSurgeries::File)
+                  = navspan 'Expedientes', 'folder', agreement_surgeries_files_path, class: 'dropdown-item final-item', title: 'Expedientes'
+                - if can?(:read, AgreementSurgeries::SaleOrder)
+                  = navspan 'O.V.', 'folder', agreement_surgeries_sale_orders_path, class: 'dropdown-item final-item', title: 'Ordenes de venta'
+                - if can?(:read, AgreementSurgeries::Shipment)
+                  = navspan 'Salidas', 'arrow-circle-right', agreement_surgeries_shipments_path, class: 'dropdown-item final-item', title: 'Salidas'
+
+          - if can?(:read, Purchases::File)
+            = navspan 'Compras', 'shopping-cart', "#purchaseSubmenu", data: {toggle: 'collapse'}, aria: {expanded: false}, class: 'dropdown-toggle'
+            %li
+              %ul.collapse.list-unstyled#purchaseSubmenu
+                - if can?(:read, Purchases::File)
+                  = navspan 'Expedientes', 'folder', purchases_files_path, class: 'dropdown-item final-item', title: 'Expediente de compras'
+                - if can?(:read, Purchases::PurchaseRequest)
+                  = navspan 'Solicitudes', 'hand-paper', purchases_purchase_requests_path, class: 'dropdown-item final-item', title: 'Solicitudes de compras'
+                - if can?(:read, Purchases::Budget)
+                  = navspan 'Presupuestos', 'file-import', purchases_budgets_path, class: 'dropdown-item final-item', title: 'Presupuestos de proveedores'
+                - if can?(:read, Purchases::Order)
+                  = navspan 'Ordenes', 'list-alt', purchases_orders_path, class: 'dropdown-item final-item', title: 'Ordenes de compras'
+                - if can?(:read, Purchases::Devolution)
+                  = navspan 'Devoluciones', 'undo', purchases_devolutions_path, class: 'dropdown-item final-item', title: 'Devoluciones de productos'
+                - if can?(:read, ExternalBill)
+                  = navspan "Comprobantes", 'dollar-sign', external_bills_path, class: 'dropdown-item final-item', title: "Facturas de compra"
+
+          - if can?(:read, Sales::File)
+            = navspan 'Ventas', 'file-invoice-dollar', "#saleSubmenu", data: {toggle: 'collapse'}, aria: {expanded: false}, class: 'dropdown-toggle'
+            %li
+              %ul.collapse.list-unstyled#saleSubmenu
+                - if can?(:read, Sales::File)
+                  = navspan 'Expedientes', 'folder', sales_files_path, class: 'dropdown-item final-item', title: 'Expedientes de venta'
+                - if can?(:read, Calendar)
+                  = navspan 'Calendario', 'calendar', sales_calendars_path, class: 'dropdown-item final-item', title: 'Calendario de ventas'
+                - if can?(:read, Sales::SaleRequest)
+                  = navspan 'Solicitudes', 'hand-paper', sales_sale_requests_path, class: 'dropdown-item final-item', title: 'Solicitudes de venta'
+                - if can?(:read, Sales::Budget)
+                  = navspan 'Presupuestos', 'file-import', sales_budgets_path, class: 'dropdown-item final-item', title: 'Presupuestos a clientes'
+                - if can?(:read, Sales::Order)
+                  = navspan 'Ordenes', 'list-alt', sales_orders_path, class: 'dropdown-item final-item', title: 'Ordenes de venta'
+                - if can?(:read, Sales::Bill)
+                  = navspan 'Comprobantes', 'list-alt', sales_bills_path, class: 'dropdown-item final-item', title: 'Comprobantes de venta'
+                - if can?(:read, Sales::Shipment)
+                  = navspan 'Remitos', 'list-alt', sales_shipments_path, class: 'dropdown-item final-item', title: 'Remitos de salida'
+
+          - if can?(:read, Tenders::File)
+            = navspan 'Licitaciones', 'file-archive', "#tenderSubmenu", data: {toggle: 'collapse'}, aria: {expanded: false}, class: 'dropdown-toggle'
+            %li
+              %ul.collapse.list-unstyled#tenderSubmenu
+                - if can?(:read, Tenders::File)
+                  = navspan 'Expedientes', 'folder', tenders_files_path, class: 'dropdown-item final-item', title: 'Expedientes de licitaciones'
+                - if can?(:read, Tenders::SaleRequest)
+                  = navspan 'Pliegos', 'file-import', tenders_sale_requests_path, class: 'dropdown-item final-item', title: 'Pliegos presentados'
+
+          - if can?(:read, GeneralCashAccount)
+            = navspan 'Finanzas', 'file-invoice-dollar', "#financeSubmenu", data: {toggle: 'collapse'}, aria: {expanded: false}, class: 'dropdown-toggle'
+            %li
+              %ul.collapse.list-unstyled#financeSubmenu
+                - current_company.cash_accounts.each do |cash_account|
+                  = navspan cash_account.nombre, 'dollar-sign', polymorphic_path(cash_account, view: 'transactions'), class: 'dropdown-item final-item', title: 'Caja de efectivo'
+                - if can?(:read, BankAccount)
+                  = navspan 'Cuentas bancarias', 'university', bank_accounts_path, class: 'dropdown-item final-item', title: 'Cuentas bancarias'
+                - if can?(:read, EmittedCheck)
+                  = navspan 'Cheques emitidos', 'money-check-alt', emitted_checks_path, class: 'dropdown-item final-item', title: 'Cheques emitidos'
+                - if can?(:read, PaymentType)
+                  = navspan 'Tipos de pagos', 'dollar-sign', payment_types_path, class: 'dropdown-item final-item', title: 'Tipos de pago'
+                - if can?(:read, Expenditure)
+                  = navspan 'Gastos abonados', 'dollar-sign', expenditures_path, class: 'dropdown-item final-item', title: 'Gastos'
+
+          / Inicio del bloque de verificación de "Reportes"
+          - if Ability.new(current_user).can?(:access, :reports)
+            = navspan 'Reportes', 'chart-line', "#reportsSubmenu", data: {toggle: 'collapse'}, aria: {expanded: false}, class: 'dropdown-toggle'
+            %li
+              %ul.collapse.list-unstyled#reportsSubmenu
+                = navspan 'Ventas', 'folder', reports_bills_path, class: 'dropdown-item final-item', title: 'Reporte de venta' if Ability.new(current_user).can?(:read, Reports::Bill)
+                = navspan 'Remitos', 'folder', reports_shipments_path, class: 'dropdown-item final-item', title: 'Remitos' if Ability.new(current_user).can?(:read, Reports::Shipment)
+                = navspan 'MEDTRONIC', 'folder', reports_shipment_details_path, class: 'dropdown-item final-item', title: 'Remitos' if Ability.new(current_user).can?(:read, Reports::MedtronicReport)
+                = navspan 'Clientes', 'users', reports_clients_path, class: 'dropdown-item final-item', title: 'Reporte de clientes' if Ability.new(current_user).can?(:read, Reports::ClientReport)
+                = navspan 'IVA Ventas', 'file-invoice-dollar', reports_sell_iva_movements_path, class: 'dropdown-item final-item', title: 'IVA de ventas' if Ability.new(current_user).can?(:read, Reports::SellIvaMovement)
+                = navspan 'Compras', 'shopping-cart', reports_purchases_path, class: 'dropdown-item final-item', title: 'Reporte de compras' if Ability.new(current_user).can?(:read, Reports::Purchase)
+                = navspan 'IVA Compras', 'file-invoice', reports_buy_iva_movements_path, class: 'dropdown-item final-item', title: 'IVA de compras' if Ability.new(current_user).can?(:read, Reports::BuyIvaMov)
+                = navspan 'Almacén', 'warehouse', reports_storages_path, class: 'dropdown-item final-item', title: 'Reporte de almacén' if Ability.new(current_user).can?(:read, Reports::Storage)
+                = navspan 'Cobranzas', 'money-check', reports_receipts_path, class: 'dropdown-item final-item', title: 'Reporte de cobranzas' if Ability.new(current_user).can?(:read, Reports::Receipt)
+                = navspan 'Finanzas', 'chart-pie', reports_finances_path, class: 'dropdown-item final-item', title: 'Reporte financiero' if Ability.new(current_user).can?(:read, Reports::Finrep)
+          
+          .dropdown-divider
+
+          - if can?(:read, :configuration)
+            %li
+              = navspan('Configuración', 'cogs', current_user.company_id.nil? ? new_company_path : company_path(current_user.company_id), title: 'Compañía', class: 'final-item')
+          
+          - if can?(:read, :support)
+            %li
+              = navspan('Soporte', 'bug', tickets_path, title: 'Soporte', class: 'final-item')
+
+          .dropdown-divider
+
+          %li
+            = navspan 'Salir', 'power-off', destroy_user_session_path, method: :delete, class: 'dropdown-item final-item logout', title: 'Cerrar sesión'

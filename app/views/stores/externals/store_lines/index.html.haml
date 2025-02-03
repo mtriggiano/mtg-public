@@ -1,0 +1,8 @@
+= index_table(mform: true, title: "false", icon: 'user-md', text: "Especialidad", path: new_stores_external_store_line_path(external_store.id), jpath: stores_external_store_lines_path(external_store.id, format: :json), mtarget: "#new_store_line_modal", columns: StoreLine::TABLE_COLUMNS)
+
+= modal("#{icon('fas', 'plus')} Añadir especialidad", "new_store_line_modal", "new_stores_external_body", "big") do
+	.modal-body
+
+= modal("#{icon('fas', 'plus')} Editar especialidad", "edit_stores_external_modal", "edit_stores_external_body", "big") do
+	.modal-body
+		= yield

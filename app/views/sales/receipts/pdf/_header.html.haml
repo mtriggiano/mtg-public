@@ -1,0 +1,60 @@
+- company_presenter ||= CompanyPresenter.new(receipt.company, self)
+.border
+  %table.width_100
+    %tr{style: "line-height: 10px !important;"}
+      %th.text_size_20.text_left.header_word_break.border{style:"text-align: center; width: 400px; line-height: 10px;"}
+        %p
+          = wicked_pdf_image_tag receipt.company.pdf_logo, width: "80px"
+        %p{style: 'white-space: pre'}
+          = receipt.company.name
+      %th.header_word_break.border{style:"width: 400px;"}
+        %p.text_size_20
+          RECIBO X
+        %p.text_size_20
+          Nº
+          = receipt.number
+        %p
+          Fecha:
+          = I18n.l(receipt.date, format: :default)
+.border
+  %center
+    = "#{company_presenter.province} , #{company_presenter.address} - Teléfono: #{receipt.company.contact_number}".html_safe
+  %center
+    E-mail:
+    = "#{company_presenter.email} - CUIT: #{company_presenter.cuit}".html_safe
+.border
+  %table.width_100{style: "font-size: 11px;"}
+    %tr
+      %td
+        %b
+          Departamento de Emisión:
+        = receipt.file.try(:file_movements).try(:last).try(:department).try(:name)
+
+      %td
+        %b
+          Cliente N°:
+        = receipt.entity_id
+    %tr
+      %td
+        %b
+          Cliente Razón Social:
+        = receipt.client.name
+    %tr
+      %td
+        %b
+          Dirección:
+        = receipt.client.address
+.border
+  %table.width_100{style: "margin-top: 15px; margin-bottom: 15px; font-size: 11px;"}
+    %tr
+      %td
+        %b
+          Recibi(mos) la suma de Pesos:
+        %span.dottedUnderline
+          #{I18n.with_locale(:es) { receipt.total.to_i.to_words }} con #{I18n.with_locale(:es) { (receipt.total % 1).round(2).to_words }} centavos.
+    %tr
+      %td
+        %b
+          En concepto de:
+        %span.dottedUnderline
+          #{sanitize receipt.concept.gsub(%r{</?[^>]+?>}, "")}

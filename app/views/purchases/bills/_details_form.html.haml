@@ -1,0 +1,18 @@
+= document_detail(d, d.index, child) do
+  %td
+    = d.input :subtype, collection: [["Producto", "Purchases::BillInventary"], ["Servicio", "Purchases::BillService"]], label: false, include_blank: false
+  %td
+    = product_td(d)
+  %td
+    = quantity_td(d)
+    = measurement_td(d)
+  %td
+    = price_td(d, false)
+  %td
+    = discount_td(d)
+  %td
+    = iva_td(d)
+  %td.fixed-col
+    = total_td(d, false)
+  %td.fixed-col
+    = d.link_to_remove icon('fas', 'trash'), class: "btn btn-danger ml-3 #{'disabled' if bill.disabled?}"

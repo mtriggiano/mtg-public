@@ -1,0 +1,126 @@
+.container
+  .row
+    - unless @bill.authorized_invoice?
+      .text_center
+        - if @bill.company.environment != "production"
+          \-- ATENCIÓN: COMPROBANTE NO AUTORIZADO --
+/ ENCABEZADO NOMBRE - TIPO - FACTURA
+.border
+  %table.width_100{style: "border-collapse: collapse;"}
+    %tr.text_center
+      %th.text_size_20.text_left.header_word_break{style:"text-align: center; width: 200px; line-height: 10px;"}
+        %p
+          = wicked_pdf_image_tag @bill.company.pdf_logo, width: "200px"
+      %td.text_size_invoice_type.border.text-bold{style: "width: 12%; border-left: 1px solid black;"}
+        %p.m-0
+          = @bill.tipo.last
+        %p.m-0.text-small
+          = "COD.#{@bill.cbte_tipo}"
+      %td.text_size_25.text-bold{style: "width: 44%; border-left: 1px solid black;"}
+        = @bill.cbte_name.upcase
+
+  %table.width_100.text-small{style: "border-collapse: collapse;"}
+    %tr
+      %td{rowspan: "5", style: "width: 1px;"}
+      %td{style: "width: 50%; border-right: 1px solid black;"}
+        %b Razon Social:
+        = @bill.company.society_name
+      %td{rowspan: "5", style: "width: 1px;"}
+      %td{style: "width: 50%;"}
+        %b
+          Punto de Venta: #{@bill.company.sale_points.last.number.rjust(5,padstr= '0')}
+          - if !@bill.number.nil?
+            \- Comp.Nro: #{@bill.number}
+    %tr
+      %td{style: "border-right: 1px solid black;"}
+        %b Domicilio:
+        = @bill.company.address + " - " + @bill.company.postal_code + " - " + @bill.company.locality.province.try(:name)
+      %td
+        %b Fecha de emisión:
+        = @bill.date.strftime("%d/%m/%Y")
+    %tr
+      %td{style: "border-right: 1px solid black;"}
+        %b Teléfono:
+        = @bill.company.try(:contact_number)
+      %td
+        %b Fecha de Inicio de Actividades:
+        = @bill.company.activity_init_date.strftime("%d/%m/%Y")
+    %tr
+      %td{style: "border-right: 1px solid black;"}
+        %b Condicion frente al IVA:
+        = @bill.company.iva_cond
+      %td
+        %b Ingresos Brutos:
+        = @bill.company.try(:gross_income)
+    %tr
+      %td{style: "border-right: 1px solid black;"}
+        %b CUIT:
+        = @bill.company.cuit
+/ FIN DEL ENCABEZADO
+
+/ DATOS CLIENTE
+.container{style: "border-right: 1px solid black; border-left: 1px solid black; border-bottom: 1px solid black; font-size: 11px; #{@bill.note.blank? ? 'margin-bottom: 5px;' : ''}; padding-top: 0px;"}
+  %table.width_100{style: "border-collapse: collapse;"}
+    %tr
+      %td{style: "width: 50%; border-right: 1px solid black;"}
+        %b Cliente:
+        %b #{@bill.client.name}
+      %td{style: "width: 50%;"}
+        %b Rto:
+        - if @bill.shipments.any?
+          = @bill.shipments.map(&:number).join(", ")
+    %tr
+      %td{style: "border-right: 1px solid black;"}
+        %b Domicilio:
+        #{@bill.client.address}
+      %td
+        %b Expediente:
+        = @bill.file.try(:external_number)
+    %tr
+      %td{style: "border-right: 1px solid black;"}
+        -if @bill.document_type
+          %b #{Afip::DOCUMENTOS.map{|name, val| name if val == @bill.document_type}.compact.join()}:
+          = @bill.document_number
+        - else
+          %b C.U.I.T.:
+          = @bill.client.document_number
+      %td
+        %b O.C.:
+        = @bill.file.try(:external_purchase_order_number)
+    %tr
+      %td{style: "border-right: 1px solid black;"}
+        %b Condicion frente al IVA:
+        #{@bill.client.iva_cond}
+      %td
+        %b Afiliado:
+        = @bill.file.pacient
+    %tr
+      %td{style: "border-right: 1px solid black;"}
+        %b Tipo de pago:
+        = @bill.payment_type.try(:name)
+      %td
+        %b Nº Afiliado:
+        = @bill.file.pacient_number
+    %tr
+      %td{style: "border-right: 1px solid black;"}
+        %b
+          Vencimiento:
+        - if @bill.fch_vto_pago.blank?
+          - unless @bill.client.payment_days.blank?
+            = Date.today + @bill.client.payment_days.days
+        - else
+          = @bill.fch_vto_pago
+      %td
+        - unless @bill.parent.nil? ##|| !@bill.is_invoice?
+          %b Factura asociada:
+          = @bill.parent.number
+- unless @bill.note.blank?
+  .container{style: "border-top: 1px solid black; border-right: 1px solid black; border-left: 1px solid black; border-bottom: 1px solid black; font-size: 10px; #{!@bill.note.blank? ? 'margin-bottom: 5px;' : ''}"}
+    %table.width_100{style: "border-collapse: collapse;"}
+      %tr
+        %td
+          %b{style: "font-size: 11px !important"}
+            Nota al cliente:
+          = @bill.note.html_safe
+
+/ FIN DATOS CLIENTE

@@ -1,0 +1,30 @@
+.card.shadow.mx-4.mb-4.collapse#optionals{data: {parent:"#document-accordion"}}
+	.card-header.bg-white
+		%h5.w-100.pt-2
+			Tributos
+	.card-body
+		.table-responsive
+			%table.table#table-optionals
+				%thead
+					%tr
+						%th Descripción
+						%th Valor
+						%th Acción
+				%tbody
+					= f.simple_fields_for :optionals, wrapper: false do |t|
+						%tr.fields
+							%td
+								= t.input :afip_id, label: false, label_method: :last, value_method: :first, collection: Afip::OPCIONALES.map{|o| [o[:id], o[:desc]]}, include_blank: false
+							%td
+								= t.input :valor, label: false
+							%td
+								= t.link_to_remove icon('fas', 'trash'), class: 'btn btn-danger'
+
+
+	.text-center
+		= f.link_to_add "#{icon('fas', 'plus')} Añadir campo".html_safe, :optionals, class: 'btn btn-success', data: {target: "#table-optionals"}
+
+	- unless f.object.disabled?
+		.text-center.mb-3
+			%hr
+				= save_button

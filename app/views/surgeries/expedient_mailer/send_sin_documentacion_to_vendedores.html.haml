@@ -1,0 +1,17 @@
+%p= "Estimado #{@current_seller.first_name}" 
+%p= "Los siguientes expedientes se encuentran faltos de documentación, porfavor regularice la situación antes de las 48hs si no seran procesados por la gerencia." 
+
+%table 
+  %thead 
+    %tr 
+      %td Fecha
+      %td Expediente
+      %td Link
+  %tbody
+    - @current_files.each do |expedient|
+      %tr 
+        %td= expedient.created_at
+        %td= expedient.title
+        %td= link_to "Ver", surgeries_file_url(expedient), class: 'nav-link'
+    
+        

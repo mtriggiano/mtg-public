@@ -1,0 +1,24 @@
+- params[:sub_view] ||= 'prescriptions'
+.nav.nav-tabs{ role:'tablist' }
+	= config_links("Recetas #{badge(file.prescriptions.count)}", 'prescriptions', params[:sub_view], [file, sub_view: 'prescriptions', view: 'documents'])
+	= config_links("Cotizaciones #{badge(file.budgets.count)}", 'budgets', params[:sub_view], [file, sub_view: 'budgets', view: 'documents'])
+	= config_links("O.V. #{badge(file.sale_orders.count)}", 'sale_orders', params[:sub_view], [file, sub_view: 'sale_orders', view: 'documents'])
+	= config_links("Salidas #{badge(file.shipments.count)}" , 'shipments', params[:sub_view], [file, sub_view: 'shipments', view: 'documents'])
+	= config_links("Solicitudes #{badge(file.purchase_requests.count)}", 'purchase_requests', params[:sub_view], [file, sub_view: 'purchase_requests', view: 'documents'])
+	= config_links("Pedidos #{badge(file.supplier_requests.count)}", 'supplier_requests', params[:sub_view], [file, sub_view: 'supplier_requests', view: 'documents'])
+	= config_links("Entradas #{badge(file.arrivals.count)}" , 'arrivals', params[:sub_view], [file, sub_view: 'arrivals', view: 'documents'])
+	= config_links("Consumos #{badge(file.consumptions.count)}" , 'consumptions', params[:sub_view], [file, sub_view: 'consumptions', view: 'documents'])
+	= config_links("Devoluciones #{badge(file.devolutions.count)}", 'devolutions', params[:sub_view], [file, sub_view: 'devolutions', view: 'documents'])
+	= config_links("O.C. #{badge(file.purchase_orders.count)}", 'orders', params[:sub_view], [file, sub_view: 'purchase_orders' 	, view: 'documents'])
+	= config_links("F.C. #{badge(file.supplier_bills.count)}", 'supplier_bills', params[:sub_view], [file, sub_view: 'supplier_bills', view: 'documents'])
+	= config_links("F.V. #{badge(file.client_bills.count)}", 'client_bills', params[:sub_view], [file, sub_view: 'client_bills', view: 'documents'])
+	= config_links("Recibos #{badge(file.client_bills.count)}", 'receipts', params[:sub_view], [file, sub_view: 'receipts', view: 'documents'])
+
+#sub-views
+	- if ["prescriptions" ,"purchase_requests","supplier_requests", "budgets", "sale_orders", "purchase_orders", "client_bills", "shipments", "consumptions", "devolutions", "arrivals", "supplier_bills", "receipts"].include? params[:sub_view]
+		- class_name = "Surgeries::#{params[:sub_view].classify}"
+		- if current_user.can?(:read, class_name.constantize)
+			= render template: "/surgeries/#{params[:sub_view]}/index", locals: {:collection => eval("file.#{params[:sub_view]}"), :@expediente => file, type: params[:type]}
+		- else
+			.mt-4
+				= render template: "/home/forbidden.html.haml", locals: {subject: 'Surgeries::File'}

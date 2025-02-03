@@ -1,0 +1,23 @@
+- present client do |client_presenter|
+	.card
+		.card-body
+			.text-muted
+				= icon('fas', 'list-alt')
+				Información básica
+			%hr
+				.row
+					.col
+						%dl
+							= see_contact_dl("Nombre", client.name)
+							= see_contact_dl("Denominación", client.denomination)
+							= see_contact_dl("Documento", client_presenter.document)
+							= see_contact_dl("Recargo", client_presenter.recharge)
+							= see_contact_dl("Dirección", client.address)
+							= see_contact_dl("ID Medtronic", client.id_medtronic)
+					.col
+						%dl
+							= see_contact_dl("Tipo de pago", client.payment_type.try(:name))
+							= see_contact_dl("Días de pago", client.payment_days)
+							= see_contact_dl("Provincia", client.province.try(:name))
+							= see_contact_dl("Localidad", client.locality.try(:name))
+							= see_contact_dl("C.P.", client.cp)

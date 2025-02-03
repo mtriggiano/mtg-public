@@ -1,0 +1,47 @@
+/ PIE DE PAGINA
+%br/
+.row.footer_bottom{style: 'font-size: 10px;'}
+  .container
+    %table.width_100
+      %tr
+        %td{rowspan: "2", style: "width: 25%"}
+          - unless @bill.cae.blank?
+            = image_tag @bill.qr_for_pdf, :width => "45%"
+        %td{rowspan: "2", style: "width: 25%"}
+          %center
+            %b Disp. N10542/16
+            = wicked_pdf_image_tag '/images/anmat.jpeg', :width => "70%"
+        %td{rowspan: "2", style: "width: 25%"}
+          %br/
+          %center
+            = wicked_pdf_image_tag '/images/afip.png', :width => "90%"
+      %tr
+        %td.text_right
+          %b CAE N°:
+          = @bill.cae
+          %br
+          %b Fecha de Vto. de CAE:
+          = I18n.l((@bill.cae_due_date || Date.today).to_date)
+.container{style: 'font-size: 10px;'}
+  %table.width_100
+    %tr.text_center
+      %td{rowspan: "2"}
+        .text_right{style: "padding-right: 170px;"}
+          = "Página #{page_number} de #{total_pages}"
+      %td{rowspan: "2", style: "width: 25% !important;"}
+        %b
+        %center
+          - if @bill.authorized_invoice?
+            - barcode    = Barby::Code25Interleaved.new(@bill.code_numbers(@bill.code_hash))
+            - outputter  = Barby::PngOutputter.new(barcode)
+            - file       = File.open(@barcode_path,'wb') {|f| f.write barcode.to_png(xdim: 1, height: 30) }
+            = image_tag(@barcode_path, class: "img-responsive")
+          - else
+            - unless @bill.cae.blank?
+              - barcode  = Barby::Code25Interleaved.new(@bill.code_numbers(@bill.code_hash))
+              - bar_png  = barcode.to_png(xdim:1, height: 30)
+              - image    = Base64.encode64(bar_png.to_s).gsub(/\s+/, "")
+              = image_tag "data:image/png;base64,#{Rack::Utils.escape(image)}"
+              = barcode.to_s
+
+/ FIN PIE DE PAGINA

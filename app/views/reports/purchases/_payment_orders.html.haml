@@ -1,0 +1,12 @@
+.index-body.table-responsive
+	%table#paginated_table.table{data: {title: "Reporte ORDENES DE PAGO", source: reports_purchases_path(view: 'payment_orders', format: :json)}}
+		%thead.thead-light
+			%th.actions{scope: 'col'} Número
+			%th.actions{scope: 'col'} Proveedor
+			%th.actions{scope: 'col'} Fecha
+			%th.actions{scope: 'col'} Estado
+			%th.actions{scope: 'col'} Total
+			%th.actions{scope: 'col'} Total pagado
+		%tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::PaymentOrder.merge("actions" => ""))

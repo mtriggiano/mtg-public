@@ -1,0 +1,20 @@
+.col-6.text-center
+	.d-block.with-title
+		.mx-2.1.justify-content-center
+			.caption.captionload
+				= image_tag "/images/load.gif", class: 'img-fluid'
+			.img_wrp
+				= image_tag file.implant_certificate, width: '90px', height: '75px', class: "border img-fuild image", data: {index: 1}
+		.mt-3
+			= f.input :implant_original_filename, label: "Crt. de implante"
+		= f.input :implant_certificate, as: :file, input_html: { hidden: true, class: "file_input", data: {index: 1} }, label: false
+.col-6.text-center
+	.d-block.with-title
+		.mx-2.1.justify-content-center
+			.caption.captionload
+				= image_tag "/images/load.gif", class: 'img-fluid'
+			.img_wrp
+				= image_tag file.surgical_sheet, width: '90px', height: '75px', class: "border img-fuild image", data: {index: 1}
+		.mt-3
+			= f.input :surgical_sheet_original_filename, label: "Foja quirúrgica"
+		= f.input :surgical_sheet, as: :file, input_html: { hidden: true, class: "file_input", data: {index: 1} }, label: false

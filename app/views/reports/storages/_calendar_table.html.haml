@@ -1,0 +1,25 @@
+#bmenu.mx-4.d-flex.justify-content-between.align-items-center
+.index-body.table-responsive
+  %table#paginated_table.full.table{data: {title: "Reporte CALENDARIO DE ALMACEN", source: reports_storages_path(view: 'calendar_table', format: :json)}}
+    %thead.thead-light
+      %th.actions{scope: 'col'} ID
+      %th.actions{scope: 'col'} Cliente
+      %th.actions{scope: 'col'} Afiliado
+      %th.actions{scope: 'col'} Fecha de entrega
+      %th.actions{scope: 'col'} Título
+      %th.actions{scope: 'col'} Tipo
+      %th.actions{scope: 'col'} Lugar
+      %th.actions{scope: 'col'} Lugar de entrega
+      %th.actions{scope: 'col'} Expediente
+      %th.actions{scope: 'col'} O.C. Obra social
+      %th.actions{scope: 'col'} O.V.
+      %th.actions{scope: 'col'} Médico
+      %th.actions{scope: 'col'} Responsable actual
+      %th.actions{scope: 'col'} Estado
+      %th.actions{scope: 'col'} Remito
+      %th.actions{scope: 'col'} Comentarios
+      %th.actions{scope: 'col'} Crt. Implante
+      %th.actions{scope: 'col'} Foja Quirúrgica
+    %tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::CalendarTable)

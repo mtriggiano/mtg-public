@@ -1,0 +1,48 @@
+= simple_form_builder external_arrival, defaults: {disabled: external_arrival.disabled?} do |f|
+	.card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+		.card-body
+			= file_header(f, true)
+			.header-detail
+				= error_explanation(f.object)
+				.row
+					.col-sm-4.col-12
+						= number_input(f, true)
+						= supplier_input(f)
+					.col-sm-4.col-12
+						= store_input(f)
+						= date_input(f, :date)
+					.col-sm-4.col-12
+						= f.input :punctuation, label: "Puntuación al proveedor", label_html: {class: 'h6'}, collection: 1..10, placeholder: "Puntuación por servicio"
+						= state_input(f, with_button: false)
+					.col-sm-4.col-12
+						= f.label :delivered_shipments, class: "h6" do
+							Remitos entregados a compras?
+							= f.object.delivered_shipments ? content_tag(:span, icon('fas', 'check'), class: 'text-success') : content_tag(:span, icon('fas', 'times'), class: 'text-danger')
+						- if can?(:update, f.object)
+							.button.btn{:"data-target" => "#update_delivered_shipment_external_arrival", :"data-toggle" => "modal", :"data-form" => "false"} <i class="fas fa-edit"></i>
+						%p
+							- if external_arrival.traslado_stock_interno
+								%p 
+									%span Movimiento de stock interno.
+								%p
+									%span Salida asociada:
+									= link_to external_arrival.external_shipment.number, [:edit, external_arrival.external_shipment] if external_arrival.external_shipment
+				.row
+					.col-6
+						= new_associated_document(f)
+					.col-6
+						= new_associated_document(f, :secondary_assign)
+				= state_manager(f)
+	= document_table(f, "surgeries") do
+		= observation_input(f)		
+		= render '/purchases/shared_attachment', f:f
+
+	- if can?(:update, f.object)
+		= modal("#{icon('fas', 'edit')} Remitos entregados?", "update_delivered_shipment_external_arrival", "update_delivered_shipment_external_arrival_body", "big") do
+			.modal-body
+				= simple_form_for(record, html: {class: 'simple-form horizontal-form'}, wrapper: :horizontal_form) do |f|
+					.row
+						.col-sm-6.col-12
+							= f.input :delivered_shipments, label: "Remitos entregados a compras?"
+					%hr
+						= save_button

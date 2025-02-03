@@ -1,0 +1,45 @@
+= render 'old_bank_checks', bank_check: bank_check.old_bank_check if bank_check.old_bank_check
+
+.card.mb-4.rounded-lg.border-left-danger
+  .card-body
+    .row
+      .col-6.form-group
+        %p.mb-1 Número de cheque
+        %h4
+          = bank_check.numero_cheque
+      .col-3.form-group
+        %p.mb-1 Fecha de registro
+        %h4
+          = bank_check.created_at
+      .col-3.form-group
+        %p.mb-1 Fecha de vencimiento
+        %h4
+          = bank_check.vencimiento
+      .col-6.form-group
+        %p.mb-1 Emitido por
+        %h4
+          = link_to bank_check.client.name, client_path(bank_check.client)
+      .col-3.form-group
+        %p.mb-1 Estado
+        %h4
+          %span.badge.badge-pill.badge-danger Reemplazado
+      .col-3.form-group
+        %p.mb-1 Recibo
+        %h4
+          = link_to bank_check.receipt.name, expedient_receipt_path(bank_check.receipt) if bank_check.receipt
+      .col-12
+        - if bank_check.cheque_reemplazado?
+          %p.mb-1 Este cheque reemplaza un anterior. Motivo:
+          %h4
+            = bank_check.concepto
+        %hr
+      .col-6
+      .col-3.form-group
+        - if bank_check.cobrado?
+          %p.mb-1 Fecha de cambio
+          %h4
+            = bank_check.fecha_deposito
+      .col-3.form-group
+        %p.mb-1 Importe
+        %h4
+          = number_to_ars bank_check.importe

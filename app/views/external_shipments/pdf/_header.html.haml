@@ -1,0 +1,61 @@
+- company_presenter ||= CompanyPresenter.new(sale_shipment.company, self)
+.text_size_invoice_type{style: "width: 40px; position: absolute; margin-left: 720px; z-index: 99999;"}
+  %center
+    .border.border-top-0{style: "width: 40px; background-color: white;"}
+      = sale_shipment.shipment_type == "Oficial" ? "R" : "X"
+.border
+  %table.width_100
+    %tr{style: "line-height: 10px !important;"}
+      %th.text_size_20.text_left.header_word_break{style:"text-align: center; width: 200px; line-height: 10px;"}
+        %p
+          = wicked_pdf_image_tag sale_shipment.company.pdf_logo, width: "200px"
+      %th.header_word_break{style:"width: 300px; text-align: left; padding-left: 50px; font-size: 11px;"}
+        %p
+          = sale_shipment.company.try(:address)
+        %p
+          = sale_shipment.company.postal_code + " " + sale_shipment.company.try(:locality).try(:province).try(:name) + " - " + sale_shipment.company.try(:locality).try(:province).try(:country).try(:name)
+        %p
+          = "#{sale_shipment.company.try(:contact_number)}".html_safe
+        %p
+          = "#{sale_shipment.company.try(:email)}".html_safe
+        %p
+          = "C.U.I.T.: #{sale_shipment.company.try(:cuit)}".html_safe
+        %p
+          www.magnus.com.ar
+      %th.header_word_break.border-left{style:"width: 250px;"}
+        %br
+        %br
+        %br
+        %br
+        %p.text_size_25
+          REMITO
+        %p.text_size_20
+          Nº
+          = sale_shipment.number
+        %p.text_size_20
+          Fecha:
+          = I18n.l(Date.today, format: :default)
+        %p.text_size_20
+          Salida:
+          = I18n.l(sale_shipment.date, format: :default)
+.border
+  %table.width_100{style: 'font-size: 11px;'}
+    %tr
+      %td
+        %b
+          INSTITUCIÓN:
+        = sale_shipment.client.denomination
+    %tr
+      %td
+        %b
+          CLIENTE RAZÓN SOCIAL:
+        = sale_shipment.client.name
+      %td
+        %b
+          EXPEDIENTE:
+        = "SIN EXPEDIENTE"
+    %tr
+      %td
+        %b
+          FECHA DE SALIDA:
+          = I18n.l(sale_shipment.date, format: :default)

@@ -1,0 +1,73 @@
+- company_presenter ||= CompanyPresenter.new(order.company, self)
+- client_presenter ||= ClientPresenter.new(order.client, self)
+.border
+  %table.width_100
+    %tr{style: "line-height: 10px !important;"}
+      %th.text_size_20.text_left.header_word_break{style:"text-align: center; width: 200px; line-height: 10px;"}
+        %p
+          = wicked_pdf_image_tag order.company.pdf_logo, width: "200px"
+      / %th.text_size_invoice_type
+      /   .budget_type
+      /     = order.budget_type == "Oficial" ? "R" : "X"
+      %th.header_word_break{style:"width: 300px; text-align: left; padding-left: 50px;"}
+        %p
+          = order.company.try(:address)
+        %p
+          = order.company.postal_code + " " + order.company.try(:locality).try(:province).try(:name) + " - " + order.company.try(:locality).try(:province).try(:country).try(:name)
+        %p
+          = "#{order.company.try(:contact_number)}".html_safe
+        %p
+          = "#{order.company.try(:email)}".html_safe
+        %p
+          = "#{order.company.try(:cuit)}".html_safe
+        %p
+          www.magnus.com.ar
+      %th.header_word_break.border{style:"width: 250px;"}
+        %p.text_size_20
+          ORDEN DE VENTA
+        %p.text_size_20
+          Nº
+          = order.number
+        %p
+          Fecha:
+          = I18n.l(order.created_at, format: :short)
+.border
+  %table.width_100
+    %tr
+      %td
+        %b
+          Departamento de Emisión:
+        = order.file.file_movements.try(:last).try(:department).try(:name)
+      %td
+        %b
+          Fecha de operación:
+        = I18n.l(order.expected_delivery_date, format: :default)
+
+    %tr
+      %td
+        %b
+          Cliente:
+        = "#{client_presenter.document}"
+      %td
+        %b
+          Cliente Razón Social:
+        = order.client.name
+    %tr
+      %td
+        %b
+          Médico:
+        = order.file.doctor
+      %td
+        %b
+          Lugar:
+        = "#{order.file.province}: #{order.file.place}"
+    %tr
+      %td
+        %b
+          Vendedor:
+        = order.user.name
+    tr
+      %td
+        %b
+          Detalle:
+        = order.observation

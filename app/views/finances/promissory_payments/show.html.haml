@@ -1,0 +1,44 @@
+= render 'bank_check_payment', check: promissory_payment
+
+-# Cambio de cheque
+- if promissory_payment.posible_cambio?
+  .text-center
+    %button.btn.btn-outline-warning.mb-4.boton-cambio-cheque Registrar cambio
+
+  .contenedor-cambio-cheque{style: "display: none"}
+    %p.h4.mb-0
+      Cambio de
+      = promissory_payment.payment_type
+      %span.float-right
+        %button.btn.btn-sm.btn-danger.boton-cambio-cheque{style: "display: none"}
+          = icon('fas', 'times')
+    %p.mb-1.text-muted Registre el reemplazo de un cheque/pagaré que ha tenido algún inconveniente
+    = simple_form_for(@payment, url: polymorphic_path(@payment), wrapper: false) do |f|
+      .card.mb-3
+        .card-body
+          = error_notification(f)
+          .row
+            .col-lg-3
+              = f.input :numero_cheque, label: "Número de cheque/pagaré", required: true
+            .col-lg-3
+              = label_tag :client, "Emitido por"
+              = text_field_tag :client, promissory_payment.client.name, class: "form-control", disabled: true
+            .col-lg-3
+              = label_tag :emision, "Fecha de emisión"
+              = text_field_tag :emision, Date.today, class: "form-control", disabled: true
+            .col-lg-3
+              = f.input :vencimiento, as: :date_picker, label: "Fecha de vencimiento", required: true
+            .col-lg-12
+              = f.input :concepto, as: :text, label: "Razón del cambio", required: true
+            .col-lg-3.offset-lg-9
+              = f.input :importe, label: "Importe", required: true
+          = f.hidden_field :old_bank_check_id, value: promissory_payment.id
+          = f.hidden_field :entity_id, value: promissory_payment.entity_id
+      .actions
+        = save_button
+
+- unless promissory_payment.cobrado?
+  .text-center.boton-registrar-deposito
+    %button.btn.mb-4.btn-outline-success{:"data-target" => "#confirmCollect", :"data-toggle" => "modal", :"data-form" => "false"} Registrar depósito
+
+  = render 'collect_payment'

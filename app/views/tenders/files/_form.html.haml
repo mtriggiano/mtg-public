@@ -1,0 +1,75 @@
+= simple_nested_form_for file, data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host }, html: {class: 'horizontal-form directUpload'}, wrapper: :horizontal_form, defaults: {disabled: file.disabled? } do |f|
+	= error_notification(f)
+	.row
+		= error_notification(f)
+		.col-6
+			= f.association :client, as: :select, label: "Cliente", collection: current_company.clients.order(:denomination).map{|c| [c.denomination, c.id]}
+			%hr.dotted
+			= f.input :sale_type, collection: Tenders::File::TYPES, label: "Tipo"
+			= f.input :initial_department, as: :hidden, value: 8
+			%hr.dotted
+			= f.input :title, label: "Procedimiento"
+			%hr.dotted
+			= f.input :external_number, label: "Nº expediente"
+			%hr.dotted
+			= f.input :objeto, label: "Objeto"
+			%hr.dotted
+			= f.input :pacient,label: "Paciente"
+			%hr.dotted
+			= f.input :pacient_number,label: "HC Paciente"
+			%hr.dotted
+			= f.input :technical, label: "Técnico"
+			%hr.dotted
+			= f.input :forma_pago, label: "Forma de pago"
+			%hr.dotted
+			= f.input :precio_pliego, label: "Precio del Pliego"
+		.col-6
+			= f.input :province, label: "Provincia"
+			%hr.dotted
+			= f.input :destinos, label: "Destino/s"
+			%hr.dotted
+			= f.input :resolution, label: "Resolucion"
+			%hr.dotted
+			.row
+				.col-md-4.col-lg-3.col-form-label.col-form-label-sm
+					= f.label "Apertura"
+				.col-md-8.col-lg-9.d-flex.justify-content-between
+					= f.input :place, placeholder: "Lugar", label: false, wrapper_html: { class: "mb-0"}
+					= f.input :delivery_date, input_html: {placeholder: "Fecha"}, as: :date_picker, label: false, wrapper_html: { class: "mb-0"}
+					= f.input :delivery_hour, input_html: {placeholder: "Hora"}, as: :time_picker, label: false, wrapper_html: { class: "mb-0"}
+			%hr.dotted
+			= f.input :sistema_apertura, label: "Sistema Apertura"
+			%hr.dotted
+			= f.input :doctor, label: "Médico"
+			%hr.dotted
+			= f.input :init_date, label: "Inicio Expediente", as: :date_picker
+			%hr.dotted
+			= f.input :substate, label: "Estado", collection: Sales::File::STATES, include_blank: false, input_html: {value: f.object&.substate}
+			%hr.dotted
+			= f.association :user, as: :select, label: "Responsable", collection: current_company.users.map{|u| [u.name, u.id]}
+			%hr.dotted
+			.row.form-group
+				= f.label :open, "Abierto?", class: "col-md-4 col-lg-3 col-form-label col-form-label-sm select optional"
+				.col-md-8.col-lg-9
+					= f.input :open, label: false, input_html: { data: { toggle: 'toggle', onstyle: 'success', offstyle: 'danger', on: "Si", off: "No" } }, wrapper_html: { class: 'flex-grow-1', style: 'margin-left: -1.25rem; padding-right: 1.25rem;' }
+	.row.dotted.pt-4
+		.col-12
+			%hr.dotted
+
+				.col.text-center
+					%p.text-muted
+						Pliego
+					.mx-2.1.justify-content-center
+						.caption.captionload
+							= image_tag "/images/load.gif", class: 'img-fluid'
+						.img_wrp
+							= image_tag file.pliego, width: '90px', height: '75px', class: "border img-fuild image", data: {index: 1}
+						- if file.pliego != "/images/attachment.png"
+							%br
+							= link_to "Ver pliego", file.pliego
+						.mt-3
+							= f.input :pliego_original_filename, label: "Pliego"
+						= f.input :pliego, as: :file, input_html: { hidden: true, class: "file_input", data: {index: 1} }, label: false
+	.actions.text-center.w-100
+		- unless f.object.disabled?
+			= save_button

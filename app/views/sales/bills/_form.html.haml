@@ -1,0 +1,102 @@
+- bill.errors.add(:base, "Hubo un problema al confirmar la factura. Contacte inmediatamente a soporte.") if bill.state == "En revisión"
+= simple_form_builder bill, default: {label_html: {class: :h6}} do |f|
+  = shared_nav(f)
+  .card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+    .card-body
+      = file_header(f)
+      .header-detail
+        = error_explanation(f.object)
+        .row
+          .col-sm-4.col-12.border-right
+            .row
+              .col
+                = f.label :number, "Número"
+                .row
+                  .col-5
+                    = f.input :sale_point, label: false, input_html: { maxlength: 5, type: "number" }, required: true, placeholder: "Pto. vta"
+                  .col-7
+                    = f.input :number, label: false, placeholder: "Número", input_html: {disabled: true}
+              .col
+                = f.input :manual, collection: [["Manual", "M"],["Electrónica", "E"]], label: "Método"
+            .row
+              .col-6
+                = sale_client_select(f)
+              .col-6
+                = f.association :payment_type, selected: bill.payment_type_id || 4 || bill.client.try(:payment_type_id) || current_company.payment_types, label: "Tipo de pago"
+            .row
+              .col-6
+                = f.input :cbte_tipo, collection: bill.cbte_types.map{ |tipo| [tipo[:text], tipo[:id]] }, prompt: "Seleccione..."
+              .col-6
+                = f.input :parent_bill, label: "Factura asociada", collection: bills.confirmed.only_bills.map{|u| [u.name(:short), u.id]}
+          .col-sm-4.col-12.border-right
+            .row
+              .col-6
+                = f.input :total_trib, min: 0, input_html: {disabled: true}
+              .col-6
+                = f.input :iva_amount, input_html:{id: 'parent_iva_amount', disabled: true}
+            .row
+              .col-6
+                = total_usd_input(f)
+              .col-6
+                = usd_price_input(f)
+            .row
+              .col-6
+                = f.input :gross_amount, input_html: {id: 'parent_gross_price', disabled: true}
+              .col-6
+                = f.input :total, input_html:{id: 'parent_total', disabled: true}
+          .col-sm-4.col-12
+            .row
+              .col-6
+                = currency_input(f)
+              .col-6
+                = state_input(f, with_button: false)
+            = f.input :concept, collection: Afip::CONCEPTOS.keys, input_html: {include_blank: false}
+            = f.input :cbte_fch, as: :date_picker, input_html: {value: Date.today, disabled: true}
+        .dynamic-bill-info
+          = render 'dynamic_attributes', f: f
+        .row
+          .col-6
+            = new_associated_document(f, :assign)
+          .col-6
+            - if bill.editable?
+              = new_associated_document(f, :filter)
+            - else
+              .d-flex.align-items-baseline
+                = button_tag type: :button, class: 'btn btn-primary btn-sm mt-4', data: {toggle: 'modal', target: '#asoc_shipment_modal'} do
+                  = icon('fas', 'plus')
+                  Vincular remito
+                = new_associated_document(f, :filter, 'official', true)
+        = observation_to_user("Solo se vincularan los detalles del presupuesto con estado 'Aprobado'.")
+        = record.receipts_bills.map{|a| link_to a.receipt.name, edit_expedient_receipt_path(a.receipt) }.join(" - ").html_safe
+        #bill_state.text-center
+          = render 'bill_state'
+        = file_state_manager(f)
+  = render '/sales/bills/file_data', {f:f, bill: bill}
+  = content_for(:extra_links) do
+    %li.nav-item
+      = button_tag "#{icon('fas', 'hand-holding-usd')} Tributos".html_safe, type: :button, aria: {selected: false, controls: 'tributes'}, data: {toggle: 'tab', target: '#tributes'}, class: 'nav-link bg-white'
+    %li.nav-item
+      = button_tag "#{icon('fas', 'eraser')} Notas de crédito".html_safe, type: :button, aria: {selected: false, controls: 'credits'}, data: {toggle: 'tab', target: '#credits'}, class: 'nav-link bg-white' if bill.has_credit_note?
+    %li.nav-item
+      = button_tag "#{icon('fas', 'pencil')} Notas de débito".html_safe, type: :button, aria: {selected: false, controls: 'debits'}, data: {toggle: 'tab', target: '#debits'}, class: 'nav-link bg-white' if bill.has_debit_note?
+    %li.nav-item
+      = button_tag "#{icon('fas', 'tasks')} Opcionales".html_safe, type: :button, aria: {selected: false, controls: 'optionals'}, data: {toggle: 'tab', target: '#optionals'}, class: 'nav-link bg-white'
+    %li.nav-item
+      = button_tag "#{icon('fas', 'sticky-note')} Nota de factura".html_safe, type: :button, aria: {selected: false, controls: 'note'}, data: {toggle: 'tab', target: '#note'}, class: 'nav-link bg-white'
+
+  = document_table(f) do
+    = render '/tributes/form', f: f
+    = render '/bill_optionals/form', f: f
+    = render 'credit_notes', bill: bill
+    = render 'debit_notes', bill: bill
+    = render '/file_attributes_configs/shared_extra_attributes', f:f, object: bill
+    = observation_input(f)
+    = note_input(f)
+    = render '/sales/shared_attachment', f:f
+- unless bill.editable?
+  = modal("Vincular remito", 'asoc_shipment_modal', 'asoc_shipment_modal_body') do
+    = simple_nested_form_for bill, default: {label_html: {class: :h6}} do |f|
+      .modal-body
+        = new_associated_document(f, :filter)
+      .modal-footer
+        = save_button

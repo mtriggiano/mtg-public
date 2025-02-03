@@ -1,0 +1,38 @@
+.index
+  .index-title
+    .principal
+      #{icon('fas', 'dollar-sign')} Reporte de IVA COMPRAS
+  #bmenu.mx-4.d-flex.justify-content-between.align-items-center
+  .index-body.table-responsive
+    %table#paginated_table.table{data: {title: "Reporte IVA COMPRAS", source: reports_buy_iva_movements_path(format: :json)}}
+      %thead.thead-light
+        %th.actions{scope: 'col'} Tipo y clase
+        %th.actions{scope: 'col'} Punto
+        %th.actions{scope: 'col'} Numero
+        %th.actions{scope: 'col'} Fecha
+        %th.actions{scope: 'col'} Registro
+        %th.actions{scope: 'col'} Razon social
+        %th.actions{scope: 'col'} CUIT
+        %th.actions{scope: 'col'} Neto
+        %th.actions{scope: 'col'} IVA
+        %th.actions{scope: 'col'} No gravado
+        %th.actions{scope: 'col'} Exento
+        %th.actions{scope: 'col'} Perc IIBB Salta
+        %th.actions{scope: 'col'} Perc IIBB Jujuy
+        %th.actions{scope: 'col'} Perc IIBB Catamarca
+        %th.actions{scope: 'col'} Ret IIBB
+        %th.actions{scope: 'col'} Ret.Gcias
+        %th.actions{scope: 'col'} Perc IVA
+        %th.actions{scope: 'col'} Imp. Nac.
+        %th.actions{scope: 'col'} Imp. Prov.
+        %th.actions{scope: 'col'} Imp. Muni.
+        %th.actions{scope: 'col'} Imp. Int.
+        %th.actions{scope: 'col'} I.I.B.B.
+        %th.actions{scope: 'col'} Perc. I.I.B.B.
+        %th.actions{scope: 'col'} Perc. Imp. Mun.
+        %th.actions{scope: 'col'} Otras Perc.
+        %th.actions{scope: 'col'} Perc. IVA no Cat.
+        %th.actions{scope: 'col'} Total
+      %tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::BuyIvaMovement.merge("actions" => ""))

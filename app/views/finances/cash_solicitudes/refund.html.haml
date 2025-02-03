@@ -1,0 +1,55 @@
+%h2
+  Rendición -
+  = cash_solicitude.codigo
+
+= simple_nested_form_for(cash_solicitude, :url => finalize_cash_solicitude_path(cash_solicitude), method: :patch) do |f|
+  %p.text-muted.mb-1 Información de la solicitud
+  .card.mb-5
+    .card-body
+      = error_notification(f)
+      = render 'show', cash_solicitude: cash_solicitude
+      %hr
+      .row
+        .col-md-4
+        .col-md-2.form-group
+          %p Fecha de retiro
+          %h5.text-center
+            = cash_solicitude.cash_withdrawal.fecha
+        .col-md-2.form-group
+          %p Importe entregado
+          %h5.text-right
+            %span $
+            %span.withdrawal-total
+              = cash_solicitude.cash_withdrawal.importe
+        .col-md-2.form-group
+          %p Total de gastos
+          %h5.text-right
+            %span $
+            %span.expenses-total 0.00
+        .col-md-2.form-group
+          %p A rendir
+          %h5.text-right
+            %span $
+            %span.refund-total 0.00
+
+  .mb-5
+    %p.text-muted.mb-1 Comprobantes asociados
+    = render 'admin_expense_details', f: f
+    %p.text-center
+      = f.link_to_add "#{icon('fas','plus')} Añadir comprobante".html_safe, :expense_details, class: 'btn btn-outline-success'
+
+
+  %p.text-muted.mb-1 Registro de rendición
+  .card.mb-5
+    .card-body
+      = f.simple_fields_for :cash_refund, wrapper: false do |cr|
+        .fields
+          .row
+            .col-md-3.form-group
+              = cr.input :fecha, label: "Fecha", input_html: { disabled: true }, disabled: true
+            .col-md-3.form-group
+              = cr.input :importe, label: "Importe devuelto", input_html: { value: @a_rendir }, required: true
+            .col-md-6.form-group
+              = cr.input :observacion, label: "Observaciones"
+  .actions
+    = save_button

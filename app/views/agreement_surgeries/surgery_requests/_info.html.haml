@@ -1,0 +1,147 @@
+#surgery_request.card.shadow.mx-4.mb-4.collapse{data: {parent: "#document-accordion"}}
+	.card-header.bg-white
+		%h5.w-100.pt-2 
+			Solicitud 
+			= (present surgery_request).state
+	.card-body
+		- if surgery_request
+			.row
+				.col-4
+					%p
+						%strong
+							Número
+						%span
+							= (present surgery_request).number
+					%p
+						%strong
+							Nombres
+						%span
+							= surgery_request.first_name
+					%p
+						%strong
+							Apellidos
+						%span
+							= surgery_request.last_name
+					%p
+						%strong
+							Tipo Documento
+						%span
+							= surgery_request.document_type
+					%p
+						%strong
+							Numero Documento
+						%span
+							= surgery_request.document_number
+					%p
+						%strong
+							Direccion
+						%span
+							= surgery_request.address
+					%p
+						%strong
+							Fecha Nacimiento
+						%span
+							= surgery_request.birthday
+					%p
+						%strong
+							Edad
+						%span
+							= surgery_request.age
+					%p
+						%strong
+							Sexo
+						%span
+							= surgery_request.gender
+					%p
+						%strong
+							Celular
+						%span
+							= surgery_request.mobile_phone
+					%p
+						%strong
+							Provincia
+						%span
+							= surgery_request.province.try(:name)
+					%p
+						%strong
+							Localidad
+						%span
+							= surgery_request.locality.try(:name)
+				.col-4
+					%p
+						%strong
+							Fecha solicitud
+						%span
+							= surgery_request.request_date
+					%p
+						%strong
+							Tipo de Cirujia
+						%span
+							= surgery_request.surgery_type
+					%p
+						%strong
+							Fecha Cirujia
+						%span
+							= surgery_request.surgery_date
+					%p
+						%strong
+							Obra Social
+						%span
+							= surgery_request.social_work
+					%p
+						%strong
+							Numero Paciente
+						%span
+							= surgery_request.pacient_number
+					%p
+						%strong
+							Historia Clínica
+						%span
+							= surgery_request.medical_history
+					%p
+						%strong
+							Institucion
+						%span
+							= surgery_request.institution
+					%p
+						%strong
+							Medico
+						%span
+							= surgery_request.doctor
+					%p
+						%strong
+							Stock Interno?
+						%span
+							= surgery_request.internal_stock
+					%p
+						%strong
+							Tiempo cirujia
+						%span
+							= surgery_request.surgery_time
+					%p
+						%strong
+							Observación
+						%span
+							= surgery_request.observation
+				.col-md-4
+					%table.table.table.sm.table-bordered
+						%thead
+							%tr
+								%th
+									Nomenclador
+								%th
+									Cantidad
+						%tbody
+							- surgery_request.surgery_request_details.each do |surgery_request_detail|
+								%tr
+									%td
+										= surgery_request_detail.surgery_material
+									%td
+										= surgery_request_detail.quantity
+		- else
+			%p.text-muted
+				No tiene solicitud asignada
+
+
+
+

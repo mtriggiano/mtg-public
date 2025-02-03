@@ -1,0 +1,19 @@
+
+#bmenu.mx-4.d-flex.justify-content-between.align-items-center
+.index-body.table-responsive
+  %table#paginated_table.table{data: {title: "Reporte ENTRADAS ALMACEN", source: reports_storages_path(view: 'arrivals', format: :json)}}
+    %thead.thead-light
+      %th.actions{scope: 'col'} Número
+      %th.actions{scope: 'col'} Fecha
+      %th.actions{scope: 'col'} Factura
+      %th.actions{scope: 'col'} Proveedor
+      %th.actions{scope: 'col'} O.C.
+      %th.actions{scope: 'col'} Expediente
+      %th.actions{scope: 'col'} Estado
+      %th.actions{scope: 'col'} Usuario
+      %th.actions{scope: 'col'} Observaciones
+      %th.actions{scope: 'col'} Remitos entregados?
+      %th.actions{scope: 'col'} Acciones
+    %tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::Arrival.merge("actions" => ""))

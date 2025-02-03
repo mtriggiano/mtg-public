@@ -1,0 +1,34 @@
+%nav.navbar.navbar-expand-lg.fixed-top.blurry
+  .blurrer
+  .container-fluid
+    .nav-left
+      = button_tag class: 'navbar-toggler', type: 'button', data:{toggle: 'collapse', target: '#navpills'} do
+        %span.navbar-toggler-icon
+      %span.w-100.d-lg-none.d-block
+      %span.border-right.pr-1
+        = button_tag icon('fas', 'indent'), type: :button, id: "sidebarCollapse", class: 'btn btn-sm text-dark bg-transparent'
+      %span.w-100.d-lg-none.d-block
+      .text-right
+        = button_tag class: 'navbar-toggler', type: 'button', data:{toggle: 'collapse', target: '#myNavbar'} do
+          %span.navbar-toggler-icon
+    .collapse.navbar-collapse.text-right.flex-shrink-1#myNavbar
+      %ul.navbar-nav.ml-auto.flex-nowrap.text-right
+        - dolar_billete_buy, dolar_billete_sell = TodayDolarGetter.new.call
+        %li.nav-item
+          %span.nav-link{style: "color: black"}
+            USD:
+            %span.text-success
+              = number_to_currency(dolar_billete_buy, unit: "$", format: "%u%n")
+            |
+            %span.text-danger
+              = number_to_currency(dolar_billete_sell, unit: "$", format: "%u%n")
+        = subscribe_to "/magnus/notifications/#{current_user.id}"
+        %li.nav-item.mx-4
+          = link_to notifications_path, remote: true, id: 'notifications-link', class: 'nav-link menu-item notification-bell' do
+            = icon('fas', 'bell')
+            %span.badgenotifications#span_notify
+              = current_user.count_notifications
+          = render '/notifications/container'
+        %li.nav-item.dropdown
+          = link_to edit_user_registration_path, id: 'MiCuenta', class: 'menu-item profile-dropdown-link' do
+            = image_tag current_user.avatar, class: 'rounded-circle user-avatar mx-2'

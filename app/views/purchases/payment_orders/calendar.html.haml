@@ -1,0 +1,16 @@
+.index
+  .index-title
+    .principal
+      = icon('fas', 'calendar')
+      Calendario de pagos
+#index-body.table-responsive.border.p-4
+  .calendar
+    = Purchases::PaymentOrders::CalendarBody.new(self, {events: @calendar}).render do |date, orders|
+      = date.strftime("%d")
+      - total = orders.inject(0){ |sum, o| sum+= o.total }.round(2)
+      - case total
+      - when 0..99999 then color = 'success'
+      - when 100000..199999 then color = 'warning'
+      - else color = 'danger'
+      %br
+      = link_to number_to_ars(total), new_purchases_payment_order_path(date: date), class: "calendar_total text-#{color}"

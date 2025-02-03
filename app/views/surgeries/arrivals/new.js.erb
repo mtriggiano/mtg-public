@@ -1,0 +1,10 @@
+<% simple_nested_form_for arrival do |f| %>
+	<% @builder = f %>
+<% end %>
+$("table.parent-table > tbody").html("<%= j render '/purchases/shared_details_form', f: @builder %>");
+<% unless arrival.entity_id.nil? %>
+	$("#surgeries_arrival_entity_id").val("<%= arrival.entity_id %>").trigger('change');
+<% end %>
+'<% if arrival.date %>'
+	$("#surgeries_arrival_date").val("<%= arrival.date %>").trigger('change');
+'<% end %>'

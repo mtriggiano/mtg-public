@@ -1,0 +1,12 @@
+= yield(:extra_links)
+%li.nav-item
+	= button_tag "#{icon('fas', 'list')} Conceptos".html_safe, type: :button, aria: {selected: true, controls: 'concepts'}, data: {toggle: 'tab', target: '#concepts', target: '#concepts'}, class: 'nav-link bg-white active'
+%li.nav-item.ml-1
+	= button_tag "#{icon('fas', 'eye')} Mostrar adjuntos".html_safe, type: :button, aria: {selected: false, controls: 'attachments'}, data: {toggle: 'tab', target: '#attachments'}, class: 'nav-link bg-white '
+%li.nav-item.ml-1
+	= button_tag "#{icon('fas', 'ellipsis-v')} Campos adicionales".html_safe, type: :button, aria: {selected: false, controls: 'custom_attributes'}, data: {toggle: 'tab', target: '#custom_attributes'}, class: 'nav-link bg-white collapsed'
+%li.nav-item.ml-1
+	= button_tag "#{icon('fas', 'comment')} Observación".html_safe, type: :button, aria: {selected: false, controls: 'observation'}, data: {toggle: 'tab', target: '#observation'}, class: 'nav-link bg-white collapsed'
+- if f.object.disabled? && f.object.class.name != "TenderBill"
+	%li.nav-item.ml-1
+		= link_to "#{icon('fas', 'backspace')} Solicitar reapertura".html_safe, [:open, f.object], class: 'nav-link bg-white collapsed btn-outline-danger'

@@ -1,0 +1,22 @@
+- child ||= d.object.is_a_child?
+- index = @index || d.index
+= document_detail(d, index, child) do
+	%td.d-flex.border-top-0
+		= state_point(d.object.info) unless child
+	%td
+		= product_td(d)
+	%td
+		= product_code_td(d)
+	%td
+		= branch_td(d)
+	%td
+		= quantity_td(d)
+	%td
+		= approved_quantity_td(d)
+		= measurement_td(d)
+	%td
+		= document_detail_observation_button d, index, child
+	%td.fixed-col
+		= document_detail_actions d, index, child
+- unless child
+	= document_detail_observation d, index, child

@@ -1,0 +1,23 @@
+.card
+  .card-body
+    %table.table
+      %thead
+        %th Fecha
+        %th Concepto
+        %th Débitos
+        %th Créditos
+        %th Saldo
+      %tbody
+        - @transactions.each do |transaction|
+          %tr
+            %td
+              = transaction.fecha
+            %td
+              = transaction.descripcion
+            %td.text-right
+              = number_to_ars transaction.debito
+            %td.text-right
+              = number_to_ars transaction.credito
+            %td.text-right
+              = number_to_ars transaction.saldo
+    = paginate @transactions

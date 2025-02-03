@@ -1,0 +1,26 @@
+
+= simple_nested_form_for(permission, html: { class: 'horizontal-form directUpload', id: '#vacations_form', data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host } }, wrapper: :horizontal_form) do |f|
+	.row
+		.col-12
+			= error_notification(f)
+			= f.input :user_id, label: "Empleado", collection: current_company.users.map{|u| [u.name, u.id]}
+			.row
+				.col-6
+					%hr.dotted
+						= date_input(f, :init_date)
+				.col-6
+					%hr.dotted
+						= f.input :days, label: "Días"
+			%hr.dotted
+				= f.input :reason, as: :select, collection: Justification::REASONS
+			%hr.dotted
+				= f.input :observation, as: :text, input_html: {rows: 5, style: 'resize: none;'}
+			%hr.dotted
+				-# .caption.captionload
+				-# 	= image_tag "/images/load.gif", class: 'img-fluid'
+				-# .img_wrp
+				-# 	= image_tag permission.principal_attachment, width: '90px', height: '75px', class: "border img-fuild image", data: {index: 1}
+				=# f.input :principal_attachment, as: :file, input_html: { class: "file_input", data: {index: 1} }, label: false
+			%hr.dotted
+				#approve_attachs
+					= render '/human_resources/_shared/shared_attachment', f: f

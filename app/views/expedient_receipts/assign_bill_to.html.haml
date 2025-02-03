@@ -1,0 +1,23 @@
+%h2.text-center
+	= expedient_receipt.name
+%p.text-muted.text-center
+	= expedient_receipt.client.name
+
+= simple_nested_form_for expedient_receipt do |f|
+	.table-responsive
+		%table.table
+			%thead
+				%th Fecha
+				%th Importe
+				%th Factura
+			%tbody
+				= f.simple_fields_for :details, f.object.details.select{|d| d.available_to_assign > 0} do |d|
+					%tr
+						%td
+							= expedient_receipt.date
+						%td
+							= number_to_ars d.object.available_to_assign.round(2)
+						%td
+							= d.association :bill, label: false, collection: @unpaid_bills, wrapper: false, input_html: { class: 'form-control-sm' }
+	.modal-footer
+		= save_button

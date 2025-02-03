@@ -1,0 +1,40 @@
+.card.shadow.mx-4.mb-4.collapse#debits{data: {parent:"#document-accordion"}}
+	.card-header.bg-white
+		%h5.w-100.pt-2
+			%span.dropdown.display-th
+				= button_tag icon('fas', 'cogs'), id: "hideConceptsButton", type: 'button', class: 'btn btn-light border btn-sm dropdown-toggle', data: {toggle: 'dropdown', for: "sales/bills"}, aria:{haspopup: true, expanded: false}
+				.dropdown-menu>
+			Notas de débito
+	.card-body
+		.table-responsive
+			%table.table
+				%thead
+					%tr
+						- hidden_attributes = current_user.table_configs.custom_hidden_attributes("sales/bills")
+						%th Nº
+						- Sales::BillDetail::TABLE_COLUMNS.each do |detail, options|
+							%th{class: "#{'hidden' if hidden_attributes.include? detail} #{'important' if options["important"]} #{'fixed-col' if  options["fixed"]}"}
+								= detail unless detail == "Acción"
+				%tbody
+					-bill.debit_notes.each do |debit_note|
+						- debit_note.details.each do |detail|
+							%tr
+								%td
+									= debit_note.name(:short)
+								%td
+									= detail.tipo
+								%td
+									= detail.product_name
+								%td
+									= detail.quantity
+								%td
+									= detail.product_measurement
+								%td
+									= "$ #{detail.price}"
+								%td
+									= detail.discount
+								%td
+									= detail.iva_aliquot
+								%td.fixed-col
+									= "$ #{detail.total}"
+								%td.fixed-col

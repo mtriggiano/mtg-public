@@ -1,0 +1,69 @@
+- present company do |company_presenter|
+	.pr-2.pl-2.row
+		.col-12.col-md-4.p-2
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'list-alt')
+					Información básica
+				%dl.p-4.card-body
+					= see_company_dl("Nombre", company_presenter.name)
+					%hr.dotted
+					= see_company_dl("Email", company_presenter.email)
+					%hr.dotted
+					= see_company_dl("Razón social", company_presenter.society_name)
+					%hr.dotted
+					= see_company_dl("Concepto", company_presenter.concept)
+					%hr.dotted
+					= see_company_dl("Ubicación", company_presenter.address)
+					%hr.dotted
+					= see_company_dl("C.U.I.T.", company_presenter.cuit)
+					%hr.dotted
+					= see_company_dl("Usuarios", company_presenter.users_count)
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'chart-pie')
+					Facturación en el último mes
+				.card-body
+					= area_chart company_presenter.last_month_incomes
+		.col-12.col-md-4.p-2
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'clipboard-list')
+					Actividad reciente
+				.card-body
+					%h4.text-center
+						¡Todavia no tienes ninguna actividad registrada!
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'store')
+					Depositos
+				.card-body
+					%table.table.table-striped
+						%thead
+							%th
+								Nombre
+							%th
+								Ubicación
+							%th
+								Disponibilidad
+						%tbody
+							- company.stores.each do |store|
+								%tr
+									%td #{store.name}
+									%td #{store.location}
+									%td #{store.filled ? "Lleno" : "Disponible" }
+		.col-12.col-md-4.p-2
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'chart-pie')
+					Actividad por usuario
+				.card-body
+					= pie_chart current_company.users.joins(:activities).group("users.email").count("activities.id").first(5)
+			.card.shadow.toggle-card
+				.card-header.text-muted.bg-white
+					= icon('fas', 'chart-bar')
+					Ingresos vs gastos
+				.card-body
+					= pie_chart Company.group(:name).count, colors: ["#b00", "#666"], donut: true
+
+		

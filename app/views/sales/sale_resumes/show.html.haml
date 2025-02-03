@@ -1,0 +1,21 @@
+- params[:view] ||= 'general'
+
+- present sale_resume do |resume_presenter|
+	.px-3.pb-3.row
+		= client_card('3', "#{resume_presenter.date}", 'Fecha del resumen', 'calendar-alt', 'info')
+		= client_card('3', "#{resume_presenter.total_bills}", 'Ingresos estimados del mes', 'briefcase', 'primary')
+		= client_card('3', "#{resume_presenter.total_payed}", 'Total Pagado', 'hand-holding-usd', 'danger')
+		= client_card('3', "#{resume_presenter.balance}", 'Balance del mes', 'hand-holding-usd', 'success')
+	%ul.nav.justify-content-center.bg-white.border-bottom.border-top.mx-3.shadow.rounded-top
+		%li.nav-item.border-animated
+			= show_links('General', 'general', params[:view], sale_resume_path(sale_resume.id, view: 'general'))
+		%li.nav-item.border-animated
+			= show_links('Facturas', 'bills', params[:view], sale_resume_path(sale_resume.id, view: 'bills'))
+		%li.nav-item.border-animated
+			= show_links('Recibos', 'receipts' , params[:view], sale_resume_path(sale_resume.id, view: 'receipts'))
+		%li.nav-item.border-animated
+			= show_links('Estadísticas', 'stats', params[:view], sale_resume_path(sale_resume.id, view: 'stats'))
+	.container-fluid.mt-2
+		#config_fields
+			- if ['general', 'bills', 'receipts', 'stats'].include?(params[:view])
+				= render "/sales/sale_resumes/see/#{params[:view]}"

@@ -1,0 +1,8 @@
+- total_page = 0
+- @receipt ||= expedient_receipt
+- group_details = @receipt.details.includes(:bill).in_groups_of(15, fill_with= nil)
+- group_details.each_with_index do |details_page, index|
+	.alwaysbreak
+		= render '/expedient_receipts/pdf/header.html.haml', receipt: @receipt
+		= render '/expedient_receipts/pdf/details.html.haml', :details => details_page.compact, payments: @receipt.payments, receipt: @receipt
+		= render template: '/sales/receipts/pdf/_footer.html.haml', :locals => { :page_number => (index + 1), :total_pages => group_details.count, receipt: @receipt }

@@ -1,0 +1,49 @@
+= simple_form_builder arrival, defaults: {disabled: arrival.disabled?} do |f|
+	= shared_nav(f)
+	.card.shadow.mb-4.mx-4.rounded-lg{class: "border-left-#{record.state_color}"}
+		.card-body
+			= surgery_header(f)
+			.header-detail
+				= error_notification(f)
+				.row
+					.col-sm-4.col-12
+						= number_input(f, true)
+						= supplier_input(f)
+					.col-sm-4.col-12
+						= store_input(f)
+						= date_input(f, :date)
+					.col-sm-4.col-12
+						= f.input :punctuation, label: "Puntuación al proveedor", label_html: {class: 'h6'}, collection: 1..10, placeholder: "Puntuación por servicio"
+						= state_input(f, with_button: false)
+				= new_associated_document(f)
+				= state_manager(f)
+				= file_state_manager(f)
+	= document_table(f) do
+		= render '/file_attributes_configs/shared_extra_attributes', f:f, object: arrival
+		= observation_input(f)
+		= render '/purchases/shared_attachment', f:f
+
+
+= modal("#{icon('fas', 'magic')} Autocompletar campos", "autocomplete_modal", "autocomplete_modal_body") do
+	= form_tag [:import, :surgeries_arrivals] do
+		.modal-body
+			%p.text-muted Para completar automaticamente el documento primero ingrese el ID global de transacción provisto por su proveedor.
+			%h5
+				%span.text-warning
+					= icon('fas', 'exclamation-triangle')
+				Considreaciones
+			%ul.text-muted
+				%li Tenga en cuenta que solo se cargaran los productos trazables.
+				%li No podra asociar un pedido si selecciona esta opción.
+				%li
+					Si quiere autocompletar un pedido se recomienda
+					%span.text-danger
+						NO USAR ESTA OPCIÓN.
+				%li Se borraran todos los detalles no guardados
+			.form-group
+				= label_tag :number, "Ingrese el N° de remito"
+				= number_field_tag :number, params[:number], required: true, class: 'form-control'
+				= hidden_field_tag :id, arrival.id
+		.modal-footer
+			= save_button
+			= close_button

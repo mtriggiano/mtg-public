@@ -1,0 +1,19 @@
+
+- if current_user.can?(:read, "Surgeries::File")
+	= index_table(mform: true, icon: 'exchange-alt', text: "Movimientos", path: new_surgeries_file_movement_path(surgery_file_id: file.id), jpath: surgeries_file_movements_path(surgery_file_id: file.id, format: :json), mtarget: "#new_movement_modal", model_name: "Surgeries::FileMovement")
+- else
+	.mt-4
+		= render template: "/home/forbidden.html.haml", locals: {subject: "Surgeries::File"}
+
+
+= modal("#{icon('fas', 'plus')} Editar movimiento", "edit_movement_modal", "edit_movement_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'eye')} Ver movimiento", "show_movement_modal", "show_movement_body", "big") do
+	.modal-body
+		= yield
+
+= modal("#{icon('fas', 'plus')} Añadir movimiento", "new_movement_modal", "new_surgery_file_surgery_file_movement_body", "big") do
+	.modal-body
+		= yield

@@ -1,0 +1,37 @@
+%h2
+  Informe de gastos
+
+= simple_nested_form_for(cash_solicitude, :url => update_expenses_cash_solicitude_path(cash_solicitude), method: :patch) do |f|
+  .card.mb-4
+    .card-body
+      = error_notification(f)
+      = render 'show', cash_solicitude: cash_solicitude
+      %hr
+      .row
+        .col-6
+        .col-2.form-group
+          %p Importe entregado
+          %h4.text-right
+            %span $
+            %span.withdrawal-total
+              = cash_solicitude.cash_withdrawal.importe
+        .col-2.form-group
+          %p Total de gastos
+          %h4.text-right
+            %span $
+            %span.expenses-total
+              = cash_solicitude.expense_details.sum(:total).round(2) || "0.0"
+        .col-2.form-group
+          %p A rendir
+          %h4.text-right
+            %span $
+            %span.refund-total 0.00
+
+  %h4 Comprobantes asociados
+  = render 'user_expense_details', f: f
+  .form-group
+    %p.text-center
+      = f.link_to_add "#{icon('fas','plus')} Añadir comprobante".html_safe, :expense_details, class: 'btn btn-success'
+
+  .actions
+    = save_button

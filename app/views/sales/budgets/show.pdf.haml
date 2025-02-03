@@ -1,0 +1,8 @@
+- @sale_budget ||= budget
+- total_page = 0
+- group_details = DetailPdf.new(@sale_budget, with_childs: true).build.in_groups_of(15)
+- group_details.each_with_index do |details_page, index|
+	.alwaysbreak
+		= render template: '/sales/budgets/pdf/_header.html.haml', locals: {sale_budget: @sale_budget}
+		= render template: '/sales/budgets/pdf/_details.html.haml', :locals => { :page_number => (index + 1), :details => details_page.compact, sale_budget: @sale_budget}
+		= render template: '/sales/budgets/pdf/_footer.html.haml', :locals => { :page_number => (index + 1), :total_pages => group_details.count, sale_budget: @sale_budget }

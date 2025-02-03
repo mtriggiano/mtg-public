@@ -1,0 +1,12 @@
+= simple_form_for [client, contact, client_contact_record] do |f|
+	= error_notification(f)
+	= f.input :title, label: "Título"
+	%hr.dotted
+	= f.input :date, as: :date_picker, label: "Fecha"
+	%hr.dotted
+	= f.input :object, label: "Objeto"
+	%hr.dotted
+	= f.input :body, label: "Cuerpo", input_html: { :rows => 5 }, as: :summernote
+.actions
+	= save_button
+	= close_button

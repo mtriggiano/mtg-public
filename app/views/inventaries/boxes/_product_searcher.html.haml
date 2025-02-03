@@ -1,0 +1,6 @@
+- products.each do |product|
+	%tr.draggable{draggable:"true", ondragstart:"drag(event)", id: "#{product.id}"}
+		%td{style: 'width: 10%' }
+			= image_tag product.default_image, width: '100%', class: 'img-fuild image'
+		%td{style: 'width: 90%', id: product.id }
+			= product.full_name

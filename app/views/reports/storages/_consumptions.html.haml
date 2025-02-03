@@ -1,0 +1,18 @@
+#bmenu.mx-4.d-flex.justify-content-between.align-items-center
+.index-body.table-responsive
+  %table#paginated_table.table{data: {title: "Reporte CONSUMOS ALMACEN", source: reports_storages_path(view: 'consumptions', format: :json)}}
+    %thead.thead-light
+      %th.actions{scope: 'col'} Número
+      %th.actions{scope: 'col'} Fcha. Cx.
+      %th.actions{scope: 'col'} Fcha. Consumop
+      %th.actions{scope: 'col'} Rto.
+      %th.actions{scope: 'col'} Expediente
+      %th.actions{scope: 'col'} Afiliado
+      %th.actions{scope: 'col'} Cliente
+      %th.actions{scope: 'col'} Médico
+      %th.actions{scope: 'col'} Usuario
+      %th.actions{scope: 'col'} Estado
+      %th.actions{scope: 'col'} Acciones
+    %tbody.table-bordered
+
+= table_script(DatatableConstants::Reports::Consumption.merge("actions" => ""))

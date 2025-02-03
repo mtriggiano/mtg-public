@@ -1,0 +1,20 @@
+- present user_vacation do |us_vacation_presenter|
+  .row
+    .col-12
+      .pr-2.pl-2.bg-white.p-3
+        .text-muted
+        = icon('fas', 'list-alt')
+        = "Información de la asignación de vacaciones"
+      %hr
+        %dl
+          = see_contact_dl("ID", user_vacation.id)
+          %hr.dotted
+          = see_contact_dl("Empleado", us_vacation_presenter.user_name)
+          %hr.dotted
+          = see_contact_dl("Días", user_vacation.days)
+          %hr.dotted
+          = see_contact_dl("Desde", us_vacation_presenter.init_date_label)
+          %hr.dotted
+          = see_contact_dl("Hasta", us_vacation_presenter.final_date_label)
+          %hr.dotted
+          = see_contact_dl("Aprobadas?", us_vacation_presenter.approved_icon)

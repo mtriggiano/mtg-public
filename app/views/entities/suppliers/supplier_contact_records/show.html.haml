@@ -1,0 +1,16 @@
+- present(supplier_contact_record) do |contact_record_presenter|
+	.pr-2.pl-2.w-100.bg-white.p-3.w-100
+		%dl
+			= see_contact_dl("Proveedor", supplier.name)
+			%hr.dotted
+			= see_contact_dl("Relizado por", contact_record_presenter.user_name)
+			%hr.dotted
+			= see_contact_dl("Fecha", contact_record_presenter.date)
+			%hr.dotted
+			= see_contact_dl("Título", contact_record_presenter.title)
+			%hr.dotted
+			= see_contact_dl("Objeto", contact_record_presenter.object)
+			%hr.dotted
+			= see_contact_dl("Cuerpo", contact_record_presenter.body)
+			%hr.dotted
+			= see_contact_dl("Registrado en", contact_record_presenter.created_at)

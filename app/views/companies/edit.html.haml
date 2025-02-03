@@ -1,0 +1,14 @@
+- params[:view] ||= 'general'
+.row
+	.col-2
+		.nav.flex-column.nav-pills{ role:'tablist', aria:{ orientation:'vertical' } } 
+			= config_links('General'		, 'general'		, params[:view], edit_company_path(current_company.id, view: 'general'))
+			= config_links('Ubicación'		, 'location'	, params[:view], edit_company_path(current_company.id, view: 'location'))
+			= config_links('A.N.M.A.T.'		, 'anmat'		, params[:view], edit_company_path(current_company.id, view: 'anmat'))
+			= config_links('Contable'		, 'accountant'	, params[:view], edit_company_path(current_company.id, view: 'accountant'))
+			= config_links('Puntos de venta', 'sale_points'	, params[:view], edit_company_path(current_company.id, view: 'sale_points'))
+			= config_links('Departamentos'	, 'departments'	, params[:view], edit_company_path(current_company.id, view: 'departments'))
+			= config_links('Depósitos'		, 'stores'		, params[:view], edit_company_path(current_company.id, view: 'stores'))
+			= config_links('Bancos'			, 'banks'		, params[:view], edit_company_path(current_company.id, view: 'banks'))
+			= config_links('Tarjetas'		, 'cards'		, params[:view], edit_company_path(current_company.id, view: 'cards'))
+	= render 'form'

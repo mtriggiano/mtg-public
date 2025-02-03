@@ -1,0 +1,35 @@
+= simple_nested_form_for sale_order, url: url_for(controller: 'surgeries/sale_orders', action: 'deliver', format: :pdf) do |f|
+	%p.text-muted
+		= icon('fas', 'exclamation-circle')
+		Configure los detalles de la orden de venta. Los datos especifique abajo seran los que se mostraran en el PDF que se enviará al cliente.
+	.table-responsive
+		%table.table.custom-details
+			%thead
+				%th
+					Cantidad
+				%th
+					Descripción
+				%th
+					Precio Unit.
+				%th
+					Precio Total
+				%th
+					Acciones
+			%tbody.custom-details
+				= f.simple_fields_for :custom_details, f.object.custom_details_builder, defaults: {disabled: false}, wrapper: false do |cd|
+					%tr.fields
+						%td{style: 'width: 10%'}
+							= cd.input :quantity, label: false
+						%td{style: 'width: 60%'}	
+							= cd.input :product_name, label: false, as: :text
+						%td{style: 'width: 10%'}	
+							= cd.input :price, label: false
+						%td{style: 'width: 10%'}	
+							= cd.input :total, label: false, input_html: {data: {reversible: false}}
+						%td{style: 'width: 10%'}
+							= cd.link_to_remove icon('fas', 'trash'), class: 'btn btn-icon btn-sm btn-light btn-outline-danger'
+	%hr
+	.text-center
+		= f.link_to_add "#{icon('fas', 'plus')} Agregar".html_safe, :custom_details, class: 'btn btn-success', data:{target: 'table.custom-details'}
+	%hr
+	= save_button

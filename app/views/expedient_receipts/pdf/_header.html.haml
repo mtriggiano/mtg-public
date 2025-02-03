@@ -1,0 +1,65 @@
+- company_presenter ||= CompanyPresenter.new(receipt.company, self)
+.border
+  %table.width_100
+    %tr{style: "line-height: 10px !important;"}
+      %th.text_size_20.text_center{style:"width: 100px;"}
+        = wicked_pdf_image_tag receipt.company.pdf_logo, style: "max-width: 100px; max-height: 130px"
+      %th.header_word_break{style:"width: 300px; text-align: left; padding-left: 50px;"}
+        %p{style: 'font-size: 15px;'}
+          = receipt.company.try(:address)
+        %p{style: 'font-size: 15px;'}
+          = receipt.company.postal_code + " " + receipt.company.try(:locality).try(:province).try(:name) + " - " + receipt.company.try(:locality).try(:province).try(:country).try(:name)
+        %p{style: 'font-size: 15px;'}
+          = "#{receipt.company.try(:contact_number)}".html_safe
+        %p{style: 'font-size: 15px;'}
+          cobranzas@magnus.com.ar
+        %p{style: 'font-size: 15px;'}
+          = "C.U.I.T.: #{receipt.company.try(:cuit)}".html_safe
+        %p{style: 'font-size: 15px;'}
+          www.magnus.com.ar
+      %th.header_word_break.border{style:"width: 250px;"}
+        %p.text_size_20
+          RECIBO
+        %p.text_size_25
+          Nº
+          = receipt.number
+        %p
+          Fecha:
+          = I18n.l(receipt.date, format: :default)
+.border
+  %table.width_100
+    %tr
+      %td
+        %b
+          Señor(es):
+        = receipt.client.try(:name)
+      %td
+        %b
+          Domicilio:
+        = receipt.client.try(:address)
+    %tr
+      %td
+        %b
+          C.U.I.T.:
+        = receipt.client.try(:document_number)
+      %td
+        %b
+          Gln:
+        = receipt.client.try(:gln)
+.border
+  %table.width_100
+    %tr
+      %td
+        %b
+          Recibimos la suma de Pesos:
+        = number_to_words(receipt.total)
+    - unless receipt.concept.blank?
+      %tr
+        %td
+          %b
+            En concepto de:
+          = receipt.try(:concept).html_safe
+    %tr
+      %td
+        %b
+          Conforme al siguiente detalle:
